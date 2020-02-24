@@ -13,8 +13,9 @@ public class Entry implements Serializable{
     private String title;
     private String entryNote;
     private int priorityValue;
+    private Category category;
 
-    public Entry(int remindingPeriod, LocalDateTime dueDate, String title, String entryNote, int priorityValue){
+    public Entry(int remindingPeriod, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
         this.creationDate = LocalDateTime.now();
         this.dueDate = dueDate;
         this.reminderDates = getReminderDatesInInit(remindingPeriod);
@@ -22,6 +23,7 @@ public class Entry implements Serializable{
         this.title = title;
         this.entryNote = entryNote;
         this.priorityValue = priorityValue;
+        this.category = category;
     }
 
     public List<LocalDateTime> getReminderDatesInInit(int remindingPeriod){
@@ -78,6 +80,14 @@ public class Entry implements Serializable{
 
     public void setPriorityValue(int priorityValue) {
         this.priorityValue = priorityValue;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
 
