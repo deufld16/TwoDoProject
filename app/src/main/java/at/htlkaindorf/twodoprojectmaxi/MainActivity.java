@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import at.htlkaindorf.twodoprojectmaxi.activities.CreationActivity;
 import at.htlkaindorf.twodoprojectmaxi.activities.EntryCreationActivity;
 import at.htlkaindorf.twodoprojectmaxi.activities.WelcomeActivity;
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         Intent welcomeIntent = new Intent(this, WelcomeActivity.class);
         startActivity(welcomeIntent);
 
-        Intent creationIntent = new Intent(this, EntryCreationActivity.class);
+        Intent creationIntent = new Intent(this, CreationActivity.class);
         startActivity(creationIntent);
     }
 }
