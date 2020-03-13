@@ -68,7 +68,7 @@
             android:inputType="textPersonName"
             android:paddingStart="7dp"
             android:paddingEnd="7dp"
-            android:textColor="#000000" />
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 
@@ -87,9 +87,9 @@
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2"
                 app:srcCompat="@drawable/ic_ecp_lb_desc" />
 
             <TextView
@@ -118,10 +118,9 @@
             android:paddingTop="7dp"
             android:paddingEnd="7dp"
             android:paddingBottom="7dp"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
 
     <Spinner
@@ -188,7 +187,7 @@
             android:paddingStart="7dp"
             android:paddingEnd="7dp"
             android:textAlignment="viewStart"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -209,7 +208,7 @@
         app:srcCompat="@drawable/ic_ecp_seperator_line" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btCreationOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -220,7 +219,7 @@
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btCreationCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

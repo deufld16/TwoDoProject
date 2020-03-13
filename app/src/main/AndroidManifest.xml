@@ -9,9 +9,11 @@
         android:roundIcon="@drawable/logo_new_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activities.CreationActivity"></activity>
-        <activity android:name=".activities.EntryCreationActivity" />
-        <activity android:name=".activities.WelcomeActivity" />
+        <activity
+            android:name=".activities.ToDoListActivity"
+            android:label="@string/title_activity_to_do_list"
+            android:theme="@style/NoActionBar"></activity>
+        <activity android:name=".activities.CreationActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
