@@ -7,6 +7,12 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 
 public class CategoryListModel {
 
+    public CategoryListModel(){
+        allCategories.add(new Category("School", 1));
+        allCategories.add(new Category("Friends", 2));
+        allCategories.add(new Category("ToDo", 3));
+    }
+
     private List<Category> allCategories = new LinkedList<>();
 
     public void addCategory(Category cat){

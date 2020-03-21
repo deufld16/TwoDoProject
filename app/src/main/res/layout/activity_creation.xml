@@ -61,7 +61,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/edTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_ecp_tf_title"
@@ -108,7 +108,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/edDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_ecp_tf_desc"
@@ -124,7 +124,7 @@
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/spCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
