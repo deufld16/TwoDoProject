@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+
 public class Entry implements Serializable{
 
     private LocalDateTime creationDate;
@@ -15,10 +17,10 @@ public class Entry implements Serializable{
     private int priorityValue;
     private Category category;
 
-    public Entry(int remindingPeriod, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
+    public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
         this.creationDate = LocalDateTime.now();
         this.dueDate = dueDate;
-        this.reminderDates = getReminderDatesInInit(remindingPeriod);
+        this.reminderDates = getReminderDatesInInit(reminderID);
 
         this.title = title;
         this.entryNote = entryNote;
@@ -26,10 +28,38 @@ public class Entry implements Serializable{
         this.category = category;
     }
 
-    public List<LocalDateTime> getReminderDatesInInit(int remindingPeriod){
-        while(creationDate.plusDays(remindingPeriod).isBefore(dueDate)){
-            creationDate = creationDate.plusDays(remindingPeriod);
-            reminderDates.add(creationDate);
+    public List<LocalDateTime> getReminderDatesInInit(int reminderID){
+        if(reminderID != 0 && reminderID != 5 && reminderID != 6){
+            int plusNumber = 0;
+            int type = 0;
+            switch (reminderID){
+                case 1: plusNumber = 1;
+                    break;
+                case 2: plusNumber = 7;
+                    break;
+                case 3: plusNumber = 1;
+                        type = 1;
+                    break;
+                case 4: plusNumber = 1;
+                        type = 2;
+                    break;
+            }
+            if(type == 0){
+                while(creationDate.plusDays(plusNumber).isBefore(dueDate)){
+                    creationDate = creationDate.plusDays(plusNumber);
+                    reminderDates.add(creationDate);
+                }
+            }else if(type == 1){
+                while(creationDate.plusMonths(plusNumber).isBefore(dueDate)){
+                    creationDate = creationDate.plusMonths(plusNumber);
+                    reminderDates.add(creationDate);
+                }
+            }else if(type == 2){
+                while(creationDate.plusYears(plusNumber).isBefore(dueDate)){
+                    creationDate = creationDate.plusYears(plusNumber);
+                    reminderDates.add(creationDate);
+                }
+            }
         }
         return reminderDates;
     }
