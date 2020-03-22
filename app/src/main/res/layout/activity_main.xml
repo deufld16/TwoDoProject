@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="Open Sans"
+        android:paddingBottom="8dp"
         android:text="Press checkmark to continue"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"

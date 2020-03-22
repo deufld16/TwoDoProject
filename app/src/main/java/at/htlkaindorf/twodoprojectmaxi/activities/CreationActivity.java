@@ -3,6 +3,8 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,7 @@ public class CreationActivity extends AppCompatActivity{
     private CategoryListModel clm = new CategoryListModel();
     private List<String> priorities = Arrays.asList("Low Prioirty", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
+    private Entry entry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +106,10 @@ public class CreationActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(createEntry(view)){
-                    Snackbar.make(view, "Entry saved", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Intent intent = getIntent();
+                    intent.putExtra("newEntry", entry);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
                 }
             }
         });
@@ -113,6 +118,7 @@ public class CreationActivity extends AppCompatActivity{
         btCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setResult(Activity.RESULT_CANCELED);
                 finish();
             }
         });
@@ -158,7 +164,7 @@ public class CreationActivity extends AppCompatActivity{
             }
         }
 
-        Entry e = new Entry(reminder_id, dueDate, edTitle.getText().toString(), edDescription.getText().toString(), priorityNumber, cat);
+        entry = new Entry(reminder_id, dueDate, edTitle.getText().toString(), edDescription.getText().toString(), priorityNumber, cat);
         return true;
     }
 

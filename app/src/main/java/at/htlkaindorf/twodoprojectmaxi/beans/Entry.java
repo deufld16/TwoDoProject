@@ -1,5 +1,7 @@
 package at.htlkaindorf.twodoprojectmaxi.beans;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,6 +64,12 @@ public class Entry implements Serializable{
             }
         }
         return reminderDates;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return title;
     }
 
     public LocalDateTime getCreationDate() {
