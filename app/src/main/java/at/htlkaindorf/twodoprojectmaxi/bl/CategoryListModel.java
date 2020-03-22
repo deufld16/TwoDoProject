@@ -11,6 +11,7 @@ public class CategoryListModel {
         allCategories.add(new Category("School", 1));
         allCategories.add(new Category("Friends", 2));
         allCategories.add(new Category("ToDo", 3));
+        allCategories.add(new Category("Add category", 4));
     }
 
     private List<Category> allCategories = new LinkedList<>();
