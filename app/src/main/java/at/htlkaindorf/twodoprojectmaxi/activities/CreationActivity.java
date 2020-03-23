@@ -5,10 +5,7 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -147,8 +143,8 @@ public class CreationActivity extends AppCompatActivity{
     }
 
     public boolean createEntry(View view){
-        EditText edTitle = findViewById(R.id.edTitle);
-        EditText edDescription = findViewById(R.id.edDescription);
+        EditText edTitle = findViewById(R.id.etTitle);
+        EditText edDescription = findViewById(R.id.etDescription);
         if(edTitle.getText().toString().trim().isEmpty()){
             Snackbar.make(view, "Please enter a Title for your Entry", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();

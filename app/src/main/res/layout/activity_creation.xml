@@ -61,7 +61,7 @@
                         android:text="Title"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView"
                         app:layout_constraintEnd_toEndOf="@+id/imageView"
                         app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -70,14 +70,17 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <EditText
-                    android:id="@+id/edTitle"
+                    android:id="@+id/etTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_ecp_tf_title"
+                    android:fontFamily="Open Sans"
                     android:inputType="textPersonName"
                     android:paddingStart="7dp"
                     android:paddingEnd="7dp"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:imeOptions="actionNext"/>
 
             </LinearLayout>
 
@@ -99,16 +102,18 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_ecp_lb_desc" />
 
                     <TextView
                         android:id="@+id/tvDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="Open Sans"
                         android:text="Description"
                         android:textAlignment="textStart"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -117,10 +122,11 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <EditText
-                    android:id="@+id/edDescription"
+                    android:id="@+id/etDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_ecp_tf_desc"
+                    android:fontFamily="Open Sans"
                     android:gravity="start|top"
                     android:inputType="textMultiLine"
                     android:paddingStart="7dp"
@@ -128,6 +134,8 @@
                     android:paddingEnd="7dp"
                     android:paddingBottom="7dp"
                     android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:imeOptions="actionDone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </LinearLayout>
@@ -184,7 +192,7 @@
                         android:text="Date"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@+id/ivDate"
                         app:layout_constraintEnd_toEndOf="@+id/ivDate"
                         app:layout_constraintStart_toStartOf="@+id/ivDate"
@@ -197,13 +205,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_ecp_tf_title"
+                    android:fontFamily="Open Sans"
                     android:gravity="center|start"
                     android:onClick="showDatePickerDialog"
                     android:paddingStart="7dp"
                     android:paddingEnd="7dp"
                     android:textAlignment="viewStart"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -227,24 +236,26 @@
             <Button
                 android:id="@+id/btCreationOk"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_ecp_button_ok"
+                android:fontFamily="Open Sans"
                 android:text="Ok"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btCreationCancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_ecp_button_cancel"
+                android:fontFamily="Open Sans"
                 android:text="cancel"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>

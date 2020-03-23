@@ -29,7 +29,7 @@ import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
-    private ToDoAdapter toDoAdapter = new ToDoAdapter();
+    private ToDoAdapter toDoAdapter = new ToDoAdapter(this);
     private RecyclerView.LayoutManager lm;
 
 
@@ -58,10 +58,12 @@ public class ToDoListActivity extends AppCompatActivity {
         toDoAdapter = new ToDoAdapter(entries);
         rvToDo.setAdapter(toDoAdapter);*/
         rvToDo = findViewById(R.id.rvDisplay);
-        //List<String> allNames = Arrays.asList("Test", "Florian", "Wixxer");
-        //RecyclerViewAdapter rv = new RecyclerViewAdapter(allNames, null, this);
-        //rvToDo.setAdapter(rv);
-        //rvToDo.setLayoutManager(new LinearLayoutManager(this));
+        rvToDo.setAdapter(toDoAdapter);
+        rvToDo.setLayoutManager(new LinearLayoutManager(this));
+        /*List<String> allNames = Arrays.asList("Test", "Florian", "Wixxer");
+        RecyclerViewAdapter rv = new RecyclerViewAdapter(allNames, null, this);
+        rvToDo.setAdapter(rv);
+        rvToDo.setLayoutManager(new LinearLayoutManager(this));*/
     }
 
     /**
@@ -94,6 +96,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 Toast.makeText(this, Html.fromHtml("New Entry <i>"+entry+"</i> created")
                         ,Toast.LENGTH_SHORT).show();
                 toDoAdapter.addEntry(entry);
+                toDoAdapter.notifyDataSetChanged();
             }
         }
     }
