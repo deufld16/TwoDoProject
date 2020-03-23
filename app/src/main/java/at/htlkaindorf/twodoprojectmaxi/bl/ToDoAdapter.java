@@ -17,6 +17,7 @@ import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
@@ -58,7 +59,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.tvEntryTitle.setText(entry.getTitle());
         holder.tvEntryCategory.setText(entry.getCategory().getCategory_name());
         holder.tvEntryDueDate.setText(entry.getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        holder.tvEntryPriority.setText(entry.getPriorityValue()+"");
+        holder.tvEntryPriority.setText(entry.getPriorityValue());
         holder.clEntryLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

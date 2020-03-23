@@ -159,6 +159,12 @@ public class CreationActivity extends AppCompatActivity{
         }catch (DateTimeParseException ex){
                 dueDate = null;
         }
+        if(dueDate == null)
+        {
+            Snackbar.make(view, "Please enter a Date for your Entry", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            return false;
+        }
         Category cat = (Category)spCategories.getSelectedItem();
         int priorityNumber = 0;
         for (PriorityEnum prio:

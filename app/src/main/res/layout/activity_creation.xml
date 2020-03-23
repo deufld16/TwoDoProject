@@ -75,12 +75,13 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_ecp_tf_title"
                     android:fontFamily="Open Sans"
+                    android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:paddingStart="7dp"
                     android:paddingEnd="7dp"
+                    android:text="Test Entry"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:imeOptions="actionNext"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -210,6 +211,7 @@
                     android:onClick="showDatePickerDialog"
                     android:paddingStart="7dp"
                     android:paddingEnd="7dp"
+                    android:text="23.03.2020"
                     android:textAlignment="viewStart"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />
