@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,11 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
     private TextView vwDate;
-
-    public DatePickerFragment(TextView vwDate)
+    private Spinner spReminder;
+    public DatePickerFragment(TextView vwDate, Spinner spReminder)
     {
         this.vwDate = vwDate;
+        this.spReminder = spReminder;
     }
 
     @NonNull
@@ -38,5 +40,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker datePicker, int year, int month, int day)
     {
         vwDate.setText(day+"."+(month+1)+"."+year);
+        spReminder.setEnabled(true);
+        //Maxi hier background auf normal
     }
 }

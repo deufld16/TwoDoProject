@@ -16,20 +16,23 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.bl.RecyclerViewAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
-    private RecyclerView.Adapter toDoAdapter;
+    private ToDoAdapter toDoAdapter = new ToDoAdapter();
     private RecyclerView.LayoutManager lm;
 
-    private List<Entry> entries = new LinkedList<>();
+
     private final int RC_CREATION_ACTIVITY = 2;
 
     @Override
@@ -54,6 +57,11 @@ public class ToDoListActivity extends AppCompatActivity {
 
         toDoAdapter = new ToDoAdapter(entries);
         rvToDo.setAdapter(toDoAdapter);*/
+        rvToDo = findViewById(R.id.rvDisplay);
+        //List<String> allNames = Arrays.asList("Test", "Florian", "Wixxer");
+        //RecyclerViewAdapter rv = new RecyclerViewAdapter(allNames, null, this);
+        //rvToDo.setAdapter(rv);
+        //rvToDo.setLayoutManager(new LinearLayoutManager(this));
     }
 
     /**
@@ -85,6 +93,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 Entry entry = (Entry) data.getSerializableExtra("newEntry");
                 Toast.makeText(this, Html.fromHtml("New Entry <i>"+entry+"</i> created")
                         ,Toast.LENGTH_SHORT).show();
+                toDoAdapter.addEntry(entry);
             }
         }
     }

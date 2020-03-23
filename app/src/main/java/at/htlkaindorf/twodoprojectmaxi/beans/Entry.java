@@ -3,7 +3,9 @@ package at.htlkaindorf.twodoprojectmaxi.beans;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
@@ -12,7 +14,7 @@ public class Entry implements Serializable{
 
     private LocalDateTime creationDate;
     private LocalDateTime dueDate;
-    private List<LocalDateTime> reminderDates;
+    private List<LocalDateTime> reminderDates = new LinkedList<>();
 
     private String title;
     private String entryNote;

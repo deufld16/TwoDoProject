@@ -5,8 +5,10 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -60,6 +62,8 @@ public class CreationActivity extends AppCompatActivity{
         spCategories = findViewById(R.id.spCategories);
         spPriorities = findViewById(R.id.spPriority);
         spReminder = findViewById(R.id.spReminder);
+        spReminder.setEnabled(false);
+        //Maxi hier background auf hintergraut setzten
 
         //erstellen der Adapter für die Spinner
         List<Category> allCategories = clm.getAllCategories();
@@ -134,7 +138,7 @@ public class CreationActivity extends AppCompatActivity{
 
     public void showDatePickerDialog(View v)
     {
-        DialogFragment newFragment = new DatePickerFragment(vwDate);
+        DialogFragment newFragment = new DatePickerFragment(vwDate, spReminder);
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -152,7 +156,10 @@ public class CreationActivity extends AppCompatActivity{
         }
         LocalDateTime dueDate = null;
         try {
-            dueDate = LocalDateTime.parse(vwDate.getText().toString(), dtf);
+            String parts [] = vwDate.getText().toString().split("\\.");
+            if(parts.length == 3){
+                dueDate = LocalDateTime.of(Integer.parseInt(parts[2]), Integer.parseInt(parts[1]), Integer.parseInt(parts[0]), 0,0);
+            }
         }catch (DateTimeParseException ex){
                 dueDate = null;
         }
