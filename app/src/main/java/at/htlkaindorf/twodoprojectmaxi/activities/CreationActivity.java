@@ -26,7 +26,6 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
-import at.htlkaindorf.twodoprojectmaxi.bl.Operations;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;

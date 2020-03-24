@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,26 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.File;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
-import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
-import at.htlkaindorf.twodoprojectmaxi.bl.Operations;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
-import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoListActivity extends AppCompatActivity {
 
@@ -52,9 +43,18 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
-        Operations.setToDoAdapter(toDoAdapter);
         try {
-            toDoAdapter.loadEntries();
+            boolean fileExists = false;
+            for (File file:
+                 getFilesDir().listFiles()) {
+                Log.d("ERROR", "onCreate: " + file.getName()) ;
+                if(file.getName().equalsIgnoreCase("entries.ser")){
+                    fileExists = true;
+                }
+            }
+            if(fileExists){
+                toDoAdapter.loadEntries();
+            }
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -134,18 +134,6 @@ public class ToDoListActivity extends AppCompatActivity {
                 toDoAdapter.addEntry(entry);
                 toDoAdapter.notifyDataSetChanged();
             }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("Test", "onDestroy: Test in ToDoListACtivity");
-        super.onDestroy();
-        try{
-            toDoAdapter.saveEntries();
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
         }
     }
 }

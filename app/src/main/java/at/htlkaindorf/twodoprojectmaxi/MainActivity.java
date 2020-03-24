@@ -2,26 +2,16 @@ package at.htlkaindorf.twodoprojectmaxi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.ToDoListActivity;
-import at.htlkaindorf.twodoprojectmaxi.bl.Operations;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,18 +67,6 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent toDoListIntent = new Intent(this, ToDoListActivity.class);
         startActivity(toDoListIntent);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(Operations.getToDoAdapter() != null){
-            try {
-                Operations.getToDoAdapter().saveEntries();
-            }catch (Exception ex){
-                Log.d("ERROR", "onDestroy: An error has occured while saving");
-                ex.printStackTrace();
-            }
-        }
     }
 
 }
