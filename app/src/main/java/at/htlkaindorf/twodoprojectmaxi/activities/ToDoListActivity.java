@@ -12,8 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,12 +27,12 @@ import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
-import at.htlkaindorf.twodoprojectmaxi.bl.RecyclerViewAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
+    private EditText etSearchbar;
     private ToDoAdapter toDoAdapter = new ToDoAdapter(this);
     private RecyclerView.LayoutManager lm;
 
@@ -49,7 +53,23 @@ public class ToDoListActivity extends AppCompatActivity {
                 addEntry();
             }
         });
+        etSearchbar = findViewById(R.id.et_searchBar);
+        etSearchbar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                toDoAdapter.setFilter(etSearchbar.getText().toString());
+            }
+        });
 /*       rvToDo.setHasFixedSize(true);
 
         lm = new LinearLayoutManager(this);
@@ -60,10 +80,6 @@ public class ToDoListActivity extends AppCompatActivity {
         rvToDo = findViewById(R.id.rvDisplay);
         rvToDo.setAdapter(toDoAdapter);
         rvToDo.setLayoutManager(new LinearLayoutManager(this));
-        /*List<String> allNames = Arrays.asList("Test", "Florian", "Wixxer");
-        RecyclerViewAdapter rv = new RecyclerViewAdapter(allNames, null, this);
-        rvToDo.setAdapter(rv);
-        rvToDo.setLayoutManager(new LinearLayoutManager(this));*/
     }
 
     /**

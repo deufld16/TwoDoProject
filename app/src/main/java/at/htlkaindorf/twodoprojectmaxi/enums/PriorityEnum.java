@@ -1,8 +1,8 @@
 package at.htlkaindorf.twodoprojectmaxi.enums;
 
 public enum PriorityEnum {
-    LOW_PRIORITY("Low Pirority",1),
-    MEDIUM_PRIORITY("Medium Prioirty", 5),
+    LOW_PRIORITY("Low Priority",1),
+    MEDIUM_PRIORITY("Medium Priority", 5),
     HIGH_PRIORITY("High Priority", 9);
 
     private int prioirty_value;

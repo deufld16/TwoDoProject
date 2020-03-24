@@ -41,7 +41,7 @@ public class CreationActivity extends AppCompatActivity{
     private Spinner spReminder;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.M.yyyy");
     private CategoryListModel clm = new CategoryListModel();
-    private List<String> priorities = Arrays.asList("Low Prioirty", "Medium Priority", "High Priority");
+    private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
     private Entry entry;
 
