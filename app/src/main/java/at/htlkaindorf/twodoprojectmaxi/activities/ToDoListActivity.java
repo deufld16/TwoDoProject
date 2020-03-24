@@ -47,6 +47,7 @@ public class ToDoListActivity extends AppCompatActivity {
             boolean fileExists = false;
             for (File file:
                  getFilesDir().listFiles()) {
+                Log.d("ERROR", "onCreate: " + file.getName()) ;
                 if(file.getName().equalsIgnoreCase("entries.ser")){
                     fileExists = true;
                 }

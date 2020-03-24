@@ -29,7 +29,7 @@ import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
-    private static final String FILE_NAME = "entries.res";
+    private static final String FILE_NAME = "entries.ser";
 
     private List<Entry> entries = new LinkedList<>();
     private List<Entry> filteredEntries = new LinkedList<>();
