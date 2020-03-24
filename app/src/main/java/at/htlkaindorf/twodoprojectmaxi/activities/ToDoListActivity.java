@@ -16,8 +16,11 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.KeyListener;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,15 +29,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
+import at.htlkaindorf.twodoprojectmaxi.bl.Operations;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
+import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
     private EditText etSearchbar;
+    private Spinner spCategory;
     private ToDoAdapter toDoAdapter = new ToDoAdapter(this);
     private RecyclerView.LayoutManager lm;
+    private CategoryListModel clm = new CategoryListModel();
 
 
     private final int RC_CREATION_ACTIVITY = 2;
@@ -43,6 +52,12 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
+        Operations.setToDoAdapter(toDoAdapter);
+        try {
+            toDoAdapter.loadEntries();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
@@ -59,7 +74,6 @@ public class ToDoListActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -70,6 +84,12 @@ public class ToDoListActivity extends AppCompatActivity {
                 toDoAdapter.setFilter(etSearchbar.getText().toString());
             }
         });
+        //List<Category> allCategories = clm.getAllCategories();
+        //ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<Category>(this,
+        //        R.layout.spinner_item, allCategories);
+        //categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spCategory = findViewById(R.id.spCategoryMain);
+        //spCategory.setAdapter(categoryAdapter);
 /*       rvToDo.setHasFixedSize(true);
 
         lm = new LinearLayoutManager(this);
@@ -117,4 +137,15 @@ public class ToDoListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.d("Test", "onDestroy: Test in ToDoListACtivity");
+        super.onDestroy();
+        try{
+            toDoAdapter.saveEntries();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }

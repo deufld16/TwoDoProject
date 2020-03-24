@@ -9,9 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +25,11 @@ import java.util.List;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
+import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
+
+    private static final String FILE_NAME = "entries.res";
 
     private List<Entry> entries = new LinkedList<>();
     private List<Entry> filteredEntries = new LinkedList<>();
@@ -38,6 +47,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             return true;
         }
         return false;
+    }
+
+    public List<Entry> getEntries() {
+        return entries;
+    }
+
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
     }
 
     @NonNull
@@ -120,8 +137,24 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 }
             }
         }
-        //notifyItemRangeChanged(0, filteredEntries.size());
         notifyDataSetChanged();
-        Log.d("Test", "filter: " + filteredEntries);
+    }
+
+    public void loadEntries() throws IOException, ClassNotFoundException{
+        List<Entry> allEntries = new LinkedList<>();
+        FileInputStream fis = context.openFileInput(FILE_NAME);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        entries = (List<Entry>)ois.readObject();
+        ois.close();
+        Toast.makeText(context, "Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
+        filter();
+    }
+
+    public void saveEntries()throws IOException{
+        FileOutputStream fos = context.openFileOutput(FILE_NAME, context.MODE_PRIVATE);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(entries);
+        oos.close();
+        Toast.makeText(context, "Saved to " + context.getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 }
