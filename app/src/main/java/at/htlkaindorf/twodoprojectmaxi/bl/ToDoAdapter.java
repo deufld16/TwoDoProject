@@ -81,6 +81,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
             }
         });*/
+
         Entry entry = filteredEntries.get(position);
         holder.tvEntryTitle.setText(entry.getTitle());
         holder.tvEntryCategory.setText(entry.getCategory().getCategory_name());
