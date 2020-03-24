@@ -20,6 +20,7 @@ public class Entry implements Serializable{
     private String entryNote;
     private int priorityValue;
     private Category category;
+    private Category status;
 
     public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
         this.creationDate = LocalDateTime.now();

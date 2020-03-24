@@ -44,6 +44,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         if(!entries.contains(entry)){
             entries.add(entry);
             filter();
+            try{
+                saveEntries();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
             return true;
         }
         return false;
