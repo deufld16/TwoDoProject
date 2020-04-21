@@ -79,12 +79,12 @@ public class CreationActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                if((adapterView.getSelectedItem()+"").equals("Add category"))
+                if((adapterView.getSelectedItem()+"").equals("ADD CATEGORY"))
                 {
                     DialogFragment textInputDlg = new TextInputFragment("Add Category",
-                            "Please enter the name for the new category:");
+                            "Please enter the name for the new category:", clm,
+                            adapterView.getSelectedItemPosition(), spCategories);
                     textInputDlg.show(getSupportFragmentManager(), "textInput");
-//to be continued (https://developer.android.com/guide/topics/ui/dialogs#java)
                 }
             }
 

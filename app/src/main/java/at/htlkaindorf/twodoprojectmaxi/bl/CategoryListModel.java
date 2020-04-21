@@ -8,10 +8,15 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 public class CategoryListModel {
 
     public CategoryListModel(){
-        allCategories.add(new Category("School", 1));
+        /*allCategories.add(new Category("School", 1));
         allCategories.add(new Category("Friends", 2));
-        allCategories.add(new Category("ToDo", 3));
-        allCategories.add(new Category("Add category", 4));
+        allCategories.add(new Category("To Do", 3));
+        allCategories.add(new Category("Add category", 4));*/
+
+        allCategories.add(new Category("School"));
+        allCategories.add(new Category("Friends"));
+        allCategories.add(new Category("To Do"));
+        allCategories.add(new Category("ADD CATEGORY"));
     }
 
     private List<Category> allCategories = new LinkedList<>();
@@ -20,6 +25,11 @@ public class CategoryListModel {
         if(!allCategories.contains(cat)){
             allCategories.add(cat);
         }
+    }
+
+    public Category getCategory(int position)
+    {
+        return allCategories.get(position);
     }
 
     public void remCategory(Category cat){
@@ -33,5 +43,18 @@ public class CategoryListModel {
     
     public void setAllCategories(List<Category> allCategories) {
         this.allCategories = allCategories;
+    }
+
+    public boolean setCategoryName(int position, String catName)
+    {
+        for (Category cat : allCategories)
+        {
+            if(cat.getCategory_name().equals(catName))
+            {
+                return false;
+            }
+        }
+        getCategory(position).setCategory_name(catName);
+        return true;
     }
 }
