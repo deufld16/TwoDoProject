@@ -1,5 +1,14 @@
 package at.htlkaindorf.twodoprojectmaxi.bl;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,16 +16,9 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 
 public class CategoryListModel {
 
-    public CategoryListModel(){
-        /*allCategories.add(new Category("School", 1));
-        allCategories.add(new Category("Friends", 2));
-        allCategories.add(new Category("To Do", 3));
-        allCategories.add(new Category("Add category", 4));*/
+    private static final String FILE_NAME = "categories.ser";
 
-        allCategories.add(new Category("School"));
-        allCategories.add(new Category("Friends"));
-        allCategories.add(new Category("To Do"));
-        allCategories.add(new Category("ADD CATEGORY"));
+    public CategoryListModel(){
     }
 
     private List<Category> allCategories = new LinkedList<>();
@@ -56,5 +58,23 @@ public class CategoryListModel {
         }
         getCategory(position).setCategory_name(catName);
         return true;
+    }
+
+    public void loadCategories(Context context)throws IOException, ClassNotFoundException{
+        FileInputStream fis = context.openFileInput(FILE_NAME);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        //Log.d("ERROR", "load Categories: " + (List<Category>)ois.readObject());;
+        allCategories = new LinkedList<>((List<Category>)ois.readObject());
+        ois.close();
+        Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
+    }
+
+    public void saveCategories(Context context)throws IOException{
+        FileOutputStream fos = context.openFileOutput(FILE_NAME, context.MODE_PRIVATE);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(allCategories);
+        Log.d("ERROR", "saveCategories: " + allCategories);;
+        oos.close();
+        Toast.makeText(context, "Categories Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 }

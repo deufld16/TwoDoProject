@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -26,6 +29,7 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
@@ -40,10 +44,10 @@ public class CreationActivity extends AppCompatActivity{
     private Spinner spPriorities;
     private Spinner spReminder;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.M.yyyy");
-    private CategoryListModel clm = new CategoryListModel();
     private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
     private Entry entry;
+    private Context help = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,7 @@ public class CreationActivity extends AppCompatActivity{
         //Maxi hier background auf hintergraut setzten
 
         //erstellen der Adapter für die Spinner
-        List<Category> allCategories = clm.getAllCategories();
+        List<Category> allCategories = Proxy.getClm().getAllCategories();
         ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<Category>(this,
                 R.layout.spinner_item, allCategories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -82,8 +86,8 @@ public class CreationActivity extends AppCompatActivity{
                 if((adapterView.getSelectedItem()+"").equals("ADD CATEGORY"))
                 {
                     DialogFragment textInputDlg = new TextInputFragment("Add Category",
-                            "Please enter the name for the new category:", clm,
-                            adapterView.getSelectedItemPosition(), spCategories);
+                            "Please enter the name for the new category:", Proxy.getClm(),
+                            adapterView.getSelectedItemPosition(), spCategories, help);
                     textInputDlg.show(getSupportFragmentManager(), "textInput");
                 }
             }

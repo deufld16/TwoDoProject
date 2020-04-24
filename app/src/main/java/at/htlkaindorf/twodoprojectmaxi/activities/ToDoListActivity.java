@@ -25,6 +25,7 @@ import java.io.File;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 
 public class ToDoListActivity extends AppCompatActivity {
@@ -43,18 +44,27 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
+        Proxy.setClm(clm);
         try {
-            boolean fileExists = false;
+            boolean entriesFileExists = false;
+            boolean categoriesFileExists = false;
             for (File file:
                  getFilesDir().listFiles()) {
                 Log.d("ERROR", "onCreate: " + file.getName()) ;
                 if(file.getName().equalsIgnoreCase("entries.ser")){
-                    fileExists = true;
+                    entriesFileExists = true;
+                }
+                if(file.getName().equalsIgnoreCase("categories.ser")){
+                    categoriesFileExists = true;
                 }
             }
-            if(fileExists){
+            if(entriesFileExists){
                 toDoAdapter.loadEntries();
             }
+            if(categoriesFileExists){
+                clm.loadCategories(this);
+            }
+
         }catch (Exception ex){
             ex.printStackTrace();
         }

@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.io.Load;
@@ -65,9 +66,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewHolder viewHolder = null;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_to_do_list,
                 parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder = new ViewHolder(view);
+
         return viewHolder;
     }
 
@@ -81,20 +84,19 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
             }
         });*/
-
         Entry entry = filteredEntries.get(position);
         holder.tvEntryTitle.setText(entry.getTitle());
         holder.tvEntryCategory.setText(entry.getCategory().getCategory_name());
         holder.tvEntryDueDate.setText(entry.getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         String priority = "";
-        for (PriorityEnum prio:
-             PriorityEnum.values()) {
-            if(prio.getPrioirty_value() == entry.getPriorityValue()){
+        for (PriorityEnum prio :
+                PriorityEnum.values()) {
+            if (prio.getPrioirty_value() == entry.getPriorityValue()) {
                 priority = prio.getPrioirty_text();
             }
         }
         holder.tvEntryPriority.setText(priority);
-        holder.clEntryLayout.setOnClickListener(new View.OnClickListener(){
+        holder.clEntryLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Sie haben geklickt!", Toast.LENGTH_SHORT).show();
@@ -125,6 +127,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         }
     }
 
+
     public void setFilter(String filter) {
         this.filter = filter;
         filter();
@@ -152,7 +155,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ObjectInputStream ois = new ObjectInputStream(fis);
         entries = (List<Entry>)ois.readObject();
         ois.close();
-        Toast.makeText(context, "Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Entries Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
         filter();
     }
 
@@ -161,6 +164,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(entries);
         oos.close();
-        Toast.makeText(context, "Saved to " + context.getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Entries Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
+
+
 }

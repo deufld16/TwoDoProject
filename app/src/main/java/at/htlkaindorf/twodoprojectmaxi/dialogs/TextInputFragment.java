@@ -1,8 +1,10 @@
 package at.htlkaindorf.twodoprojectmaxi.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
@@ -26,15 +30,17 @@ public class TextInputFragment extends DialogFragment
     private int position;
     private Spinner spCategories;
     private ArrayAdapter<Category> categoryAdapter;
+    private Context context;
 
     public TextInputFragment(String title, String infoText, CategoryListModel clm, int position,
-                             Spinner spCategories) {
+                             Spinner spCategories, Context context) {
         this.title = title;
         this.infoText = infoText;
         this.clm = clm;
         this.position = position;
         this.spCategories = spCategories;
         this.categoryAdapter = (ArrayAdapter<Category>) spCategories.getAdapter();
+        this.context = context;
     }
 
     @Override
@@ -73,6 +79,11 @@ public class TextInputFragment extends DialogFragment
                     spCategories.setSelection(position-1);
                 }
                 categoryAdapter.notifyDataSetChanged();
+                try {
+                    clm.saveCategories(context);
+                }catch(IOException ex){
+                    Log.d("ERROR", "An error has occured");
+                }
                 dismiss();
             }
         });
