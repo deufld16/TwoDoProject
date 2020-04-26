@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,6 +39,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private ToDoAdapter toDoAdapter = new ToDoAdapter(this);
     private RecyclerView.LayoutManager lm;
     private CategoryListModel clm = new CategoryListModel();
+    private BottomNavigationView vNavBottom;
 
 
     private final int RC_CREATION_ACTIVITY = 2;
@@ -44,7 +48,18 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
+
+        //Navbar Start
+        vNavBottom = findViewById(R.id.bottom_navigation);
+        vNavBottom.getMenu().findItem(R.id.navigation_to_do).setChecked(true);
+        Proxy.setvNavBottom(vNavBottom);
+        Proxy.addNavigationBarListener();
+        Proxy.setMainNavActivity(this);
+        Proxy.setActiveNavActivity(this);
+        //Navbar End
+
         Proxy.setClm(clm);
+
         try {
             boolean entriesFileExists = false;
             boolean categoriesFileExists = false;
