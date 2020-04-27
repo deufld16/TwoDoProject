@@ -2,12 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:id="@+id/clManageCatagories"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="7dp"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/icCatMngmtBg"
+        android:id="@+id/ivCatMngmtBg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +24,9 @@
         android:layout_marginStart="8dp"
         android:text="Category"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/icCatMngmtBg"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCatMngmtBg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/icCatMngmtBg" />
+        app:layout_constraintTop_toTopOf="@+id/ivCatMngmtBg" />
 
     <ImageView
         android:id="@+id/ivEditCat"
@@ -31,9 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="@+id/icCatMngmtBg"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCatMngmtBg"
         app:layout_constraintEnd_toStartOf="@+id/ivDeleteCat"
-        app:layout_constraintTop_toTopOf="@+id/icCatMngmtBg"
+        app:layout_constraintTop_toTopOf="@+id/ivCatMngmtBg"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <ImageView
@@ -42,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="@+id/icCatMngmtBg"
-        app:layout_constraintEnd_toEndOf="@+id/icCatMngmtBg"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCatMngmtBg"
+        app:layout_constraintEnd_toEndOf="@+id/ivCatMngmtBg"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 </androidx.constraintlayout.widget.ConstraintLayout>

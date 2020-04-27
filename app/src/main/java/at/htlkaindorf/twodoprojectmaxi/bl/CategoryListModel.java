@@ -19,8 +19,7 @@ public class CategoryListModel {
     private static final String FILE_NAME = "categories.ser";
 
     public CategoryListModel(){
-        allCategories.add(new Category("school"));
-        allCategories.add(new Category("ADD CATEGORY"));
+
     }
 
     private List<Category> allCategories = new LinkedList<>();
@@ -67,11 +66,13 @@ public class CategoryListModel {
         ObjectInputStream ois = new ObjectInputStream(fis);
         //Log.d("ERROR", "load Categories: " + (List<Category>)ois.readObject());;
         allCategories = new LinkedList<>((List<Category>)ois.readObject());
+        addCategory(new Category("ADD CATEGORY"));
+        addCategory(new Category("School"));
         ois.close();
         Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 
-    public void saveCategories(Context context)throws IOException{
+    public void saveCategories(Context context, boolean isAddCatIncluded)throws IOException{
         FileOutputStream fos = context.openFileOutput(FILE_NAME, context.MODE_PRIVATE);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(allCategories);

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
@@ -78,6 +79,9 @@ public class ToDoListActivity extends AppCompatActivity {
             }
             if(categoriesFileExists){
                 clm.loadCategories(this);
+            }else{
+                clm.addCategory(new Category("School"));
+                clm.addCategory(new Category("ADD CATEGORY"));
             }
 
         }catch (Exception ex){

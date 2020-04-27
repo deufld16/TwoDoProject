@@ -10,11 +10,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.bl.CategroiesAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
 public class CategoriesManagementActivity extends AppCompatActivity {
 
+    private RecyclerView rvCategroiesAdapter;
+    private CategroiesAdapter catAdapter = new CategroiesAdapter(this,  getSupportFragmentManager());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +38,10 @@ public class CategoriesManagementActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        rvCategroiesAdapter = findViewById(R.id.rvMngmtCat);
+        rvCategroiesAdapter.setAdapter(catAdapter);
+        rvCategroiesAdapter.setLayoutManager(new LinearLayoutManager(this));
+        catAdapter.setEntries(Proxy.getClm().getAllCategories());
     }
 
 }

@@ -169,7 +169,7 @@ public class CreationActivity extends AppCompatActivity{
                     .setAction("Action", null).show();
             return false;
         }
-        Category cat = (Category)spCategories.getSelectedItem();
+        Category cat = Proxy.getClm().getAllCategories().get(Proxy.getClm().getAllCategories().indexOf((Category)spCategories.getSelectedItem()));
         int priorityNumber = 0;
         for (PriorityEnum prio:
              PriorityEnum.values()) {

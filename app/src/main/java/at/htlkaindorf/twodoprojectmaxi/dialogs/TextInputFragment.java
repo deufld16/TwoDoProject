@@ -80,7 +80,7 @@ public class TextInputFragment extends DialogFragment
                 }
                 categoryAdapter.notifyDataSetChanged();
                 try {
-                    clm.saveCategories(context);
+                    clm.saveCategories(context, true);
                 }catch(IOException ex){
                     Log.d("ERROR", "An error has occured");
                 }
