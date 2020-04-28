@@ -19,7 +19,8 @@ public class CategoryListModel {
     private static final String FILE_NAME = "categories.ser";
 
     public CategoryListModel(){
-
+        addCategory(new Category("default"));
+        addCategory(new Category("ADD CATEGORY"));
     }
 
     private List<Category> allCategories = new LinkedList<>();
