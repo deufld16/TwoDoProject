@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
+import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
@@ -36,6 +38,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     private List<Entry> filteredEntries = new LinkedList<>();
     private Context context;
     private String filter = "";
+    private Enum filterEnum = null;
+    private String filterCategory = "";
 
     public ToDoAdapter(Context context) {
         this.context = context;
@@ -130,23 +134,57 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     public void setFilter(String filter) {
         this.filter = filter;
-        filter();
     }
 
-    private void filter(){
-        filteredEntries.clear();
+    public void setFilterEnum(String filterEnum) {
+        for (SortingType sortingType:
+             SortingType.values()) {
+            if(sortingType.getDisplay_text().equalsIgnoreCase(filterEnum)){
+                this.filterEnum = sortingType;
+            }
+        }
+    }
 
+    public void setFilterCategory(String filterCategory) {
+        this.filterCategory = filterCategory;
+    }
+
+    public void filter(){
+        filteredEntries.clear();
+        List<Entry> helpList = new LinkedList<>();
         if(filter.equalsIgnoreCase("")){
-            filteredEntries = new LinkedList<>(entries);
+            helpList = new LinkedList<>(entries);
         }else{
             for (Entry entry:
                  entries) {
                 if(entry.getTitle().toUpperCase().contains(filter.toUpperCase())){
-                    filteredEntries.add(entry);
+                    helpList.add(entry);
                 }
             }
         }
+
+        for (Entry entry:
+                helpList) {
+            if(filterCategory.equalsIgnoreCase("All Categories") || filterCategory.equalsIgnoreCase(entry.getCategory().getCategory_name())){
+                filteredEntries.add(entry);
+            }
+        }
+        sortCategories();
         notifyDataSetChanged();
+    }
+
+    private void sortCategories(){
+        if(filterEnum != null){
+            if(filterEnum == SortingType.DUE_DATE_UPWARDS){
+                filteredEntries.sort(Comparator.comparing(Entry::getDueDate).reversed());
+            }else if(filterEnum == SortingType.DUE_DATE_DOWNWARDS){
+                filteredEntries.sort(Comparator.comparing(Entry::getDueDate));
+            }else if(filterEnum == SortingType.PRIORITY_UPWARDS){
+                filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue).reversed());
+            }else{
+                filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue));
+            }
+        }
     }
 
     public void loadEntries() throws IOException, ClassNotFoundException{

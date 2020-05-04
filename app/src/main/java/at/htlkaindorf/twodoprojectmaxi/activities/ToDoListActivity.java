@@ -19,11 +19,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
@@ -31,12 +36,14 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
+import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
     private EditText etSearchbar;
-    private Spinner spCategory;
+    private Spinner spSortingMain;
+    private Spinner spCategoryMain;
     private ToDoAdapter toDoAdapter = new ToDoAdapter(this);
     private RecyclerView.LayoutManager lm;
     private CategoryListModel clm = new CategoryListModel();
@@ -80,7 +87,6 @@ public class ToDoListActivity extends AppCompatActivity {
             if(categoriesFileExists){
                 clm.loadCategories(this);
             }else{
-                clm.addCategory(new Category("School"));
                 clm.addCategory(new Category("ADD CATEGORY"));
             }
 
@@ -111,14 +117,64 @@ public class ToDoListActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 toDoAdapter.setFilter(etSearchbar.getText().toString());
+                toDoAdapter.filter();
             }
         });
-        //List<Category> allCategories = clm.getAllCategories();
-        //ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<Category>(this,
-        //        R.layout.spinner_item, allCategories);
-        //categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spCategory = findViewById(R.id.spCategoryMain);
-        //spCategory.setAdapter(categoryAdapter);
+
+        List<Category> allCategories = new LinkedList<>(Proxy.getClm().getAllCategories());
+        List<String> allFilterCategories = new LinkedList<>();
+        for (Entry filterCategory:
+             toDoAdapter.getEntries()) {
+            if(!allFilterCategories.contains(filterCategory.getCategory().getCategory_name())){
+                allFilterCategories.add(filterCategory.getCategory().getCategory_name());
+            }
+        }
+        allFilterCategories.add(0, "All Categories");
+        allCategories.removeIf(category -> category.getCategory_name().equalsIgnoreCase("ADD CATEGORY"));
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this,
+               R.layout.spinner_item, allFilterCategories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategoryMain = findViewById(R.id.spCategoryMain);
+        spCategoryMain.setAdapter(categoryAdapter);
+        spCategoryMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                toDoAdapter.setFilter(etSearchbar.getText().toString());
+                toDoAdapter.setFilterCategory(spCategoryMain.getSelectedItem().toString());
+                toDoAdapter.filter();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        List<SortingType> allSortingTypes = Arrays.asList(SortingType.values());
+        List<String> allSortingTypesDisplayName = new LinkedList<>();
+        for (SortingType sortingType:
+             allSortingTypes) {
+            allSortingTypesDisplayName.add(sortingType.getDisplay_text());
+        }
+
+        ArrayAdapter<String> sortingTypeAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_item, allSortingTypesDisplayName);
+        sortingTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSortingMain = findViewById(R.id.spSortingMain);
+        spSortingMain.setAdapter(sortingTypeAdapter);
+        spSortingMain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                toDoAdapter.setFilter(etSearchbar.getText().toString());
+                toDoAdapter.setFilterEnum(spSortingMain.getSelectedItem().toString());
+                toDoAdapter.filter();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 /*       rvToDo.setHasFixedSize(true);
 
         lm = new LinearLayoutManager(this);

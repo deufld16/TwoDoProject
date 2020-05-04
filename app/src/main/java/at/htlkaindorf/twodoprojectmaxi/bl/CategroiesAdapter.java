@@ -52,15 +52,22 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
 
     public void setEntries(List<Category> entries) {
         this.categories = new LinkedList<>(entries);
-        Category catToRemove = null;
+        List<Category> catToRemove  = new LinkedList<>();
         for (Category cat:
              Proxy.getClm().getAllCategories()) {
             if(cat.getCategory_name().equalsIgnoreCase("ADD CATEGORY")){
-                catToRemove = cat;
+                catToRemove.add(cat);
+            }else if(cat.getCategory_name().equalsIgnoreCase(("default"))){
+                catToRemove.add(cat);
             }
         }
-        categories.remove(catToRemove);
-        Log.d("MESSAGE2", categories.toString());
+        //Log.d("MESSAGE2", categories.toString());
+        for (Category cat:
+             catToRemove) {
+            categories.remove(cat);
+            //Log.d("MESSAGE2", cat.getCategory_name());
+        }
+        //Log.d("MESSAGE2", categories.toString());
         notifyDataSetChanged();
     }
 
@@ -116,7 +123,7 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
 
     @Override
     public int getItemCount() {
-        Log.d("MESSAGE2", categories.size() + "");
+        //Log.d("MESSAGE2", categories.size() + "");
         return categories.size();
     }
 

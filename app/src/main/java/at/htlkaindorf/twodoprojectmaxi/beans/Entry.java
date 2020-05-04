@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,6 +85,9 @@ public class Entry implements Serializable{
     }
 
     public LocalDateTime getDueDate() {
+        if(dueDate == null){
+            return LocalDateTime.of(1900, Month.JANUARY, 1, 0,0);
+        }
         return dueDate;
     }
 

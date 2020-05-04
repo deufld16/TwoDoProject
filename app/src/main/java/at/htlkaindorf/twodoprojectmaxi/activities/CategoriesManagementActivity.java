@@ -1,5 +1,6 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -10,16 +11,20 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategroiesAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+import at.htlkaindorf.twodoprojectmaxi.dialogs.AddCategoryFragment;
+import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 
 public class CategoriesManagementActivity extends AppCompatActivity {
 
     private RecyclerView rvCategroiesAdapter;
     private CategroiesAdapter catAdapter = new CategroiesAdapter(this,  getSupportFragmentManager());
+    private Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +39,8 @@ public class CategoriesManagementActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                DialogFragment textInputDlg = new AddCategoryFragment(context, catAdapter);
+                textInputDlg.show(getSupportFragmentManager(), "addCategoryFragment");
             }
         });
         rvCategroiesAdapter = findViewById(R.id.rvMngmtCat);
