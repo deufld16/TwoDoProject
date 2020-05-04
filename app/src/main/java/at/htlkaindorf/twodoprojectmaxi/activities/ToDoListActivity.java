@@ -61,7 +61,7 @@ public class ToDoListActivity extends AppCompatActivity {
         vNavBottom = findViewById(R.id.bottom_navigation);
         vNavBottom.getMenu().findItem(R.id.navigation_to_do).setChecked(true);
         Proxy.setvNavBottom(vNavBottom);
-        Proxy.addNavigationBarListener();
+        Proxy.addNavigationBarListener(toDoAdapter);
         Proxy.setMainNavActivity(this);
         Proxy.setActiveNavActivity(this);
         //Navbar End

@@ -28,6 +28,7 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
+import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
@@ -40,6 +41,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     private String filter = "";
     private Enum filterEnum = null;
     private String filterCategory = "";
+    private Status displayStatus = Status.Working;
 
     public ToDoAdapter(Context context) {
         this.context = context;
@@ -103,7 +105,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.clEntryLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Sie haben geklickt!", Toast.LENGTH_SHORT).show();
+                if(entry.getStatus() == Status.Working){
+                    entry.setStatus(Status.Done);
+                }else if(entry.getStatus() == Status.Done){
+                    entry.setStatus(Status.Deleted);
+                }else{
+                    entry.setStatus(Status.Working);
+                }
+                filter();
             }
         });
     }
@@ -149,6 +158,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.filterCategory = filterCategory;
     }
 
+    public void switchView(Status status){
+        this.displayStatus = status;
+        filter();
+    }
+
     public void filter(){
         filteredEntries.clear();
         List<Entry> helpList = new LinkedList<>();
@@ -165,13 +179,15 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         for (Entry entry:
                 helpList) {
-            if(filterCategory.equalsIgnoreCase("All Categories") || filterCategory.equalsIgnoreCase(entry.getCategory().getCategory_name())){
+            if((filterCategory.equalsIgnoreCase("All Categories") ||
+                    filterCategory.equalsIgnoreCase(entry.getCategory().getCategory_name())) && entry.getStatus() == displayStatus){
                 filteredEntries.add(entry);
             }
         }
         sortCategories();
         notifyDataSetChanged();
     }
+
 
     private void sortCategories(){
         if(filterEnum != null){
