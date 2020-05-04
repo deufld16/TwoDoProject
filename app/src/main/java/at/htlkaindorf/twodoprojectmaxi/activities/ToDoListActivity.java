@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
@@ -151,18 +152,30 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        Entry entry = null;
+        if(data != null) {
+            entry = (Entry) data.getSerializableExtra("newEntry");
+        }
         if(requestCode == RC_CREATION_ACTIVITY)
         {
             //finished Entry-Creation-Process
             if(resultCode == Activity.RESULT_OK)
             {
                 //User pressed OK
-                Entry entry = (Entry) data.getSerializableExtra("newEntry");
                 Toast.makeText(this, Html.fromHtml("New Entry <i>"+entry+"</i> created")
                         ,Toast.LENGTH_SHORT).show();
                 toDoAdapter.addEntry(entry);
-                toDoAdapter.notifyDataSetChanged();
             }
         }
+        if(requestCode == toDoAdapter.getRC_MANIPULATION_ACTIVITY())
+        {
+            if(resultCode == Activity.RESULT_OK) {
+                List<Entry> currentEntries = toDoAdapter.getEntries();
+                int position = data.getIntExtra("position", 0);
+                currentEntries.set(position, entry);
+                toDoAdapter.setEntries(currentEntries);
+            }
+        }
+        toDoAdapter.notifyDataSetChanged();
     }
 }

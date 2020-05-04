@@ -1,10 +1,11 @@
 package at.htlkaindorf.twodoprojectmaxi.bl;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +24,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
-import at.htlkaindorf.twodoprojectmaxi.beans.Category;
+import at.htlkaindorf.twodoprojectmaxi.activities.ManipulationActivity;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
-import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
@@ -36,6 +36,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     private List<Entry> filteredEntries = new LinkedList<>();
     private Context context;
     private String filter = "";
+
+    private final int RC_MANIPULATION_ACTIVITY = 3;
 
     public ToDoAdapter(Context context) {
         this.context = context;
@@ -61,6 +63,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     public void setEntries(List<Entry> entries) {
         this.entries = entries;
+        filter();
+        try{
+            saveEntries();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @NonNull
@@ -102,6 +110,26 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 Toast.makeText(context, "Sie haben geklickt!", Toast.LENGTH_SHORT).show();
             }
         });
+        holder.ivEditItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editEntry(entry);
+            }
+        });
+    }
+
+    private void editEntry(Entry entry)
+    {
+        AppCompatActivity srcActivity = (AppCompatActivity) context;
+        Intent editIntent = new Intent(srcActivity, ManipulationActivity.class);
+        editIntent.putExtra("oldEntry", entry);
+        int indexOfEntry = filteredEntries.indexOf(entry);
+        editIntent.putExtra("entryPos", indexOfEntry);
+        srcActivity.startActivityForResult(editIntent, RC_MANIPULATION_ACTIVITY);
+    }
+
+    public int getRC_MANIPULATION_ACTIVITY() {
+        return RC_MANIPULATION_ACTIVITY;
     }
 
     @Override
@@ -116,6 +144,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         private TextView tvEntryCategory;
         private TextView tvEntryDueDate;
         private TextView tvEntryPriority;
+        private ImageView ivEditItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,6 +153,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             tvEntryCategory = itemView.findViewById(R.id.tv_entry_category);
             tvEntryDueDate = itemView.findViewById(R.id.tv_entry_due_date);
             tvEntryPriority = itemView.findViewById(R.id.tv_priority_of_entry);
+            ivEditItem = itemView.findViewById(R.id.iv_edit_item);
         }
     }
 
