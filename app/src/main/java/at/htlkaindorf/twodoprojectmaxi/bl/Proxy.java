@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.CategoriesManagementActivity;
+import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
 public class Proxy {
     private static CategoryListModel clm;
@@ -50,13 +51,11 @@ public class Proxy {
         Proxy.vNavBottom = vNavBottom;
     }
 
-    public static void addNavigationBarListener()
+    public static void addNavigationBarListener(ToDoAdapter toDoAdapter)
     {
         vNavBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Toast.makeText(activeNavActivity, activeNavActivity+" - "+mainNavActivity
-                        ,Toast.LENGTH_LONG).show();
                 if(!activeNavActivity.equals(mainNavActivity)) {
                     activeNavActivity.finish();
                 }
@@ -67,10 +66,13 @@ public class Proxy {
                         mainNavActivity.startActivity(categoriesIntent);
                         return true;
                     case R.id.navigation_deleted:
+                        toDoAdapter.switchView(Status.Deleted);
                         return true;
                     case R.id.navigation_to_do:
+                        toDoAdapter.switchView(Status.Working);
                         return true;
                     case R.id.navigation_done:
+                        toDoAdapter.switchView(Status.Done);
                         return true;
                 }
                 return false;

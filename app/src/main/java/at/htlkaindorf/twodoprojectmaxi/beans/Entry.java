@@ -5,10 +5,12 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
 public class Entry implements Serializable{
 
@@ -20,7 +22,7 @@ public class Entry implements Serializable{
     private String entryNote;
     private int priorityValue;
     private Category category;
-    private Category status;
+    private Status status;
 
     public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
         this.creationDate = LocalDateTime.now();
@@ -31,6 +33,7 @@ public class Entry implements Serializable{
         this.entryNote = entryNote;
         this.priorityValue = priorityValue;
         this.category = category;
+        this.status = Status.Working;
     }
 
     public List<LocalDateTime> getReminderDatesInInit(int reminderID){
@@ -84,6 +87,9 @@ public class Entry implements Serializable{
     }
 
     public LocalDateTime getDueDate() {
+        if(dueDate == null){
+            return LocalDateTime.of(1900, Month.JANUARY, 1, 0,0);
+        }
         return dueDate;
     }
 
@@ -129,6 +135,14 @@ public class Entry implements Serializable{
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
 

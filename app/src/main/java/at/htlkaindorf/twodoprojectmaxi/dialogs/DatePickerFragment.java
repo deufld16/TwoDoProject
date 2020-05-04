@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,10 +21,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 {
     private TextView vwDate;
     private Spinner spReminder;
-    public DatePickerFragment(TextView vwDate, Spinner spReminder)
+    private ArrayAdapter<String> reminderAdapter;
+
+    public DatePickerFragment(TextView vwDate, Spinner spReminder, ArrayAdapter<String> reminderAdapter)
     {
         this.vwDate = vwDate;
         this.spReminder = spReminder;
+        this.reminderAdapter = reminderAdapter;
     }
 
     @NonNull
@@ -41,6 +45,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     {
         vwDate.setText(day+"."+(month+1)+"."+year);
         spReminder.setEnabled(true);
+        spReminder.setAdapter(reminderAdapter);
         //Maxi hier background auf normal
     }
 }

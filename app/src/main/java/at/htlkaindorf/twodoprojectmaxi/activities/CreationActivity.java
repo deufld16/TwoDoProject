@@ -52,7 +52,7 @@ public class CreationActivity extends AppCompatActivity{
     public Intent intent;
     public Entry entry;
     private Context help = this;
-
+    private ArrayAdapter<String> reminderAdapter = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,13 +82,12 @@ public class CreationActivity extends AppCompatActivity{
 
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, priorities);
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        ArrayAdapter<String> reminderAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, remindingIntervalls);
+        reminderAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, remindingIntervalls);
         reminderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spCategories.setAdapter(categoryAdapter);
         spPriorities.setAdapter(priorityAdapter);
-        spReminder.setAdapter(reminderAdapter);
+        //spReminder.setAdapter(reminderAdapter);
 
         //Erstellen der Methoden für die Spinner
         spCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -159,8 +158,9 @@ public class CreationActivity extends AppCompatActivity{
 
     public void showDatePickerDialog(View v)
     {
-        DialogFragment newFragment = new DatePickerFragment(vwDate, spReminder);
+        DialogFragment newFragment = new DatePickerFragment(vwDate, spReminder, reminderAdapter);
         newFragment.show(getSupportFragmentManager(), "datePicker");
+
     }
 
     public View getVwDate() {

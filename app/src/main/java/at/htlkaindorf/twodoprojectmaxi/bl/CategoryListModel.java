@@ -67,8 +67,8 @@ public class CategoryListModel {
         ObjectInputStream ois = new ObjectInputStream(fis);
         //Log.d("ERROR", "load Categories: " + (List<Category>)ois.readObject());;
         allCategories = new LinkedList<>((List<Category>)ois.readObject());
+        addCategory(new Category("default"));
         addCategory(new Category("ADD CATEGORY"));
-        addCategory(new Category("School"));
         ois.close();
         Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
