@@ -211,7 +211,6 @@
                     android:onClick="showDatePickerDialog"
                     android:paddingStart="7dp"
                     android:paddingEnd="7dp"
-                    android:text="23.03.2020"
                     android:textAlignment="viewStart"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />

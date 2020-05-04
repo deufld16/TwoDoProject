@@ -115,7 +115,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 try {
                     saveEntries();
                 }catch (Exception ex){
-                    Log.d("Error", "An errro occured while saving the file");
+                    Log.d("Error", "An error occured while saving the file");
                 }
                 filter();
             }
