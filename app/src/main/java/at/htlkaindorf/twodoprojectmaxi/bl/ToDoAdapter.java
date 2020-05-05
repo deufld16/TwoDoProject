@@ -195,9 +195,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.filterCategory = filterCategory;
     }
 
-    public void switchView(Status status){
+    public Status switchView(Status status){
         this.displayStatus = status;
         filter();
+        return status;
     }
 
     public void filter(){

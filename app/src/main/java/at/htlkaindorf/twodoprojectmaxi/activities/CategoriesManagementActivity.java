@@ -3,6 +3,7 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,7 +32,10 @@ public class CategoriesManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories_management);
 
         //Navbar Start
-        Proxy.getvNavBottom().getMenu().findItem(R.id.navigation_categories).setChecked(true);
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        bnv.getMenu().findItem(R.id.navigation_categories).setChecked(true);
+        Proxy.setvNavBottom(bnv);
+        Proxy.addNavigationBarListener();
         Proxy.setActiveNavActivity(this);
         //Navbar End
 

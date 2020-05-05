@@ -11,13 +11,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.CategoriesManagementActivity;
+import at.htlkaindorf.twodoprojectmaxi.activities.ToDoListActivity;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
 public class Proxy {
     private static CategoryListModel clm;
     private static BottomNavigationView vNavBottom;
     private static AppCompatActivity activeNavActivity;
-    private static AppCompatActivity mainNavActivity;
+    private static ToDoAdapter toDoAdapter;
 
     public static CategoryListModel getClm() {
         return clm;
@@ -35,14 +36,6 @@ public class Proxy {
         Proxy.activeNavActivity = activeNavActivity;
     }
 
-    public static AppCompatActivity getMainNavActivity() {
-        return mainNavActivity;
-    }
-
-    public static void setMainNavActivity(AppCompatActivity mainNavActivity) {
-        Proxy.mainNavActivity = mainNavActivity;
-    }
-
     public static BottomNavigationView getvNavBottom() {
         return vNavBottom;
     }
@@ -51,30 +44,58 @@ public class Proxy {
         Proxy.vNavBottom = vNavBottom;
     }
 
-    public static void addNavigationBarListener(ToDoAdapter toDoAdapter)
+    public static ToDoAdapter getToDoAdapter() {
+        return toDoAdapter;
+    }
+
+    public static void setToDoAdapter(ToDoAdapter toDoAdapter) {
+        Proxy.toDoAdapter = toDoAdapter;
+    }
+
+    public static void addNavigationBarListener()
     {
         vNavBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(!activeNavActivity.equals(mainNavActivity)) {
-                    activeNavActivity.finish();
-                }
-                switch (item.getItemId())
+                int itemId = item.getItemId();
+
+                if(itemId == R.id.navigation_categories
+                    && !(activeNavActivity instanceof CategoriesManagementActivity))
                 {
-                    case R.id.navigation_categories:
-                        Intent categoriesIntent = new Intent(mainNavActivity, CategoriesManagementActivity.class);
-                        mainNavActivity.startActivity(categoriesIntent);
-                        return true;
-                    case R.id.navigation_deleted:
-                        toDoAdapter.switchView(Status.Deleted);
-                        return true;
-                    case R.id.navigation_to_do:
-                        toDoAdapter.switchView(Status.Working);
-                        return true;
-                    case R.id.navigation_done:
-                        toDoAdapter.switchView(Status.Done);
-                        return true;
+                    Intent categoriesIntent = new Intent(activeNavActivity, CategoriesManagementActivity.class);
+                    activeNavActivity.startActivity(categoriesIntent);
+                    activeNavActivity.overridePendingTransition(0, 0);
+                    return true;
                 }
+
+                if(itemId == R.id.navigation_deleted
+                    || itemId == R.id.navigation_to_do
+                    || itemId == R.id.navigation_done)
+                {
+                    Status status = null;
+                    switch (itemId)
+                    {
+                        case R.id.navigation_deleted:
+                            status = toDoAdapter.switchView(Status.Deleted);
+                            break;
+                        case R.id.navigation_to_do:
+                            status = toDoAdapter.switchView(Status.Working);
+                            break;
+                        case R.id.navigation_done:
+                            status = toDoAdapter.switchView(Status.Done);
+                            break;
+                    }
+
+                    if(!(activeNavActivity instanceof ToDoListActivity)) {
+                        Intent toDoIntent = new Intent(activeNavActivity, ToDoListActivity.class);
+                        toDoIntent.putExtra("displayStatus", status);
+                        activeNavActivity.startActivity(toDoIntent);
+                        activeNavActivity.overridePendingTransition(0, 0);
+                    }
+
+                    return true;
+                }
+
                 return false;
             }
         });

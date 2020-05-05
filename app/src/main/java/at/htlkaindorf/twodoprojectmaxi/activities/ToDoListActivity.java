@@ -37,6 +37,9 @@ import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
+import at.htlkaindorf.twodoprojectmaxi.enums.Status;
+
+import static at.htlkaindorf.twodoprojectmaxi.enums.Status.Deleted;
 
 public class ToDoListActivity extends AppCompatActivity {
 
@@ -60,9 +63,26 @@ public class ToDoListActivity extends AppCompatActivity {
         //Navbar Start
         vNavBottom = findViewById(R.id.bottom_navigation);
         vNavBottom.getMenu().findItem(R.id.navigation_to_do).setChecked(true);
+
+        Intent theIntent = getIntent();
+        Status displayStatus = (Status) theIntent.getSerializableExtra("displayStatus");
+        if(displayStatus != null)
+        {
+            toDoAdapter.switchView(displayStatus);
+            switch (displayStatus)
+            {
+                case Deleted:
+                    vNavBottom.getMenu().findItem(R.id.navigation_deleted).setChecked(true);
+                    break;
+                case Done:
+                    vNavBottom.getMenu().findItem(R.id.navigation_done).setChecked(true);
+                    break;
+            }
+        }
+
         Proxy.setvNavBottom(vNavBottom);
-        Proxy.addNavigationBarListener(toDoAdapter);
-        Proxy.setMainNavActivity(this);
+        Proxy.setToDoAdapter(toDoAdapter);
+        Proxy.addNavigationBarListener();
         Proxy.setActiveNavActivity(this);
         //Navbar End
 
