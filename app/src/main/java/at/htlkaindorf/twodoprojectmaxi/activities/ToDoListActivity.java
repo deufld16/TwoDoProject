@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +16,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,8 +36,6 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
-
-import static at.htlkaindorf.twodoprojectmaxi.enums.Status.Deleted;
 
 public class ToDoListActivity extends AppCompatActivity {
 
@@ -214,6 +210,7 @@ public class ToDoListActivity extends AppCompatActivity {
     {
         Intent creationIntent = new Intent(this, CreationActivity.class);
         startActivityForResult(creationIntent, RC_CREATION_ACTIVITY);
+        overridePendingTransition(R.anim.from_bottom_partial, 0);
         //startActivity(creationIntent);
     }
 

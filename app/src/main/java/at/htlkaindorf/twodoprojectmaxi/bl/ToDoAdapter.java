@@ -31,7 +31,6 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
-import at.htlkaindorf.twodoprojectmaxi.io.Load;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
@@ -146,6 +145,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         int indexOfEntry = filteredEntries.indexOf(entry);
         editIntent.putExtra("entryPos", indexOfEntry);
         srcActivity.startActivityForResult(editIntent, RC_MANIPULATION_ACTIVITY);
+        srcActivity.overridePendingTransition(R.anim.from_bottom_partial, 0);
     }
 
     public int getRC_MANIPULATION_ACTIVITY() {

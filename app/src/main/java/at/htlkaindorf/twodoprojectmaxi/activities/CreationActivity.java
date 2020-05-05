@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -140,6 +139,7 @@ public class CreationActivity extends AppCompatActivity{
                     intent.putExtra("newEntry", entry);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
+                    overridePendingTransition(R.anim.from_top_partial, 0);
                 }
             }
         });
@@ -152,6 +152,7 @@ public class CreationActivity extends AppCompatActivity{
             public void onClick(View view) {
                 setResult(Activity.RESULT_CANCELED);
                 finish();
+                overridePendingTransition(R.anim.from_top_partial, 0);
             }
         });
     }

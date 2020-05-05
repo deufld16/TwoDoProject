@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom);
-        fromTop = AnimationUtils.loadAnimation(this, R.anim.from_top);
+        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_intro);
+        fromTop = AnimationUtils.loadAnimation(this, R.anim.from_top_intro);
 
         vwCurves = (View) findViewById(R.id.vwCurves);
         vwCurves.setAnimation(fromBottom);
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent toDoListIntent = new Intent(this, ToDoListActivity.class);
         startActivity(toDoListIntent);
+        overridePendingTransition(0, R.anim.from_left);
     }
 
 }
