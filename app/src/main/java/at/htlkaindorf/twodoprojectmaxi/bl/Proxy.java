@@ -64,7 +64,7 @@ public class Proxy {
                 {
                     Intent categoriesIntent = new Intent(activeNavActivity, CategoriesManagementActivity.class);
                     activeNavActivity.startActivity(categoriesIntent);
-                    activeNavActivity.overridePendingTransition(0, 0);
+                    activeNavActivity.overridePendingTransition(0, R.anim.from_right);
                     return true;
                 }
 
@@ -90,7 +90,7 @@ public class Proxy {
                         Intent toDoIntent = new Intent(activeNavActivity, ToDoListActivity.class);
                         toDoIntent.putExtra("displayStatus", status);
                         activeNavActivity.startActivity(toDoIntent);
-                        activeNavActivity.overridePendingTransition(0, 0);
+                        activeNavActivity.overridePendingTransition(0, R.anim.from_left);
                     }
 
                     return true;
