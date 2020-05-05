@@ -20,8 +20,8 @@ public class ManipulationActivity extends CreationActivity
         etTitle.setText(editEntry.getTitle());
         etDescription.setText(editEntry.getEntryNote());
         spCategories.setSelection(categoryAdapter.getPosition(editEntry.getCategory()));
-        //spPriorities.setSelection(priorities.indexOf());
+        //hier bitte den aktuellen wert für priority auf spinner setzen
         vwDate.setText(editEntry.getDueDate().format(dtf));
-        //spReminder
+        //hier bitte den aktuellen wert für reminder auf spinner setzen
     }
 }
