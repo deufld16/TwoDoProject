@@ -226,6 +226,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public void releaseEntry(int position, Entry entry)
     {
         entries.remove(position);
+        try {
+            saveEntries();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void filter(){
