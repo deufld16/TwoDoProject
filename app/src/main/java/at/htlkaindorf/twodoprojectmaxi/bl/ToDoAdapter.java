@@ -205,6 +205,29 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         return status;
     }
 
+    public void doEntry(int position, Entry entry)
+    {
+        entry.setStatus(Status.Done);
+        entries.set(position, entry);
+    }
+
+    public void deleteEntry(int position, Entry entry)
+    {
+        entry.setStatus(Status.Deleted);
+        entries.set(position, entry);
+    }
+
+    public void restoreEntry(int position, Entry entry)
+    {
+        entry.setStatus(Status.Working);
+        entries.set(position, entry);
+    }
+
+    public void releaseEntry(int position, Entry entry)
+    {
+        entries.remove(position);
+    }
+
     public void filter(){
         filteredEntries.clear();
         List<Entry> helpList = new LinkedList<>();

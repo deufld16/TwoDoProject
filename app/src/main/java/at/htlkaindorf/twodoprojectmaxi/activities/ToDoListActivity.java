@@ -65,16 +65,43 @@ public class ToDoListActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
             Entry swipedEntry = toDoAdapter.getEntries().get(position);
 
-            if(position == ItemTouchHelper.LEFT)
-            {
-                swipedEntry.setStatus(Status.Deleted);
-            }
-            else if(position == ItemTouchHelper.RIGHT)
-            {
-                swipedEntry.setStatus(Status.Done);
-            }
+            String msg = swipedEntry.getStatus().equals(Status.Deleted) ? "Deleted" :
+                            swipedEntry.getStatus().equals(Status.Done) ? "Done" : "Working";
+            //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            System.out.println(msg);
 
-            toDoAdapter.getEntries().set(position, swipedEntry);
+            if(direction == ItemTouchHelper.LEFT)
+            {
+                //von rechts nach links
+                switch (swipedEntry.getStatus())
+                {
+                    case Working:
+                        toDoAdapter.deleteEntry(position, swipedEntry);
+                        break;
+                    case Deleted:
+                        toDoAdapter.releaseEntry(position, swipedEntry);
+                        break;
+                    case Done:
+                        toDoAdapter.restoreEntry(position, swipedEntry);
+                        break;
+                }
+            }
+            else if(direction == ItemTouchHelper.RIGHT)
+            {
+                //von links nach rechts
+                switch (swipedEntry.getStatus())
+                {
+                    case Working:
+                        toDoAdapter.doEntry(position, swipedEntry);
+                        break;
+                    case Deleted:
+                        toDoAdapter.restoreEntry(position, swipedEntry);
+                        break;
+                    case Done:
+                        toDoAdapter.releaseEntry(position, swipedEntry);
+                        break;
+                }
+            }
             toDoAdapter.filter();
         }
     };
