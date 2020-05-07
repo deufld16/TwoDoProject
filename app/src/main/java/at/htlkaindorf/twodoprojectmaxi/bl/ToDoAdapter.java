@@ -68,6 +68,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         return entries;
     }
 
+    public List<Entry> getFilteredEntries() {
+        return filteredEntries;
+    }
+
     public void setEntries(List<Entry> entries) {
         this.entries = entries;
         filter();

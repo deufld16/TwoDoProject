@@ -61,16 +61,21 @@ public class ToDoListActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
             int position = viewHolder.getAdapterPosition();
+            Entry swipedEntry = toDoAdapter.getEntries().get(position);
 
             if(position == ItemTouchHelper.LEFT)
             {
-
+                swipedEntry.setStatus(Status.Deleted);
             }
             else if(position == ItemTouchHelper.RIGHT)
             {
-                
+                swipedEntry.setStatus(Status.Done);
             }
+
+            toDoAdapter.getEntries().set(position, swipedEntry);
+            toDoAdapter.filter();
         }
     };
 
@@ -224,6 +229,9 @@ public class ToDoListActivity extends AppCompatActivity {
         rvToDo = findViewById(R.id.rvDisplay);
         rvToDo.setAdapter(toDoAdapter);
         rvToDo.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper ith = new ItemTouchHelper(ithSimpleCallback);
+        ith.attachToRecyclerView(rvToDo);
     }
 
     /**
