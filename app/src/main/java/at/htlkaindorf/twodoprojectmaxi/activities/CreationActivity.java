@@ -45,13 +45,15 @@ public class CreationActivity extends AppCompatActivity{
     public Spinner spReminder;
 
     public ArrayAdapter<Category> categoryAdapter;
+    public ArrayAdapter<String> priorityAdapter;
+    public ArrayAdapter<String> reminderAdapter;
     public DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     public List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     public List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
     public Intent intent;
     public Entry entry;
     private Context help = this;
-    private ArrayAdapter<String> reminderAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +81,7 @@ public class CreationActivity extends AppCompatActivity{
                 R.layout.spinner_item, allCategories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, priorities);
+        priorityAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, priorities);
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         reminderAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, remindingIntervalls);
         reminderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

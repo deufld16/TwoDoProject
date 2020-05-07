@@ -229,14 +229,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private void sortCategories(){
         if(filterEnum != null){
-            if(filterEnum == SortingType.DUE_DATE_UPWARDS){
-                filteredEntries.sort(Comparator.comparing(Entry::getDueDate).reversed());
+            if(filterEnum == SortingType.PRIORITY_DOWNWARDS){
+                filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue));
             }else if(filterEnum == SortingType.DUE_DATE_DOWNWARDS){
                 filteredEntries.sort(Comparator.comparing(Entry::getDueDate));
             }else if(filterEnum == SortingType.PRIORITY_UPWARDS){
                 filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue).reversed());
             }else{
-                filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue));
+                filteredEntries.sort(Comparator.comparing(Entry::getDueDate).reversed());
             }
         }
     }

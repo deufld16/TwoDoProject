@@ -23,6 +23,7 @@ public class Entry implements Serializable{
     private int priorityValue;
     private Category category;
     private Status status;
+    private int reminderID;
 
     public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
         this.creationDate = LocalDateTime.now();
@@ -34,6 +35,7 @@ public class Entry implements Serializable{
         this.priorityValue = priorityValue;
         this.category = category;
         this.status = Status.Working;
+        this.reminderID = reminderID;
     }
 
     public List<LocalDateTime> getReminderDatesInInit(int reminderID){
@@ -70,6 +72,14 @@ public class Entry implements Serializable{
             }
         }
         return reminderDates;
+    }
+
+    public int getReminderID() {
+        return reminderID;
+    }
+
+    public void setReminderID(int reminderID) {
+        this.reminderID = reminderID;
     }
 
     @NonNull
