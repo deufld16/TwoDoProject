@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -99,6 +100,11 @@ public class ToDoListActivity extends AppCompatActivity {
                 }
             }
             toDoAdapter.filter();
+            try {
+                toDoAdapter.saveEntries();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     };
 
