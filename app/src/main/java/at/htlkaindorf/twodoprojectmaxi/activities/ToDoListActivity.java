@@ -20,10 +20,13 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -146,6 +149,14 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
+
+        ImageView ivPopoupmenu = findViewById(R.id.ivPopupMenu);
+        ivPopoupmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
 
         //Navbar Start
         vNavBottom = findViewById(R.id.bottom_navigation);
@@ -295,6 +306,38 @@ public class ToDoListActivity extends AppCompatActivity {
 
         ItemTouchHelper ith = new ItemTouchHelper(ithSimpleCallback);
         ith.attachToRecyclerView(rvToDo);
+    }
+
+    /**
+     *  Method to display the menu when clicking on the menu item
+     */
+    private void showPopupMenu(View view) {
+        PopupMenu pm = new PopupMenu(this, view);
+        pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return handleMenuSelection(menuItem);
+            }
+        });
+        pm.inflate(R.menu.popup_menu);
+        pm.show();
+    }
+
+    /**
+     * Method to handle the selection of an item in the popup-menu
+     * @param menuItem
+     * @return success
+     */
+    private boolean handleMenuSelection(MenuItem menuItem)
+    {
+        switch (menuItem.getItemId())
+        {
+            case R.id.mi_transfer:
+                //Transfer via Bluetooth
+
+                return true;
+        }
+        return false;
     }
 
     /**

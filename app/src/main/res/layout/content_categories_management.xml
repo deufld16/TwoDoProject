@@ -18,6 +18,7 @@
         android:fontFamily="Open Sans"
         android:text="Categories"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:textSize="30sp" />
 
     <ScrollView

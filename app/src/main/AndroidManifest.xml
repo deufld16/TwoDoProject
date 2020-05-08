@@ -9,20 +9,21 @@
         android:roundIcon="@drawable/logo_new_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activities.ManipulationActivity"></activity>
+        <activity android:name=".activities.TransferActivity"></activity>
+        <activity android:name=".activities.ManipulationActivity" />
         <activity
             android:name=".activities.CategoriesManagementActivity"
             android:label="@string/title_activity_categories_management"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.ToDoListActivity"
             android:label="@string/title_activity_to_do_list"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.CreationActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
