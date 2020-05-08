@@ -50,6 +50,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.context = context;
     }
 
+    public Status getDisplayStatus() {
+        return displayStatus;
+    }
+
+    public void setDisplayStatus(Status displayStatus) {
+        this.displayStatus = displayStatus;
+    }
+
     public boolean addEntry(Entry entry){
         if(!entries.contains(entry)){
             entries.add(entry);

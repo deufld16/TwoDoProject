@@ -2,6 +2,8 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,6 +41,7 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.ToDoAdapter;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ToDoListActivity extends AppCompatActivity {
 
@@ -105,6 +108,37 @@ public class ToDoListActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                @NonNull RecyclerView.ViewHolder viewHolder,
+                                float dX, float dY, int actionState,
+                                boolean isCurrentlyActive) {
+            Status activeStatusView = toDoAdapter.getDisplayStatus();
+            int iconLeftSwipe = 0;
+            int iconRightSwipe = 0;
+            switch (activeStatusView)
+            {
+                case Working:
+                    iconLeftSwipe = R.drawable.ic_delete_white_60dp;
+                    iconRightSwipe = R.drawable.ic_done_white_60dp;
+                    break;
+                case Deleted:
+                    iconLeftSwipe = R.drawable.ic_delete_forever_white_60dp;
+                    iconRightSwipe = R.drawable.ic_restore_white_60dp;
+                    break;
+                case Done:
+                    iconLeftSwipe = R.drawable.ic_restore_white_60dp;
+                    iconRightSwipe = R.drawable.ic_done_all_wihte_60dp;
+                    break;
+            }
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftActionIcon(iconLeftSwipe)
+                    .addSwipeRightActionIcon(iconRightSwipe)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 
