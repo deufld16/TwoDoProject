@@ -63,12 +63,8 @@ public class ToDoListActivity extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             int position = viewHolder.getAdapterPosition();
-            Entry swipedEntry = toDoAdapter.getEntries().get(position);
-
-            String msg = swipedEntry.getStatus().equals(Status.Deleted) ? "Deleted" :
-                            swipedEntry.getStatus().equals(Status.Done) ? "Done" : "Working";
-            //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-            System.out.println(msg);
+            Entry swipedEntry = toDoAdapter.getFilteredEntries().get(position);
+            int absPosition = toDoAdapter.getEntries().indexOf(swipedEntry);
 
             if(direction == ItemTouchHelper.LEFT)
             {
@@ -76,13 +72,13 @@ public class ToDoListActivity extends AppCompatActivity {
                 switch (swipedEntry.getStatus())
                 {
                     case Working:
-                        toDoAdapter.deleteEntry(position, swipedEntry);
+                        toDoAdapter.deleteEntry(absPosition, swipedEntry);
                         break;
                     case Deleted:
-                        toDoAdapter.releaseEntry(position, swipedEntry);
+                        toDoAdapter.releaseEntry(absPosition, swipedEntry);
                         break;
                     case Done:
-                        toDoAdapter.restoreEntry(position, swipedEntry);
+                        toDoAdapter.restoreEntry(absPosition, swipedEntry);
                         break;
                 }
             }
@@ -92,13 +88,13 @@ public class ToDoListActivity extends AppCompatActivity {
                 switch (swipedEntry.getStatus())
                 {
                     case Working:
-                        toDoAdapter.doEntry(position, swipedEntry);
+                        toDoAdapter.doEntry(absPosition, swipedEntry);
                         break;
                     case Deleted:
-                        toDoAdapter.restoreEntry(position, swipedEntry);
+                        toDoAdapter.restoreEntry(absPosition, swipedEntry);
                         break;
                     case Done:
-                        toDoAdapter.releaseEntry(position, swipedEntry);
+                        toDoAdapter.releaseEntry(absPosition, swipedEntry);
                         break;
                 }
             }
