@@ -9,6 +9,7 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ public class TransferActivity extends AppCompatActivity {
     private Spinner spRole;
     private TextView tvInfoArea;
     private LottieAnimationView lavBluetooth;
+    private ImageView ivCancel;
+    private TextView tvCancel;
 
     private List<String> roles = Arrays.asList("sender", "receiver");
     private ArrayAdapter<String> roleAdapter;
@@ -36,6 +39,8 @@ public class TransferActivity extends AppCompatActivity {
         spRole = findViewById(R.id.spTransferRole);
         tvInfoArea = findViewById(R.id.tvTransferInfoArea);
         lavBluetooth = findViewById(R.id.lav_bluetooth);
+        ivCancel = findViewById(R.id.ivTransferCancel);
+        tvCancel = findViewById(R.id.tvTransferCancel);
 
         tvInfoArea.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvInfoArea.setVerticalScrollBarEnabled(true);
@@ -51,7 +56,17 @@ public class TransferActivity extends AppCompatActivity {
                                 informUser("Transfer process has started");
                             })
                             .start());
+
+        ivCancel.setOnClickListener(view -> onCancel(view));
+        tvCancel.setOnClickListener(view -> onCancel(view));
     }
+
+    private void onCancel(View view)
+    {
+        finish();
+        overridePendingTransition(0, R.anim.from_right);
+    }
+
 
     private void initRoleSpinner()
     {
