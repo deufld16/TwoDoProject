@@ -47,6 +47,7 @@
                 android:fontFamily="Open-Sans"
                 android:text="Role:"
                 android:textColor="@android:color/black"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,16 +63,17 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvTransferActionInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="Open-Sans"
         android:paddingTop="12dp"
         android:text="Press Bluetooth icon to start transfer process"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/ivTransferPageSeparator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
@@ -81,21 +83,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp"
-        android:paddingBottom="40dp">
+        android:paddingBottom="35dp">
 
-        <EditText
-            android:id="@+id/editText"
+        <TextView
+            android:id="@+id/tvTransferInfoArea"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/ic_transfer_area_bg"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            android:textColor="@android:color/black" />
+            android:fontFamily="Open Sans"
+            android:padding="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/bluetooth_icon_animated"
+            android:id="@+id/lav_bluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -103,7 +105,9 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             app:lottie_fileName="bluetooth_icon.json"
-            app:lottie_loop="true" />
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
+
     </FrameLayout>
 
 </LinearLayout>
