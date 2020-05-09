@@ -61,4 +61,49 @@
             android:background="@drawable/ic_role_dropdown" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="Open-Sans"
+        android:paddingTop="12dp"
+        android:text="Press Bluetooth icon to start transfer process"
+        android:textAlignment="center" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        app:srcCompat="@drawable/ic_transfer_seperator" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:paddingBottom="40dp">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_transfer_area_bg"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:textColor="@android:color/black" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/bluetooth_icon_animated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:lottie_fileName="bluetooth_icon.json"
+            app:lottie_loop="true" />
+    </FrameLayout>
+
 </LinearLayout>

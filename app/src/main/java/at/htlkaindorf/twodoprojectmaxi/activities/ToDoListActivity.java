@@ -334,7 +334,8 @@ public class ToDoListActivity extends AppCompatActivity {
         {
             case R.id.mi_transfer:
                 //Transfer via Bluetooth
-
+                Intent transferIntent = new Intent(this, TransferActivity.class);
+                startActivity(transferIntent);
                 return true;
         }
         return false;
