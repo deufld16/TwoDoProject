@@ -36,6 +36,13 @@ public class DeleteCategoryName extends DialogFragment {
         this.help = help;
     }
 
+    /**
+     * Inflates/Creates the dialog which is used to confirm the deletion of a category (safety check)
+     *      -OnOk category is deleted
+     *      -onCancel category deletion is canceled
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

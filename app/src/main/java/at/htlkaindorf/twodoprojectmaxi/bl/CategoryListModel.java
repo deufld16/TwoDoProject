@@ -25,6 +25,10 @@ public class CategoryListModel {
 
     private List<Category> allCategories = new LinkedList<>();
 
+    /**
+     * Checks if entry already exists, if not it is added to the categoryList
+     * @param cat
+     */
     public void addCategory(Category cat){
         if(!allCategories.contains(cat)){
             allCategories.add(cat);
@@ -49,6 +53,14 @@ public class CategoryListModel {
         this.allCategories = allCategories;
     }
 
+    /**
+     * changes the category name
+     *      -returns true if successfull
+     *      -return false if unsuccessfull
+     * @param position
+     * @param catName
+     * @return
+     */
     public boolean setCategoryName(int position, String catName)
     {
         for (Category cat : allCategories)
@@ -62,6 +74,13 @@ public class CategoryListModel {
         return true;
     }
 
+    /**
+     * Method for loading the Categories from the categories.ser file
+     * the "default" and "ADD Category" category is also added
+     * @param context
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void loadCategories(Context context)throws IOException, ClassNotFoundException{
         FileInputStream fis = context.openFileInput(FILE_NAME);
         ObjectInputStream ois = new ObjectInputStream(fis);
@@ -73,6 +92,12 @@ public class CategoryListModel {
         Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Method for saving the categories to the categoies.ser file
+     * @param context
+     * @param isAddCatIncluded
+     * @throws IOException
+     */
     public void saveCategories(Context context, boolean isAddCatIncluded)throws IOException{
         FileOutputStream fos = context.openFileOutput(FILE_NAME, context.MODE_PRIVATE);
         ObjectOutputStream oos = new ObjectOutputStream(fos);

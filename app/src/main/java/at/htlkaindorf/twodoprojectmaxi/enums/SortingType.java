@@ -1,5 +1,8 @@
 package at.htlkaindorf.twodoprojectmaxi.enums;
 
+/**
+ * Enum for Sorting which is used to determine how the entries should be sorted
+ */
 public enum SortingType {
     DUE_DATE_DOWNWARDS("Due Date ⋀"),
     DUE_DATE_UPWARDS("Due Date ⋁"),

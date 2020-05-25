@@ -29,6 +29,13 @@ public class AddCategoryFragment extends DialogFragment {
         this.catAdapter = catAdapter;
     }
 
+    /**
+     * Method that creates/inflates the Fragment which is used to add new Categories
+     *      -it is checked if the typed in name is valid, if not a default name is selected
+     *      -after that the categories are saved to the categories.ser file
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

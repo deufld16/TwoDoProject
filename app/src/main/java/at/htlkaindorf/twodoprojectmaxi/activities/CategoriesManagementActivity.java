@@ -21,17 +21,32 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.AddCategoryFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 
+/**
+ * This class is used for displaying the CategeoryManagement Page
+ * This page is used for the following things:
+ *      -creating Categories
+ *      -having an overview of all available categories
+ *      -deleting Categories
+ */
+
 public class CategoriesManagementActivity extends AppCompatActivity {
 
     private RecyclerView rvCategroiesAdapter;
     private CategroiesAdapter catAdapter = new CategroiesAdapter(this,  getSupportFragmentManager());
     private Context context = this;
+
+    /**
+     * Inflating/creating the displayed GUI
+     *      -The navbar is created in order to navigate between activities
+     *      -OnClick event for creating new categories
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories_management);
 
-        //Navbar Start
+        //Navbar Start - to navigate between the Activities
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         bnv.getMenu().findItem(R.id.navigation_categories).setChecked(true);
         Proxy.setvNavBottom(bnv);

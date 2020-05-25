@@ -32,6 +32,13 @@ import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
 
+/**
+ * This class is used for several purposes:
+ *      -to add new entries when pressing on the plus symbol on the Main Page
+ *      -to edit entries when clicking on them (detailed Information display)
+ * Therefore the class contains all Components, that are needed to create/edit an entry
+ */
+
 public class CreationActivity extends AppCompatActivity{
 
     public TextView tvHeader;
@@ -54,6 +61,10 @@ public class CreationActivity extends AppCompatActivity{
     public Entry entry;
     private Context help = this;
 
+    /**
+     * Method that inflates/creates the GUI
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +72,13 @@ public class CreationActivity extends AppCompatActivity{
         init();
     }
 
+    /**
+     * Method in which all the component are fetched and then initialized in an for the component appropriate way
+     *      -with ArrayAdapters
+     *      -with OnClickEvents (for the detailed view/editing of the entry)
+     */
     private void init(){
-        //finden der einzelnen Komponenten
+        //fetching the components and disabling the ReminderInterval until a date is selected
         tvHeader = findViewById(R.id.tv_creation_manipulation_title);
         etTitle = findViewById(R.id.etEntryTitle);
         etDescription = findViewById(R.id.etEntryDescription);
@@ -71,11 +87,10 @@ public class CreationActivity extends AppCompatActivity{
         spPriorities = findViewById(R.id.spPriority);
         spReminder = findViewById(R.id.spReminder);
         spReminder.setEnabled(false);
-        //Maxi hier background auf hintergraut setzten
 
         intent = getIntent();
 
-        //erstellen der Adapter für die Spinner
+        //creating the adapters for the spinners so that they display the wanted content
         List<Category> allCategories = Proxy.getClm().getAllCategories();
         categoryAdapter = new ArrayAdapter<Category>(this,
                 R.layout.spinner_item, allCategories);
@@ -88,9 +103,8 @@ public class CreationActivity extends AppCompatActivity{
 
         spCategories.setAdapter(categoryAdapter);
         spPriorities.setAdapter(priorityAdapter);
-        //spReminder.setAdapter(reminderAdapter);
 
-        //Erstellen der Methoden für die Spinner
+        //Creating the methods for the Spinners (OnSelectEvents)
         spCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
@@ -131,7 +145,7 @@ public class CreationActivity extends AppCompatActivity{
         btCancel = findViewById(R.id.btCreationCancel);
         addCancelListener();
     }
-
+    //OnClick event for the OK Button which creates the entry with the input data
     public void addOkListener()
     {
         btOk.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +160,7 @@ public class CreationActivity extends AppCompatActivity{
             }
         });
     }
-
+    //OnClick event for the Cancel Button in order to cancel the creation of the entry
     public void addCancelListener()
     {
         btCancel.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +173,7 @@ public class CreationActivity extends AppCompatActivity{
         });
     }
 
+    //Custom fragement which is used for displaying the calender like selecting of the date
     public void showDatePickerDialog(View v)
     {
         DialogFragment newFragment = new DatePickerFragment(vwDate, spReminder, reminderAdapter);
@@ -184,6 +199,7 @@ public class CreationActivity extends AppCompatActivity{
         return etDescription.getText().toString();
     }
 
+    //Methode to read the due date
     public LocalDateTime readDueDate()
     {
         LocalDateTime dueDate = null;
@@ -203,7 +219,7 @@ public class CreationActivity extends AppCompatActivity{
         return Proxy.getClm().getAllCategories().get(Proxy.getClm().getAllCategories()
                     .indexOf((Category)spCategories.getSelectedItem()));
     }
-
+    //Method to read the Priority as an Enum
     public int readPriority()
     {
         int priorityNumber = 0;
@@ -216,6 +232,7 @@ public class CreationActivity extends AppCompatActivity{
         return priorityNumber;
     }
 
+    //Method to read the Reminder as an Enum
     public int readReminder()
     {
         int reminder_id = 0;
@@ -228,6 +245,14 @@ public class CreationActivity extends AppCompatActivity{
         return reminder_id;
     }
 
+    /**
+     * Method that creates a new Entry and returns a boolean that distinguishes whether or not the entry could be created
+     *      -checks if all required input parameters have been set in an adequat way
+     *      -true -> Entry was created and added to the list
+     *      -false -> Entry could not be created
+     * @param view
+     * @return
+     */
     public boolean createEntry(View view){
         //EditText edTitle = findViewById(R.id.etEntryTitle);
         String titleStr = readTitle();

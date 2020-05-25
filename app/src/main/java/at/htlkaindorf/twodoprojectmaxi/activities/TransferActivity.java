@@ -20,6 +20,10 @@ import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 
+/**
+ *
+ */
+
 public class TransferActivity extends AppCompatActivity {
 
     private Spinner spRole;

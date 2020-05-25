@@ -34,6 +34,13 @@ public class ChangeCategoryName extends DialogFragment {
         this.context = context;
     }
 
+    /**
+     * Method that creates/inflates the Fragment which is used to change the Category Name
+     *      -it is checked if the typed in name is valid, if not the whole process is terminated/the name change is reverted
+     *      -after that the categories are saved to the categories.ser file
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

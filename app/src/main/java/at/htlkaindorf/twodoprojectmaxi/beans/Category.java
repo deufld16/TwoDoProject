@@ -5,6 +5,9 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
+/**
+ * Beans class for the categories
+ */
 public class Category implements Serializable {
 
     private String category_name;

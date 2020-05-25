@@ -52,6 +52,9 @@ public class Proxy {
         Proxy.toDoAdapter = toDoAdapter;
     }
 
+    /**
+     *
+     */
     public static void addNavigationBarListener()
     {
         vNavBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

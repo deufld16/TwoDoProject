@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "at.htlkaindorf.twodoprojectmaxi"
         minSdkVersion 26
@@ -20,6 +20,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    buildToolsVersion = '29.0.3'
 }
 
 dependencies {

@@ -1,5 +1,8 @@
 package at.htlkaindorf.twodoprojectmaxi.enums;
 
+/**
+ * Enum for the Reminder Spinner with the text that should be displayed and a number which is used for distinguishing the reminder dates
+ */
 public enum ReminderEnum {
     NO_REMINDER("No Reminder", 0),
     DAILY("Daily", 1),

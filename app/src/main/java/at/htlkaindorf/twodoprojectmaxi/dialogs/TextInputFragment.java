@@ -43,6 +43,11 @@ public class TextInputFragment extends DialogFragment
         this.context = context;
     }
 
+    /**
+     * Creates/Inflates the fragment which is used to add and save a new Category
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

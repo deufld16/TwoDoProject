@@ -50,6 +50,10 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
         return categories;
     }
 
+    /**
+     * Sets the categoriesList of this class as required (removes default and Add Category because they should not be removeable/editable)
+     * @param entries
+     */
     public void setEntries(List<Category> entries) {
         this.categories = new LinkedList<>(entries);
         List<Category> catToRemove  = new LinkedList<>();
@@ -61,16 +65,19 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
                 catToRemove.add(cat);
             }
         }
-        //Log.d("MESSAGE2", categories.toString());
         for (Category cat:
              catToRemove) {
             categories.remove(cat);
-            //Log.d("MESSAGE2", cat.getCategory_name());
         }
-        //Log.d("MESSAGE2", categories.toString());
         notifyDataSetChanged();
     }
 
+    /**
+     *  Creates/inflates the ViewHolder for the RecyclerView with the wanted layout
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public CategroiesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -82,6 +89,11 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
         return viewHolder;
     }
 
+    /**
+     * Prepares the RecyclerView with the required values and sets the OnClick-Events for the Delete/Edit button
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
@@ -103,30 +115,20 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
                 onEdit.show(fm, "changeCategoryName");
             }
         });
-        //holder.tvEntryCategory.setText(entry.getCategory().getCategory_name());
-        //holder.tvEntryDueDate.setText(entry.getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        //String priority = "";
-        //for (PriorityEnum prio :
-        //        PriorityEnum.values()) {
-        //    if (prio.getPrioirty_value() == entry.getPriorityValue()) {
-        //       priority = prio.getPrioirty_text();
-        //   }
-        //}
-        //holder.tvEntryPriority.setText(priority);
-        //holder.clEntryLayout.setOnClickListener(new View.OnClickListener() {
-        //   @Override
-        //   public void onClick(View view) {
-        //        Toast.makeText(context, "Sie haben geklickt!", Toast.LENGTH_SHORT).show();
-        //    }
-        //});
     }
 
+    /**
+     * returns the size of the categoryList
+     * @return
+     */
     @Override
     public int getItemCount() {
-        //Log.d("MESSAGE2", categories.size() + "");
         return categories.size();
     }
 
+    /**
+     * This class contains all the Components that are required to display the RecyclerView as wanted
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private ConstraintLayout clManageCatagories;

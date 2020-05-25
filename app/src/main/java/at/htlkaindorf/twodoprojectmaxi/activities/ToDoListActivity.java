@@ -46,6 +46,10 @@ import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+/**
+ * This is the main/starting activity. It contains a RecyclerView to display the entries and a plus button to add new Entries.
+ * There is also a navbar to navigate to the other activities.
+ */
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
@@ -59,6 +63,9 @@ public class ToDoListActivity extends AppCompatActivity {
 
     private final int RC_CREATION_ACTIVITY = 2;
 
+    /**
+     * This is used to enable swiping for setting the status of an entry to done/deleted. As a next step they can be deleted totally by swiping them one more time
+     */
     ItemTouchHelper.SimpleCallback ithSimpleCallback = new ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
@@ -66,6 +73,18 @@ public class ToDoListActivity extends AppCompatActivity {
             return false;
         }
 
+        /**
+         * This is used to set the state of the entry depending on the swipe direction and its current state
+         *      -STATE DOING
+         *          -swipe right: sets state to done
+         *          -swipe left: sets state to deleted
+         *      -STATE DELETED
+         *          -swipe right: sets state to doing/restores the entry
+         *          -swipe left: ultimately deletes an entry
+         *      -STATE DONE
+         *          -swipe right: ultimately removes the entry because its done done
+         *          -swipe left: sets state to doing
+         */
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
@@ -113,6 +132,16 @@ public class ToDoListActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         *
+         * @param c
+         * @param recyclerView
+         * @param viewHolder
+         * @param dX
+         * @param dY
+         * @param actionState
+         * @param isCurrentlyActive
+         */
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                                 @NonNull RecyclerView.ViewHolder viewHolder,
@@ -145,6 +174,18 @@ public class ToDoListActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Fetches the required components via the findViewById method
+     *      -sets the navbar to navigate between the activities
+     *      -sets the CategoryListModel in the Proxy class to make it globally available to all classes
+     *      -checks if there is a Category/Entry serilized file which can be read to restore the entries/categories
+     *          -if found it is loaded
+     *          -if not the default state of the programm is loaded
+     *      -Button to switch to the CreationActivity to add an Entry
+     *      -TextChangeListener on the SearchBar for filtering purposes
+     *      -set the Adapters for the spinners so that they can display the values as intended
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,8 +252,6 @@ public class ToDoListActivity extends AppCompatActivity {
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        /*Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -293,13 +332,6 @@ public class ToDoListActivity extends AppCompatActivity {
             }
         });
 
-/*       rvToDo.setHasFixedSize(true);
-
-        lm = new LinearLayoutManager(this);
-        rvToDo.setLayoutManager(lm);
-
-        toDoAdapter = new ToDoAdapter(entries);
-        rvToDo.setAdapter(toDoAdapter);*/
         rvToDo = findViewById(R.id.rvDisplay);
         rvToDo.setAdapter(toDoAdapter);
         rvToDo.setLayoutManager(new LinearLayoutManager(this));

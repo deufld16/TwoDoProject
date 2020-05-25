@@ -12,6 +12,10 @@ import java.util.List;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
+/**
+ * Beans class for the entries
+ */
+
 public class Entry implements Serializable{
 
     private LocalDateTime creationDate;
@@ -38,6 +42,11 @@ public class Entry implements Serializable{
         this.reminderID = reminderID;
     }
 
+    /**
+     * Method that calculates all the dates on which a reminding message should be received
+     * @param reminderID
+     * @return
+     */
     public List<LocalDateTime> getReminderDatesInInit(int reminderID){
         if(reminderID != 0 && reminderID != 5 && reminderID != 6){
             int plusNumber = 0;

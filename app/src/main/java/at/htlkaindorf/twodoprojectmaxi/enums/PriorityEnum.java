@@ -1,5 +1,8 @@
 package at.htlkaindorf.twodoprojectmaxi.enums;
 
+/**
+ * Enum for the Priority with the Text that should be displayed and the value for the filtering/sorting
+ */
 public enum PriorityEnum {
     LOW_PRIORITY("Low Priority",1),
     MEDIUM_PRIORITY("Medium Priority", 5),

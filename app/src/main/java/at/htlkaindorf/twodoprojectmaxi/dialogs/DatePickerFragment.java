@@ -17,6 +17,9 @@ import java.util.Calendar;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 
+/**
+ * creates/inflates the Calenderlike looking GUI which is used to select and return a date
+ */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
     private TextView vwDate;
@@ -30,6 +33,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         this.reminderAdapter = reminderAdapter;
     }
 
+    //shows the Calender-like dialog
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int day = c.get(Calendar.DAY_OF_MONTH);
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
-
+    //thsi method is called when the date is selected, this enables the spinner so that a reminderInterval can be set
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day)
     {

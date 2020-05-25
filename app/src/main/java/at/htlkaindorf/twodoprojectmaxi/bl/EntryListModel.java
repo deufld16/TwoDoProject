@@ -19,16 +19,27 @@ public class EntryListModel {
     private boolean descDate;
     private boolean priorityOrDate;
 
+    /**
+     * Adds an entry and filters all the entries afterwards
+     * @param entry
+     */
     public void addEntry(Entry entry){
         allEntries.add(entry);
         filterAndSort();
     }
 
+    /**
+     * Removese an entry and filters all the remaining entries afterwards
+     * @param entry
+     */
     public void remEntry(Entry entry){
         allEntries.remove(entry);
         filterAndSort();
     }
 
+    /**
+     * Method that filters and sorts all the entries according to the filter and sorting criteria
+     */
     private void filterAndSort(){
         filteredEntries.clear();
 
@@ -65,6 +76,14 @@ public class EntryListModel {
         return filteredEntries;
     }
 
+    /**
+     * Method that is used to set all the filter Parameters
+     * @param filterCategory
+     * @param filter
+     * @param descPriority
+     * @param descDate
+     * @param priorityOrDate
+     */
     public void setFilterParameters(Category filterCategory, String filter, boolean descPriority, boolean descDate, boolean priorityOrDate){
         this.filterCategory = filterCategory;
         this.filter = filter;

@@ -6,11 +6,25 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
 
+/**
+ * Class that inherits from the creation Activity. This acitvity is used for displaying detailed information of the entry
+ * and to edit the entries.
+ */
+
 public class ManipulationActivity extends CreationActivity
 {
     private Entry editEntry;
     private int position;
 
+    /**
+     * Overrides the onCreate method from the CreatinActivity so that the components are filled
+     * with the values of the entry (for the detailed view and to edit them)
+     *      -Enums are set
+     *      -Title and description are set
+     *      -due date is set
+     *      -in other words all attribute from an entry, that can be entered when creating the entry, are set.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
