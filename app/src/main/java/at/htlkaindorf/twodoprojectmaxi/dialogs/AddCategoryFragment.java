@@ -19,6 +19,12 @@ import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategroiesAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
+/***
+ * Fragment for adding a new category
+ *
+ * @author Maximilian Strohmaier
+ */
+
 public class AddCategoryFragment extends DialogFragment {
 
     private Context context;

@@ -27,6 +27,9 @@ import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
  *      -creating Categories
  *      -having an overview of all available categories
  *      -deleting Categories
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
  */
 
 public class CategoriesManagementActivity extends AppCompatActivity {

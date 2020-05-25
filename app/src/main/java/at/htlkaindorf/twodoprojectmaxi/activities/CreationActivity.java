@@ -37,6 +37,9 @@ import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
  *      -to add new entries when pressing on the plus symbol on the Main Page
  *      -to edit entries when clicking on them (detailed Information display)
  * Therefore the class contains all Components, that are needed to create/edit an entry
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
  */
 
 public class CreationActivity extends AppCompatActivity{

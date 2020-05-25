@@ -20,6 +20,12 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategroiesAdapter;
 
+/***
+ * Fragment to confirm the deletion of a sepcific category item
+ *
+ * @author Florian Deutschmann
+ */
+
 public class DeleteCategoryName extends DialogFragment {
 
     private Category category;
@@ -41,7 +47,7 @@ public class DeleteCategoryName extends DialogFragment {
      *      -OnOk category is deleted
      *      -onCancel category deletion is canceled
      * @param savedInstanceState
-     * @return
+     * @return dialog
      */
     @NonNull
     @Override

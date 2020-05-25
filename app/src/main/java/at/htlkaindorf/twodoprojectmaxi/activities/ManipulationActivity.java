@@ -9,6 +9,8 @@ import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
 /**
  * Class that inherits from the creation Activity. This acitvity is used for displaying detailed information of the entry
  * and to edit the entries.
+ *
+ * @author Maximilian Strohmaier
  */
 
 public class ManipulationActivity extends CreationActivity

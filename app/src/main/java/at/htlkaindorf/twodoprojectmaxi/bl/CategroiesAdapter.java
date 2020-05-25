@@ -34,6 +34,13 @@ import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.DeleteCategoryName;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 
+/***
+ * Adapter-class for the categories-recylcer-view
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
+ */
+
 public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.ViewHolder> {
 
     private List<Category> categories = new LinkedList<>();
@@ -119,7 +126,7 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
 
     /**
      * returns the size of the categoryList
-     * @return
+     * @return size
      */
     @Override
     public int getItemCount() {
@@ -128,6 +135,9 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
 
     /**
      * This class contains all the Components that are required to display the RecyclerView as wanted
+     *
+     * @author Florian Deutschmann
+     * @author Maximilian Strohmaier
      */
     public class ViewHolder extends RecyclerView.ViewHolder{
 

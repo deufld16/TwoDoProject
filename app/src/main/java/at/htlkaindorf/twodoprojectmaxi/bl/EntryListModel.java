@@ -7,6 +7,13 @@ import java.util.List;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 
+/**
+ * Model-class for the entry list
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
+ */
+
 public class EntryListModel {
 
     private List<Entry> allEntries = new LinkedList<>();

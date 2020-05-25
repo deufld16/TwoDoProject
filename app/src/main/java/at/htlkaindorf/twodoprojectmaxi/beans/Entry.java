@@ -14,6 +14,8 @@ import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
 /**
  * Beans class for the entries
+ *
+ * @author Florian Deutschmann
  */
 
 public class Entry implements Serializable{

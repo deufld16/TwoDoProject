@@ -21,7 +21,11 @@ import java.util.List;
 import at.htlkaindorf.twodoprojectmaxi.R;
 
 /**
+ * This activity is used to allow the user to transfer his/her own To Do List
+ * to another device via Bluetooth. Furthermore, it informs the user about
+ * all steps during this process
  *
+ * @author Maximilan Strohmaier
  */
 
 public class TransferActivity extends AppCompatActivity {
@@ -35,6 +39,11 @@ public class TransferActivity extends AppCompatActivity {
     private List<String> roles = Arrays.asList("sender", "receiver");
     private ArrayAdapter<String> roleAdapter;
 
+    /***
+     * Method to inflate the GUI and initialize vital variables
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +74,11 @@ public class TransferActivity extends AppCompatActivity {
         tvCancel.setOnClickListener(view -> onCancel(view));
     }
 
+    /***
+     * Method to terminate the current transfer process and return to previous activity
+     *
+     * @param view
+     */
     private void onCancel(View view)
     {
         finish();
@@ -72,6 +86,9 @@ public class TransferActivity extends AppCompatActivity {
     }
 
 
+    /***
+     * Method to initialize the role spinner with the predefined roles
+     */
     private void initRoleSpinner()
     {
         roleAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_white, roles);
@@ -79,6 +96,11 @@ public class TransferActivity extends AppCompatActivity {
         spRole.setAdapter(roleAdapter);
     }
 
+    /***
+     * Method to inform the user about the progress of the transfer using a specific message
+     *
+     * @param msg
+     */
     public void informUser(String msg)
     {
         tvInfoArea.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
