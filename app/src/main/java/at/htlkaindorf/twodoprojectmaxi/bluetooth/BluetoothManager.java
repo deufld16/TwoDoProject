@@ -19,6 +19,7 @@ public class BluetoothManager
 {
     private BluetoothAdapter bluetoothAdapter;
     private TransferActivity srcActivity;
+    private boolean processDone = true;
 
     public final int BLUETOOTH_ENABLE_REQUEST_CODE = 1;
 
@@ -39,13 +40,16 @@ public class BluetoothManager
 
                 if(state == BluetoothAdapter.STATE_OFF) {
                     srcActivity.informUser("Bluetooth turned off");
-                    srcActivity.informUserProcessFailed();
+                    if(!processDone) {
+                        srcActivity.informUserProcessFailed();
+                    }
                 }
             }
         }
     };
 
     public BluetoothManager(AppCompatActivity srcActivity) throws Exception {
+        processDone = false;
         this.srcActivity = (TransferActivity) srcActivity;
 
         //check Bluetooth availability

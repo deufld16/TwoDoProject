@@ -135,7 +135,8 @@ public class TransferActivity extends AppCompatActivity {
     }
 
     /***
-     * Method to standardizedly inform the user about a failed process
+     * Method to inform the user about a failed process in a standardized way
+     * and allow further actions
      */
     public void informUserProcessFailed()
     {
