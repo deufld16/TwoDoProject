@@ -1,9 +1,10 @@
 package at.htlkaindorf.twodoprojectmaxi.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
@@ -19,7 +20,30 @@ public class BluetoothManager
     private BluetoothAdapter bluetoothAdapter;
     private TransferActivity srcActivity;
 
-    public final int BLUETOOTH_REQUEST_CODE = 1;
+    public final int BLUETOOTH_ENABLE_REQUEST_CODE = 1;
+
+    public final BroadcastReceiver bluetoothChangeReceiver = new BroadcastReceiver() {
+        /***
+         * Listener for changes concerning the Bluetooth state
+         *
+         * @param context
+         * @param intent
+         */
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+
+                if(state == BluetoothAdapter.STATE_OFF) {
+                    srcActivity.informUser("Bluetooth turned off");
+                    srcActivity.informUserProcessFailed();
+                }
+            }
+        }
+    };
 
     public BluetoothManager(AppCompatActivity srcActivity) throws Exception {
         this.srcActivity = (TransferActivity) srcActivity;
@@ -31,15 +55,22 @@ public class BluetoothManager
             throw new Exception("Device does not support bluetooth");
         }
 
-        //turn on Bluetooth
+        enableBluetooth();
+    }
+
+    /***
+     * Method to enable Bluetooth on device
+     */
+    private void enableBluetooth()
+    {
         if(!bluetoothAdapter.isEnabled())
         {
             Intent enaBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            srcActivity.startActivityForResult(enaBluetoothIntent, BLUETOOTH_REQUEST_CODE);
+            srcActivity.startActivityForResult(enaBluetoothIntent, BLUETOOTH_ENABLE_REQUEST_CODE);
         }
         else
         {
-            this.srcActivity.informUser("Bluetooth turned on");
+            srcActivity.informUser("Bluetooth turned on");
         }
     }
 }

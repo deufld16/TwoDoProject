@@ -3,11 +3,11 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ObjectAnimator;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -71,6 +71,7 @@ public class TransferActivity extends AppCompatActivity {
                             .setDuration(1000)
                             .withEndAction(() -> {
                                 lavBluetooth.setVisibility(View.INVISIBLE);
+                                tvInfoArea.setText("");
                                 informUser("Transfer process has started");
                                 startBluetoothTransfer();
                             })
@@ -88,11 +89,15 @@ public class TransferActivity extends AppCompatActivity {
         try
         {
             bm = new BluetoothManager(this);
+
+            //register listener for Bluetooth state changes
+            IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+            registerReceiver(bm.bluetoothChangeReceiver, filter);
         }
         catch (Exception e)
         {
             informUser(e.getMessage());
-            informUserProcessFinished();
+            informUserProcessFailed();
         }
     }
 
@@ -129,9 +134,24 @@ public class TransferActivity extends AppCompatActivity {
         tvInfoArea.append(msg+"\n");
     }
 
-    public void informUserProcessFinished()
+    /***
+     * Method to standardizedly inform the user about a failed process
+     */
+    public void informUserProcessFailed()
     {
-        informUser("Process finished");
+        informUser("Process execution failed");
+        informUser("For another attempt press Bluetooth icon");
+        restartAll();
+    }
+
+    /***
+     * Method to entirely restart the Bluetooth transfer process
+     */
+    public void restartAll()
+    {
+        unregisterReceiver(bm.bluetoothChangeReceiver);
+        lavBluetooth.setAlpha(1f);
+        lavBluetooth.setVisibility(View.VISIBLE);
     }
 
     /***
@@ -144,17 +164,33 @@ public class TransferActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(bm != null && requestCode == bm.BLUETOOTH_REQUEST_CODE)
+
+        if(bm != null) {
+            //Result-Handler for enabling Bluetooth
+            if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
+                if (resultCode == RESULT_CANCELED) {
+                    informUserProcessFailed();
+                    return;
+                } else if (resultCode == RESULT_OK) {
+                    informUser("Bluetooth turned on");
+                }
+            }
+        }
+    }
+
+    /***
+     * Destructor for TransferActivity
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //unregister listener for Bluetooth state changes
+        try {
+            unregisterReceiver(bm.bluetoothChangeReceiver);
+        } catch (RuntimeException rex)
         {
-            if(resultCode == RESULT_CANCELED)
-            {
-                informUserProcessFinished();
-                return;
-            }
-            else if(resultCode == RESULT_OK)
-            {
-                informUser("Bluetooth turned on");
-            }
+
         }
     }
 }
