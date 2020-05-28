@@ -1,8 +1,10 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.bluetooth.BluetoothManager;
 
 /**
  * This activity is used to allow the user to transfer his/her own To Do List
@@ -38,6 +41,8 @@ public class TransferActivity extends AppCompatActivity {
 
     private List<String> roles = Arrays.asList("sender", "receiver");
     private ArrayAdapter<String> roleAdapter;
+
+    private BluetoothManager bm;
 
     /***
      * Method to inflate the GUI and initialize vital variables
@@ -67,11 +72,28 @@ public class TransferActivity extends AppCompatActivity {
                             .withEndAction(() -> {
                                 lavBluetooth.setVisibility(View.INVISIBLE);
                                 informUser("Transfer process has started");
+                                startBluetoothTransfer();
                             })
                             .start());
 
         ivCancel.setOnClickListener(view -> onCancel(view));
         tvCancel.setOnClickListener(view -> onCancel(view));
+    }
+
+    /***
+     * Method that initializes the bluetooth transfer process using adequate classes
+     */
+    private void startBluetoothTransfer()
+    {
+        try
+        {
+            bm = new BluetoothManager(this);
+        }
+        catch (Exception e)
+        {
+            informUser(e.getMessage());
+            informUserProcessFinished();
+        }
     }
 
     /***
@@ -107,4 +129,32 @@ public class TransferActivity extends AppCompatActivity {
         tvInfoArea.append(msg+"\n");
     }
 
+    public void informUserProcessFinished()
+    {
+        informUser("Process finished");
+    }
+
+    /***
+     * Method that receives the results of user inputs during the transfer process
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(bm != null && requestCode == bm.BLUETOOTH_REQUEST_CODE)
+        {
+            if(resultCode == RESULT_CANCELED)
+            {
+                informUserProcessFinished();
+                return;
+            }
+            else if(resultCode == RESULT_OK)
+            {
+                informUser("Bluetooth turned on");
+            }
+        }
+    }
 }
