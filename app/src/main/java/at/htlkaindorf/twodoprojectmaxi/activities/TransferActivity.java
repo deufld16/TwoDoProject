@@ -2,7 +2,6 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,15 +13,12 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,6 +41,7 @@ public class TransferActivity extends AppCompatActivity {
     private LottieAnimationView lavBluetooth;
     private ImageView ivCancel;
     private TextView tvCancel;
+    private BluetoothDevicesFragment bluetoothDevicesDlg = null;
 
     private List<String> roles = Arrays.asList("sender", "receiver");
     private ArrayAdapter<String> roleAdapter;
@@ -79,7 +76,6 @@ public class TransferActivity extends AppCompatActivity {
                             .withEndAction(() -> {
                                 lavBluetooth.setVisibility(View.INVISIBLE);
                                 tvInfoArea.setText("");
-                                informUser("Transfer process has started");
                                 startBluetoothTransfer();
                             })
                             .start());
@@ -99,12 +95,13 @@ public class TransferActivity extends AppCompatActivity {
 
             //register listener for Bluetooth state changes
             IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_FOUND);
             registerReceiver(bm.bluetoothChangeReceiver, filter);
         }
         catch (Exception e)
         {
             informUser(e.getMessage());
-            informUserProcessFailed();
+            processFailed();
         }
     }
 
@@ -145,7 +142,7 @@ public class TransferActivity extends AppCompatActivity {
      * Method to inform the user about a failed process in a standardized way
      * and allow further actions
      */
-    public void informUserProcessFailed()
+    public void processFailed()
     {
         informUser("Process execution failed");
         informUser("For another attempt press Bluetooth icon");
@@ -168,19 +165,34 @@ public class TransferActivity extends AppCompatActivity {
      * Method to display specific devices and let the user decide whether he/she
      * wants to take a displayed one or do something else to get further devices
      *
+     * @param srcManager
      * @param devices
-     * @param actionStr
-     * @return chosen Bluetooth device
-     *         null, if other steps should be taken
+     * @param title
+     * @param description
+     * @param furtherAction
      */
-    public BluetoothDevice chooseDevice(Set<BluetoothDevice> devices, String actionStr)
+    public void displayDevices(BluetoothManager srcManager, List<BluetoothDevice> devices,
+                               String title, String description, String furtherAction)
     {
-        BluetoothDevice chosenDevice = null;
-
-        DialogFragment bluetoothDevicesDlg = new BluetoothDevicesFragment(devices, actionStr);
+        bluetoothDevicesDlg = new BluetoothDevicesFragment(srcManager, devices,
+                                                title, description, furtherAction);
         bluetoothDevicesDlg.show(getSupportFragmentManager(), "bluetoothDevicesFragment");
+    }
 
-        return chosenDevice;
+    /***
+     * Method to update the set of available Bluetooth devices
+     *
+     * @param devices
+     * @return success
+     */
+    public boolean updateDevices(List<BluetoothDevice> devices)
+    {
+        if(bluetoothDevicesDlg == null)
+        {
+            return false;
+        }
+        bluetoothDevicesDlg.setDevices(devices);
+        return true;
     }
 
     /***
@@ -198,7 +210,7 @@ public class TransferActivity extends AppCompatActivity {
             //Result-Handler for enabling Bluetooth
             if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
                 if (resultCode == RESULT_CANCELED) {
-                    informUserProcessFailed();
+                    processFailed();
                     return;
                 } else if (resultCode == RESULT_OK) {
                     informUser("Bluetooth turned on");
