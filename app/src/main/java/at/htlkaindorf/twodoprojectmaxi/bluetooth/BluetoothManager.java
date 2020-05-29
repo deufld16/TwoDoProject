@@ -1,11 +1,14 @@
 package at.htlkaindorf.twodoprojectmaxi.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Set;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 
@@ -20,6 +23,7 @@ public class BluetoothManager
     private BluetoothAdapter bluetoothAdapter;
     private TransferActivity srcActivity;
     private boolean processDone = true;
+    private Set<BluetoothDevice> pairedDevices;
 
     public final int BLUETOOTH_ENABLE_REQUEST_CODE = 1;
 
@@ -75,6 +79,16 @@ public class BluetoothManager
         else
         {
             srcActivity.informUser("Bluetooth turned on");
+            queryPairedDevices();
         }
     }
+
+    /***
+     * Method to get all already paired devices
+     */
+    public void queryPairedDevices()
+    {
+        srcActivity.chooseDevice(bluetoothAdapter.getBondedDevices(), "str");
+    }
+
 }

@@ -2,8 +2,10 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
@@ -12,16 +14,21 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.bluetooth.BluetoothManager;
+import at.htlkaindorf.twodoprojectmaxi.dialogs.BluetoothDevicesFragment;
 
 /**
  * This activity is used to allow the user to transfer his/her own To Do List
@@ -150,9 +157,30 @@ public class TransferActivity extends AppCompatActivity {
      */
     public void restartAll()
     {
-        unregisterReceiver(bm.bluetoothChangeReceiver);
+        if(bm != null && bm.bluetoothChangeReceiver != null) {
+            unregisterReceiver(bm.bluetoothChangeReceiver);
+        }
         lavBluetooth.setAlpha(1f);
         lavBluetooth.setVisibility(View.VISIBLE);
+    }
+
+    /***
+     * Method to display specific devices and let the user decide whether he/she
+     * wants to take a displayed one or do something else to get further devices
+     *
+     * @param devices
+     * @param actionStr
+     * @return chosen Bluetooth device
+     *         null, if other steps should be taken
+     */
+    public BluetoothDevice chooseDevice(Set<BluetoothDevice> devices, String actionStr)
+    {
+        BluetoothDevice chosenDevice = null;
+
+        DialogFragment bluetoothDevicesDlg = new BluetoothDevicesFragment(devices, actionStr);
+        bluetoothDevicesDlg.show(getSupportFragmentManager(), "bluetoothDevicesFragment");
+
+        return chosenDevice;
     }
 
     /***
@@ -174,6 +202,7 @@ public class TransferActivity extends AppCompatActivity {
                     return;
                 } else if (resultCode == RESULT_OK) {
                     informUser("Bluetooth turned on");
+                    bm.queryPairedDevices();
                 }
             }
         }
