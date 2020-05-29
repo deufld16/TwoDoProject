@@ -17,6 +17,13 @@ import at.htlkaindorf.twodoprojectmaxi.activities.CategoriesManagementActivity;
 import at.htlkaindorf.twodoprojectmaxi.activities.ToDoListActivity;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
+/**
+ * Proxy-class for a central access of specific data
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
+ */
+
 public class Proxy {
     private static CategoryListModel clm;
     private static BottomNavigationView vNavBottom;
@@ -65,7 +72,8 @@ public class Proxy {
     }
 
     /**
-     *
+     * Method to set the actions that must be taken after clicking
+     * on specific items of the bottom navigation bar
      */
     public static void addNavigationBarListener()
     {
@@ -114,6 +122,5 @@ public class Proxy {
                 return false;
             }
         });
-        // for more information see https://androidwave.com/bottom-navigation-bar-android-example/
     }
 }

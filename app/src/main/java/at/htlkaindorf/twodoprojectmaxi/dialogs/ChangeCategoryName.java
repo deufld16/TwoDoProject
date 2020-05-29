@@ -20,6 +20,12 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategroiesAdapter;
 
+/***
+ * Fragment for changing the name of a specific category
+ *
+ * @author Florian Deutschmann
+ */
+
 public class ChangeCategoryName extends DialogFragment {
 
     private Category category;

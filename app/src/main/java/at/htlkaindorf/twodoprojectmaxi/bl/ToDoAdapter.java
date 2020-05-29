@@ -32,6 +32,15 @@ import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
+
+/**
+ * Adapter-class for the To-Do-list-entry-recycler-view
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
+ */
+
+
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private static final String FILE_NAME = "entries.ser";
@@ -58,6 +67,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.displayStatus = displayStatus;
     }
 
+    /***
+     * Method to add a new entry to the To-Do-List
+     *
+     * @param entry
+     * @return sucess of adding process
+     */
     public boolean addEntry(Entry entry){
         if(!entries.contains(entry)){
             entries.add(entry);
@@ -90,6 +105,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         }
     }
 
+    /***
+     * Inflates the layout for the To-Do-list-entries
+     *
+     * @param parent
+     * @param viewType
+     * @return current ViewHolder
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -101,16 +123,15 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         return viewHolder;
     }
 
+    /***
+     * Binds specific data to the representation of the corresponding To-Do-list-entry
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
-        /*holder.imageName.setText(mImageNames.get(position));
-        holder.parentLayout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });*/
         Entry entry = filteredEntries.get(position);
         holder.tvEntryTitle.setText(entry.getTitle());
         holder.tvEntryCategory.setText(entry.getCategory().getCategory_name());
@@ -149,6 +170,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         });
     }
 
+    /***
+     * Method to initiate the process of editing an existing entry
+     *
+     * @param entry
+     */
     private void editEntry(Entry entry)
     {
         AppCompatActivity srcActivity = (AppCompatActivity) context;
@@ -169,6 +195,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         return filteredEntries.size();
     }
 
+    /***
+     * Contains all necessary components for displaying a To-Do-list-entry
+     *
+     * @author Florian Deutschmann
+     * @author Maximilian Strohmaier
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private ConstraintLayout clEntryLayout;
@@ -207,35 +239,68 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.filterCategory = filterCategory;
     }
 
+    /***
+     * updates the display-status (Working, Deleted, Done)
+     *
+     * @param status
+     * @return current status
+     */
     public Status switchView(Status status){
         this.displayStatus = status;
         filter();
         return status;
     }
 
+    /***
+     * Set status of forwarded entry to DONE
+     *
+     * @param position
+     * @param entry
+     */
     public void doEntry(int position, Entry entry)
     {
         entry.setStatus(Status.Done);
         entries.set(position, entry);
     }
 
+    /***
+     * Set status of forwarded entry to DELETED
+     *
+     * @param position
+     * @param entry
+     */
     public void deleteEntry(int position, Entry entry)
     {
         entry.setStatus(Status.Deleted);
         entries.set(position, entry);
     }
 
+    /***
+     * Set status of forwarded entry to WORKING
+     *
+     * @param position
+     * @param entry
+     */
     public void restoreEntry(int position, Entry entry)
     {
         entry.setStatus(Status.Working);
         entries.set(position, entry);
     }
 
+    /***
+     * Remove the forwarded entry permanently
+     *
+     * @param position
+     * @param entry
+     */
     public void releaseEntry(int position, Entry entry)
     {
         entries.remove(position);
     }
 
+    /***
+     * Filter the entries according to a specific filter
+     */
     public void filter(){
         filteredEntries.clear();
         List<Entry> helpList = new LinkedList<>();
@@ -262,6 +327,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
 
+    /***
+     * Sort the filtered entries
+     */
     private void sortCategories(){
         if(filterEnum != null){
             if(filterEnum == SortingType.PRIORITY_DOWNWARDS){
@@ -276,6 +344,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         }
     }
 
+    /***
+     * Load Entries from a .ser file
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void loadEntries() throws IOException, ClassNotFoundException{
         List<Entry> allEntries = new LinkedList<>();
         FileInputStream fis = context.openFileInput(FILE_NAME);
@@ -286,6 +360,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         filter();
     }
 
+    /***
+     * Save Entries to a .ser file
+     *
+     * @throws IOException
+     */
     public void saveEntries()throws IOException{
         FileOutputStream fos = context.openFileOutput(FILE_NAME, context.MODE_PRIVATE);
         ObjectOutputStream oos = new ObjectOutputStream(fos);

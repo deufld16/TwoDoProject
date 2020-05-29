@@ -47,9 +47,13 @@ import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 /**
- * This is the main/starting activity. It contains a RecyclerView to display the entries and a plus button to add new Entries.
+ * This is the starting activity. It contains a RecyclerView to display the entries and a plus button to add new Entries.
  * There is also a navbar to navigate to the other activities.
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
  */
+
 public class ToDoListActivity extends AppCompatActivity {
 
     private RecyclerView rvToDo;
@@ -64,7 +68,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private final int RC_CREATION_ACTIVITY = 2;
 
     /**
-     * This is used to enable swiping for setting the status of an entry to done/deleted. As a next step they can be deleted totally by swiping them one more time
+     * This is used to enable swiping for setting the status of an entry to done/deleted.
      */
     ItemTouchHelper.SimpleCallback ithSimpleCallback = new ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -133,6 +137,8 @@ public class ToDoListActivity extends AppCompatActivity {
         }
 
         /**
+         * Method to display a specific icon while swiping an entry in order to
+         * enhance the user experience and receive a visual feedback
          *
          * @param c
          * @param recyclerView

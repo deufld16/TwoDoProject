@@ -1,11 +1,14 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ObjectAnimator;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,11 +20,18 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.bluetooth.BluetoothManager;
+import at.htlkaindorf.twodoprojectmaxi.dialogs.BluetoothDevicesFragment;
 
 /**
+ * This activity is used to allow the user to transfer his/her own To Do List
+ * to another device via Bluetooth. Furthermore, it informs the user about
+ * all steps during this process
  *
+ * @author Maximilan Strohmaier
  */
 
 public class TransferActivity extends AppCompatActivity {
@@ -31,10 +41,18 @@ public class TransferActivity extends AppCompatActivity {
     private LottieAnimationView lavBluetooth;
     private ImageView ivCancel;
     private TextView tvCancel;
+    private BluetoothDevicesFragment bluetoothDevicesDlg = null;
 
     private List<String> roles = Arrays.asList("sender", "receiver");
     private ArrayAdapter<String> roleAdapter;
 
+    private BluetoothManager bm;
+
+    /***
+     * Method to inflate the GUI and initialize vital variables
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +75,8 @@ public class TransferActivity extends AppCompatActivity {
                             .setDuration(1000)
                             .withEndAction(() -> {
                                 lavBluetooth.setVisibility(View.INVISIBLE);
-                                informUser("Transfer process has started");
+                                tvInfoArea.setText("");
+                                startBluetoothTransfer();
                             })
                             .start());
 
@@ -65,6 +84,32 @@ public class TransferActivity extends AppCompatActivity {
         tvCancel.setOnClickListener(view -> onCancel(view));
     }
 
+    /***
+     * Method that initializes the bluetooth transfer process using adequate classes
+     */
+    private void startBluetoothTransfer()
+    {
+        try
+        {
+            bm = new BluetoothManager(this);
+
+            //register listener for Bluetooth state changes
+            IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_FOUND);
+            registerReceiver(bm.bluetoothChangeReceiver, filter);
+        }
+        catch (Exception e)
+        {
+            informUser(e.getMessage());
+            processFailed();
+        }
+    }
+
+    /***
+     * Method to terminate the current transfer process and return to previous activity
+     *
+     * @param view
+     */
     private void onCancel(View view)
     {
         finish();
@@ -72,6 +117,9 @@ public class TransferActivity extends AppCompatActivity {
     }
 
 
+    /***
+     * Method to initialize the role spinner with the predefined roles
+     */
     private void initRoleSpinner()
     {
         roleAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_white, roles);
@@ -79,10 +127,112 @@ public class TransferActivity extends AppCompatActivity {
         spRole.setAdapter(roleAdapter);
     }
 
+    /***
+     * Method to inform the user about the progress of the transfer using a specific message
+     *
+     * @param msg
+     */
     public void informUser(String msg)
     {
         tvInfoArea.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
         tvInfoArea.append(msg+"\n");
     }
 
+    /***
+     * Method to inform the user about a failed process in a standardized way
+     * and allow further actions
+     */
+    public void processFailed()
+    {
+        informUser("Process execution failed");
+        informUser("For another attempt press Bluetooth icon");
+        restartAll();
+    }
+
+    /***
+     * Method to entirely restart the Bluetooth transfer process
+     */
+    public void restartAll()
+    {
+        if(bm != null && bm.bluetoothChangeReceiver != null) {
+            unregisterReceiver(bm.bluetoothChangeReceiver);
+        }
+        lavBluetooth.setAlpha(1f);
+        lavBluetooth.setVisibility(View.VISIBLE);
+    }
+
+    /***
+     * Method to display specific devices and let the user decide whether he/she
+     * wants to take a displayed one or do something else to get further devices
+     *
+     * @param srcManager
+     * @param devices
+     * @param title
+     * @param description
+     * @param furtherAction
+     */
+    public void displayDevices(BluetoothManager srcManager, List<BluetoothDevice> devices,
+                               String title, String description, String furtherAction)
+    {
+        bluetoothDevicesDlg = new BluetoothDevicesFragment(srcManager, devices,
+                                                title, description, furtherAction);
+        bluetoothDevicesDlg.show(getSupportFragmentManager(), "bluetoothDevicesFragment");
+    }
+
+    /***
+     * Method to update the set of available Bluetooth devices
+     *
+     * @param devices
+     * @return success
+     */
+    public boolean updateDevices(List<BluetoothDevice> devices)
+    {
+        if(bluetoothDevicesDlg == null)
+        {
+            return false;
+        }
+        bluetoothDevicesDlg.setDevices(devices);
+        return true;
+    }
+
+    /***
+     * Method that receives the results of user inputs during the transfer process
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(bm != null) {
+            //Result-Handler for enabling Bluetooth
+            if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
+                if (resultCode == RESULT_CANCELED) {
+                    processFailed();
+                    return;
+                } else if (resultCode == RESULT_OK) {
+                    informUser("Bluetooth turned on");
+                    bm.queryPairedDevices();
+                }
+            }
+        }
+    }
+
+    /***
+     * Destructor for TransferActivity
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //unregister listener for Bluetooth state changes
+        try {
+            unregisterReceiver(bm.bluetoothChangeReceiver);
+        } catch (RuntimeException rex)
+        {
+
+        }
+    }
 }

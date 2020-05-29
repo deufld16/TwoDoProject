@@ -12,6 +12,13 @@ import android.widget.TextView;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.ToDoListActivity;
 
+/***
+ * Entry point of app, which is used as a welcome screen
+ *
+ * @author Maximilian Strohmaier
+ * @author Florian Deutschmann
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private Animation fromBottom;
@@ -23,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivIcBg;
     private ImageView ivIcFg;
 
+    /***
+     * inflate the welcome screen GUI
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*Intent welcomeIntent = new Intent(this, WelcomeActivity.class);
-        startActivity(welcomeIntent);*/
     }
 
+    /***
+     * Move on to To-Do-List
+     */
     public void openToDoList()
     {
         Intent toDoListIntent = new Intent(this, ToDoListActivity.class);

@@ -14,6 +14,13 @@ import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 
+/**
+ * Model-class for the category list
+ *
+ * @author Florian Deutschmann
+ * @author Maximilian Strohmaier
+ */
+
 public class CategoryListModel {
 
     private static final String FILE_NAME = "categories.ser";

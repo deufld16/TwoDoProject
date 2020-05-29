@@ -22,6 +22,12 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
 
+/***
+ * DialogFragment for text-based user input
+ *
+ * @author Maximilian Strohmaier
+ */
+
 public class TextInputFragment extends DialogFragment
 {
     private String title;
