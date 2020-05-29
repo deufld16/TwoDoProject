@@ -26,6 +26,11 @@ public class AlertReceiver extends BroadcastReceiver {
 
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
+    /**
+     * Method, which recieves the alarm when it goes off. This method creates and displays the reminder notification using an self created notification channel.
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         //Log.d("NOTIFICATION_TESTING", "onReceive: Started message sending process");

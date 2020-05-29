@@ -22,6 +22,11 @@ public class RestartAppReceiver extends BroadcastReceiver {
     public RestartAppReceiver() {
     }
 
+    /**
+     * Method which reschedules the alarm after a device power off (removes all currently set Alarms)
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
 

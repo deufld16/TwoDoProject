@@ -8,6 +8,9 @@ import android.util.Log;
 
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
+/**
+ * Class that is called before any other activity or class and is used for general configuration purposes which has to be done at the beginning of the application start
+ */
 public class App extends Application {
 
     public static final String CHANNEL_ID = "reminder_channel";
@@ -20,6 +23,9 @@ public class App extends Application {
         Proxy.setContext(this);
     }
 
+    /**
+     * Method which creates the NotificationChannel over which the reminder notifications can be sent
+     */
     private void createNotificationChannels(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel reminder_channel = new NotificationChannel(

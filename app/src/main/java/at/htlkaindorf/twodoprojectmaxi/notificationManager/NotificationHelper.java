@@ -36,6 +36,10 @@ public class NotificationHelper {
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.YYYY");
     private static final String FILE_NAME =  "entries.ser";
 
+    /**
+     * Method which sets the alarm for the next reminder Date of an entry
+     * @param entry
+     */
     public static void startAlarm(Entry entry){
         AlarmManager alarmManager = (AlarmManager) Proxy.getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(Proxy.getContext(), AlertReceiver.class);
@@ -63,6 +67,11 @@ public class NotificationHelper {
         entry.getReminderDates().remove(0);
     }
 
+    /**
+     * Method which is used when an entry has more than one Reminder Date left to locate the Entity using the id and then scheduling the next Reminder Date using the method
+     * startAlarm(Entity entity)
+     * @param id
+     */
     public static void startAlarm(int id){
         Entry specificEntry = null;
         try{
@@ -81,6 +90,10 @@ public class NotificationHelper {
         }
     }
 
+    /**
+     * Method which cancels an Alarm using its request_id
+     * @param request_id
+     */
     public static void cancelAlarm(int request_id){
         AlarmManager alarmManager = (AlarmManager) Proxy.getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(Proxy.getContext(), AlertReceiver.class);
