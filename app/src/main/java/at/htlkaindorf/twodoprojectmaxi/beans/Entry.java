@@ -1,15 +1,18 @@
 package at.htlkaindorf.twodoprojectmaxi.beans;
 
+import android.app.PendingIntent;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
-import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.notificationManager.NotificationHelper;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 
 /**
@@ -29,7 +32,9 @@ public class Entry implements Serializable{
     private Status status;
     private int reminderID;
 
-    public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category){
+    private int request_id;
+
+    public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category, int request_id){
         this.creationDate = LocalDateTime.now();
         this.dueDate = dueDate;
         this.reminderDates = getReminderDatesInInit(reminderID);
@@ -40,6 +45,10 @@ public class Entry implements Serializable{
         this.category = category;
         this.status = Status.Working;
         this.reminderID = reminderID;
+
+        this.request_id = request_id;
+
+        NotificationHelper.startAlarm(this);
     }
 
     /**
@@ -68,20 +77,43 @@ public class Entry implements Serializable{
                     creationDate = creationDate.plusDays(plusNumber);
                     reminderDates.add(creationDate);
                 }
+                reminderDates.add(dueDate.minusDays(1));
+                reminderDates.add(dueDate);
             }else if(type == 1){
                 while(creationDate.plusMonths(plusNumber).isBefore(dueDate)){
                     creationDate = creationDate.plusMonths(plusNumber);
                     reminderDates.add(creationDate);
                 }
+                reminderDates.add(dueDate.minusDays(1));
+                reminderDates.add(dueDate);
             }else if(type == 2){
                 while(creationDate.plusYears(plusNumber).isBefore(dueDate)){
                     creationDate = creationDate.plusYears(plusNumber);
                     reminderDates.add(creationDate);
                 }
+                reminderDates.add(dueDate.minusDays(1));
+                reminderDates.add(dueDate);
             }
+        }else if(reminderID == 0){
+            reminderDates.add(dueDate.minusDays(1));
+            reminderDates.add(dueDate);
         }
         return reminderDates;
     }
+
+    public boolean needsReminder(){
+        Log.d("RestartAppReceiver", title + ": " + dueDate + "\n" + LocalDateTime.now());
+        return dueDate.isAfter(LocalDateTime.now());
+    }
+
+    public int getRequest_id() {
+        return request_id;
+    }
+
+    public void setRequest_id(int request_id) {
+        this.request_id = request_id;
+    }
+
 
     public int getReminderID() {
         return reminderID;

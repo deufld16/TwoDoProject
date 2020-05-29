@@ -1,5 +1,6 @@
 package at.htlkaindorf.twodoprojectmaxi.bl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -8,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.CategoriesManagementActivity;
@@ -19,11 +22,20 @@ public class Proxy {
     private static BottomNavigationView vNavBottom;
     private static AppCompatActivity activeNavActivity;
     private static ToDoAdapter toDoAdapter;
+    private static Context context;
+
+    public static Context getContext(){
+        return context;
+    }
+
+    public static void setContext(Context context){
+        Proxy.context = context;
+    }
 
     public static CategoryListModel getClm() {
         return clm;
     }
-
+    
     public static void setClm(CategoryListModel clm) {
         Proxy.clm = clm;
     }

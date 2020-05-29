@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -280,8 +281,27 @@ public class CreationActivity extends AppCompatActivity{
 
         int reminder_id = readReminder();
 
-        entry = new Entry(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat);
+        entry = new Entry(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat, getRequestID());
+
         return true;
+    }
+
+    public int getRequestID(){
+        int request_id = 0;
+        int help = 0;
+        do{
+            help = 0;
+            request_id ++;
+            for (Entry entry:
+                    Proxy.getToDoAdapter().getEntries()) {
+                if(entry.getRequest_id() != request_id){
+                    help ++;
+                }
+            }
+        }while(help != Proxy.getToDoAdapter().getEntries().size());
+
+        Log.d("ERROR", request_id + "");
+        return request_id;
     }
 
 }
