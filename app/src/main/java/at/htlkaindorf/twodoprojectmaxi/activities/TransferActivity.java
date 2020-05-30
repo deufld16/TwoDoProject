@@ -146,6 +146,10 @@ public class TransferActivity extends AppCompatActivity {
     {
         informUser("Process execution failed");
         informUser("For another attempt press Bluetooth icon");
+        if(bluetoothDevicesDlg != null)
+        {
+            bluetoothDevicesDlg.dismiss();
+        }
         restartAll();
     }
 

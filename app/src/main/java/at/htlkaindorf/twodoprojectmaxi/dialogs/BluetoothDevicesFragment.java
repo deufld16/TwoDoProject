@@ -2,6 +2,7 @@ package at.htlkaindorf.twodoprojectmaxi.dialogs;
 
 import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,16 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.bluetooth.BluetoothManager;
+
+/***
+ * PopUp that informs user about available Bluetooth devices
+ *
+ * @author Maximilian Strohmaier
+ */
 
 public class BluetoothDevicesFragment extends DialogFragment
 {
@@ -53,6 +59,12 @@ public class BluetoothDevicesFragment extends DialogFragment
         refreshDeviceNamesAdapter();
     }
 
+    /***
+     * Main method to inflate the GUI and initialize and configure vital variables
+     *
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -76,10 +88,10 @@ public class BluetoothDevicesFragment extends DialogFragment
                 switch (buttonText.toLowerCase())
                 {
                     case "discover further devices":
-                        onDiscoverFurther();
+                        discoverFurther();
                         break;
                     case "cancel":
-                        onDiscoveryDone(null);
+                        selectionDone(null);
                         break;
                 }
             }
@@ -89,7 +101,7 @@ public class BluetoothDevicesFragment extends DialogFragment
         liDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                onDiscoveryDone(devices.get(i));
+                selectionDone(devices.get(i));
             }
         });
 
@@ -98,6 +110,9 @@ public class BluetoothDevicesFragment extends DialogFragment
         return dialog;
     }
 
+    /***
+     * reset the adapter for the devices list
+     */
     private void refreshDeviceNamesAdapter()
     {
         deviceNamesAdapter = new ArrayAdapter<String>(getContext(),
@@ -108,7 +123,7 @@ public class BluetoothDevicesFragment extends DialogFragment
     /***
      * Handler for Discover Further Devices Button
      */
-    private void onDiscoverFurther()
+    private void discoverFurther()
     {
         dismiss();
         bm.discoverDevices();
@@ -117,9 +132,20 @@ public class BluetoothDevicesFragment extends DialogFragment
     /***
      * Handler for Discovery Cancel Button resp. an item selection
      */
-    private void onDiscoveryDone(BluetoothDevice device)
+    private void selectionDone(BluetoothDevice device)
     {
         bm.definePartnerDevice(device);
         dismiss();
+    }
+
+    /***
+     * Method that handles the cancelation of the dialog (i.e. when pressing "back")
+     *
+     * @param dialog
+     */
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        selectionDone(null);
+        super.onCancel(dialog);
     }
 }

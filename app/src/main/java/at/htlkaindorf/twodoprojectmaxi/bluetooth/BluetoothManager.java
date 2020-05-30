@@ -136,8 +136,8 @@ public class BluetoothManager
     {
         if(bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
+            srcActivity.informUser("Bluetooth discovery has stopped");
         }
-        srcActivity.informUser("Bluetooth discovery has stopped");
 
         if(selectedDevice == null)
         {
