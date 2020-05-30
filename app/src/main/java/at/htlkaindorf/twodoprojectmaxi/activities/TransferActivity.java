@@ -66,6 +66,7 @@ public class TransferActivity extends AppCompatActivity {
 
         tvInfoArea.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvInfoArea.setVerticalScrollBarEnabled(true);
+        tvInfoArea.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
 
         initRoleSpinner();
 
@@ -134,7 +135,6 @@ public class TransferActivity extends AppCompatActivity {
      */
     public void informUser(String msg)
     {
-        tvInfoArea.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
         tvInfoArea.append(msg+"\n");
     }
 
@@ -200,7 +200,7 @@ public class TransferActivity extends AppCompatActivity {
     }
 
     /***
-     * Method that receives the results of user inputs during the transfer process
+     * Method that receives results of user inputs during the transfer process
      *
      * @param requestCode
      * @param resultCode

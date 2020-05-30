@@ -26,7 +26,6 @@ public class BluetoothManager
     private BluetoothAdapter bluetoothAdapter;
     private TransferActivity srcActivity;
     private boolean processDone = true;
-    //private Set<BluetoothDevice> devices = new HashSet<>();
     private List<BluetoothDevice> deviceList;
     private BluetoothDevice partnerDevice;
 
