@@ -45,25 +45,26 @@ import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
 
 public class CreationActivity extends AppCompatActivity{
 
-    public TextView tvHeader;
-    public EditText etTitle;
-    public EditText etDescription;
-    public TextView vwDate;
-    public Button btOk;
-    public Button btCancel;
-    public Spinner spCategories;
-    public Spinner spPriorities;
-    public Spinner spReminder;
+    protected TextView tvHeader;
+    protected EditText etTitle;
+    protected EditText etDescription;
+    protected TextView vwDate;
+    protected Button btOk;
+    protected Button btCancel;
+    protected Spinner spCategories;
+    protected Spinner spPriorities;
+    protected Spinner spReminder;
 
-    public ArrayAdapter<Category> categoryAdapter;
-    public ArrayAdapter<String> priorityAdapter;
-    public ArrayAdapter<String> reminderAdapter;
-    public DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    public List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
-    public List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
-    public Intent intent;
-    public Entry entry;
-    private Context help = this;
+    protected ArrayAdapter<Category> categoryAdapter;
+    protected ArrayAdapter<String> priorityAdapter;
+    protected ArrayAdapter<String> reminderAdapter;
+    protected Intent intent;
+    protected DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
+    private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
+    private Entry entry;
+    private Context helpContext = this;
 
     /**
      * Method that inflates/creates the GUI
@@ -117,7 +118,7 @@ public class CreationActivity extends AppCompatActivity{
                 {
                     DialogFragment textInputDlg = new TextInputFragment("Add Category",
                             "Please enter the name for the new category:", Proxy.getClm(),
-                            adapterView.getSelectedItemPosition(), spCategories, help);
+                            adapterView.getSelectedItemPosition(), spCategories, helpContext);
                     textInputDlg.show(getSupportFragmentManager(), "textInput");
                 }
             }
