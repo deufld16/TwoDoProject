@@ -284,6 +284,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/ic_ecp_button_cancel"
                 android:fontFamily="Open Sans"
                 android:text="cancel"
