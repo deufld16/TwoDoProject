@@ -8,9 +8,7 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
@@ -29,7 +27,10 @@ public class BluetoothManager
     private List<BluetoothDevice> deviceList;
     private BluetoothDevice partnerDevice;
 
+    private int discoverDur = 120;
+
     public final int BLUETOOTH_ENABLE_REQUEST_CODE = 1;
+    public final int DISCOVERABILITY_ENABLE_REQUEST_CODE = 2;
 
     public final BroadcastReceiver bluetoothChangeReceiver = new BroadcastReceiver() {
         /***
@@ -78,13 +79,14 @@ public class BluetoothManager
             throw new Exception("Device does not support bluetooth");
         }
 
-        enableBluetooth();
+        //enableBluetooth();
+        enableBluetoothDiscoverability();
     }
 
     /***
      * Method to enable Bluetooth on device
      */
-    private void enableBluetooth()
+    /*private void enableBluetooth()
     {
         if(!bluetoothAdapter.isEnabled())
         {
@@ -94,6 +96,25 @@ public class BluetoothManager
         else
         {
             srcActivity.informUser("Bluetooth turned on");
+            queryPairedDevices();
+        }
+    }*/
+
+    /***
+     * Method to enable Bluetooth as well as the discoverability of the device to certain amount of time
+     */
+    private void enableBluetoothDiscoverability()
+    {
+        if(!bluetoothAdapter.isEnabled()
+                || bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
+        {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, discoverDur);
+            srcActivity.startActivityForResult(discoverableIntent, DISCOVERABILITY_ENABLE_REQUEST_CODE);
+        }
+        else
+        {
+            srcActivity.informUser("Bluetooth enabled, discoverable for "+discoverDur+"s");
             queryPairedDevices();
         }
     }

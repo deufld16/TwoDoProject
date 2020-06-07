@@ -47,6 +47,7 @@ public class TransferActivity extends AppCompatActivity {
     private ArrayAdapter<String> roleAdapter;
 
     private BluetoothManager bm;
+    private String infoStr = "";
 
     /***
      * Method to inflate the GUI and initialize vital variables
@@ -212,12 +213,28 @@ public class TransferActivity extends AppCompatActivity {
 
         if(bm != null) {
             //Result-Handler for enabling Bluetooth
-            if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
+            /*if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
                 if (resultCode == RESULT_CANCELED) {
                     processFailed();
                     return;
                 } else if (resultCode == RESULT_OK) {
-                    informUser("Bluetooth turned on");
+                    infoStr += "Bluetooth turned on - ";
+                    bm.enableDiscoverability();
+                }
+            }*/
+
+            //Result-Handler for enabling discoverability
+            if(requestCode == bm.DISCOVERABILITY_ENABLE_REQUEST_CODE)
+            {
+                if(resultCode == RESULT_CANCELED)
+                {
+                    informUser("Error while enabling bluetooth");
+                    processFailed();
+                    return;
+                }
+                else
+                {
+                    informUser("Bluetooth enabled, discoverable for "+resultCode+"s");
                     bm.queryPairedDevices();
                 }
             }
