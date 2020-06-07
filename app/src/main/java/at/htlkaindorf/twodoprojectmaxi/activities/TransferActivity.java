@@ -44,6 +44,7 @@ public class TransferActivity extends AppCompatActivity {
     private BluetoothDevicesFragment bluetoothDevicesDlg = null;
 
     private List<String> roles = Arrays.asList("sender", "receiver");
+    private String activeRole = roles.get(0);
     private ArrayAdapter<String> roleAdapter;
 
     private BluetoothManager bm;
@@ -93,7 +94,10 @@ public class TransferActivity extends AppCompatActivity {
     {
         try
         {
-            bm = new BluetoothManager(this);
+            activeRole = (String) spRole.getSelectedItem();
+            spRole.setEnabled(false);
+
+            bm = new BluetoothManager(this, activeRole);
 
             //register listener for Bluetooth state changes
             IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -114,6 +118,9 @@ public class TransferActivity extends AppCompatActivity {
      */
     private void onCancel(View view)
     {
+        if(bm != null) {
+            bm.terminate();
+        }
         finish();
         overridePendingTransition(0, R.anim.from_right);
     }
@@ -164,6 +171,8 @@ public class TransferActivity extends AppCompatActivity {
         }
         lavBluetooth.setAlpha(1f);
         lavBluetooth.setVisibility(View.VISIBLE);
+
+        spRole.setEnabled(true);
     }
 
     /***
@@ -235,7 +244,7 @@ public class TransferActivity extends AppCompatActivity {
                 else
                 {
                     informUser("Bluetooth enabled, discoverable for "+resultCode+"s");
-                    bm.queryPairedDevices();
+                    bm.initDeviceRole();
                 }
             }
         }

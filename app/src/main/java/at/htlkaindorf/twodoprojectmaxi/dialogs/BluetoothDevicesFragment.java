@@ -134,7 +134,7 @@ public class BluetoothDevicesFragment extends DialogFragment
      */
     private void selectionDone(BluetoothDevice device)
     {
-        bm.definePartnerDevice(device);
+        bm.connectWith(device);
         dismiss();
     }
 
