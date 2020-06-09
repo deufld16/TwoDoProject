@@ -1,10 +1,17 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
@@ -21,7 +28,9 @@ public class App extends Application {
 
         createNotificationChannels();
         Proxy.setContext(this);
+
     }
+
 
     /**
      * Method which creates the NotificationChannel over which the reminder notifications can be sent

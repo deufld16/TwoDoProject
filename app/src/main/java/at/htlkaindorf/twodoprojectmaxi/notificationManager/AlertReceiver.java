@@ -64,6 +64,7 @@ public class AlertReceiver extends BroadcastReceiver {
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .build();
+
         notificationManager.notify(intent.getIntExtra("id", 1), notification);
         if(!intent.getStringExtra("nextDueDate").equalsIgnoreCase("none")){
             NotificationHelper.startAlarm(intent.getIntExtra("id", 1));

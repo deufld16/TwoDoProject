@@ -34,6 +34,8 @@ public class Entry implements Serializable{
     private Status status;
     private int reminderID;
 
+    private List<String> allAudioFileLocations = new LinkedList<>();
+
     private int request_id;
 
     public Entry(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category, int request_id){
@@ -49,7 +51,6 @@ public class Entry implements Serializable{
         this.reminderID = reminderID;
 
         this.request_id = request_id;
-
         NotificationHelper.startAlarm(this);
     }
 
@@ -196,6 +197,14 @@ public class Entry implements Serializable{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public List<String> getAllAudioFileLocations() {
+        return allAudioFileLocations;
+    }
+
+    public void setAllAudioFileLocations(List<String> allAudioFileLocations) {
+        this.allAudioFileLocations = allAudioFileLocations;
     }
 }
 

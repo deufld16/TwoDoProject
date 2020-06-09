@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -31,6 +32,7 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
+import at.htlkaindorf.twodoprojectmaxi.notificationManager.NotificationHelper;
 
 
 /**
@@ -147,18 +149,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.clEntryLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(entry.getStatus() == Status.Working){
-                    entry.setStatus(Status.Done);
-                }else if(entry.getStatus() == Status.Done){
-                    entry.setStatus(Status.Deleted);
-                }else{
-                    entry.setStatus(Status.Working);
-                }
-                try {
-                    saveEntries();
-                }catch (Exception ex){
-                    Log.d("Error", "An error occured while saving the file");
-                }
                 filter();
             }
         });
@@ -259,6 +249,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
      */
     public void doEntry(int position, Entry entry)
     {
+        NotificationHelper.cancelAlarm(entry.getRequest_id());
         entry.setStatus(Status.Done);
         entries.set(position, entry);
     }
@@ -271,6 +262,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
      */
     public void deleteEntry(int position, Entry entry)
     {
+        NotificationHelper.cancelAlarm(entry.getRequest_id());
         entry.setStatus(Status.Deleted);
         entries.set(position, entry);
     }
@@ -285,7 +277,27 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     {
         entry.setStatus(Status.Working);
         entries.set(position, entry);
+        updateReminders(entry);
+        if(entry.getReminderDates().size() >= 1){
+            NotificationHelper.startAlarm(entry);
+        }
     }
+
+    private void updateReminders(Entry entry){
+        List<LocalDateTime> datesToRemove = new LinkedList<>();
+        for (LocalDateTime reminder:
+             entry.getReminderDates()) {
+            if(reminder.isBefore(LocalDateTime.now())){
+                datesToRemove.add(reminder);
+            }
+        }
+
+        for (LocalDateTime remove:
+             datesToRemove) {
+            entry.getReminderDates().remove(remove);
+        }
+    }
+
 
     /***
      * Remove the forwarded entry permanently

@@ -1,10 +1,19 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /**
  * Class that inherits from the creation Activity. This acitvity is used for displaying detailed information of the entry
@@ -17,6 +26,8 @@ public class ManipulationActivity extends CreationActivity
 {
     private Entry editEntry;
     private int position;
+
+    private SoundRecorder soundRecorder = new SoundRecorder();
 
     /**
      * Overrides the onCreate method from the CreatinActivity so that the components are filled
@@ -60,5 +71,14 @@ public class ManipulationActivity extends CreationActivity
         spReminder.setAdapter(reminderAdapter);
         spReminder.setEnabled(true);
         spReminder.setSelection(reminderAdapter.getPosition((reminder.getReminder_identifierString())));
+
+        //recordButtonOnClickListener
+
+        if(soundRecorder.checkPermissionFromDevice()){
+
+        }else{
+            soundRecorder.requestPermission(this);
+        }
     }
+
 }
