@@ -31,7 +31,7 @@ public class BluetoothServer
      */
     public void cancelListening()
     {
-        act.cancel();
+        //act.cancel();
         act.interrupt();
     }
 

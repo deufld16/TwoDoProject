@@ -87,7 +87,7 @@ public class BluetoothClient
      */
     public void closeConnection()
     {
-        ct.cancel();
+        //ct.cancel();
         ct.interrupt();
     }
 
@@ -130,6 +130,7 @@ public class BluetoothClient
                     }
                 });
                 //TODO: client-side process with opened connection
+                cancel();
             } catch (IOException e) {
                 srcActivity.informUser("Unable to connect");
                 cancel();
