@@ -141,7 +141,7 @@ public class TransferActivity extends AppCompatActivity {
      *
      * @param msg
      */
-    public void informUser(String msg)
+    public synchronized void informUser(String msg)
     {
         tvInfoArea.append(msg+"\n");
     }
