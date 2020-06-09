@@ -44,9 +44,11 @@ public class TransferActivity extends AppCompatActivity {
     private BluetoothDevicesFragment bluetoothDevicesDlg = null;
 
     private List<String> roles = Arrays.asList("sender", "receiver");
+    private String activeRole = roles.get(0);
     private ArrayAdapter<String> roleAdapter;
 
     private BluetoothManager bm;
+    private String infoStr = "";
 
     /***
      * Method to inflate the GUI and initialize vital variables
@@ -92,7 +94,10 @@ public class TransferActivity extends AppCompatActivity {
     {
         try
         {
-            bm = new BluetoothManager(this);
+            activeRole = (String) spRole.getSelectedItem();
+            spRole.setEnabled(false);
+
+            bm = new BluetoothManager(this, activeRole);
 
             //register listener for Bluetooth state changes
             IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -113,6 +118,9 @@ public class TransferActivity extends AppCompatActivity {
      */
     private void onCancel(View view)
     {
+        if(bm != null) {
+            bm.terminate();
+        }
         finish();
         overridePendingTransition(0, R.anim.from_right);
     }
@@ -133,7 +141,7 @@ public class TransferActivity extends AppCompatActivity {
      *
      * @param msg
      */
-    public void informUser(String msg)
+    public synchronized void informUser(String msg)
     {
         tvInfoArea.append(msg+"\n");
     }
@@ -163,6 +171,8 @@ public class TransferActivity extends AppCompatActivity {
         }
         lavBluetooth.setAlpha(1f);
         lavBluetooth.setVisibility(View.VISIBLE);
+
+        spRole.setEnabled(true);
     }
 
     /***
@@ -212,13 +222,29 @@ public class TransferActivity extends AppCompatActivity {
 
         if(bm != null) {
             //Result-Handler for enabling Bluetooth
-            if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
+            /*if (requestCode == bm.BLUETOOTH_ENABLE_REQUEST_CODE) {
                 if (resultCode == RESULT_CANCELED) {
                     processFailed();
                     return;
                 } else if (resultCode == RESULT_OK) {
-                    informUser("Bluetooth turned on");
-                    bm.queryPairedDevices();
+                    infoStr += "Bluetooth turned on - ";
+                    bm.enableDiscoverability();
+                }
+            }*/
+
+            //Result-Handler for enabling discoverability
+            if(requestCode == bm.DISCOVERABILITY_ENABLE_REQUEST_CODE)
+            {
+                if(resultCode == RESULT_CANCELED)
+                {
+                    informUser("Error while enabling bluetooth");
+                    processFailed();
+                    return;
+                }
+                else
+                {
+                    informUser("Bluetooth enabled, discoverable for "+resultCode+"s");
+                    bm.initDeviceRole();
                 }
             }
         }

@@ -8,10 +8,8 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 
@@ -23,14 +21,21 @@ import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 
 public class BluetoothManager
 {
+    private String role = "";
+    private BluetoothServer server = null;
+    private BluetoothClient client = null;
+
     private BluetoothAdapter bluetoothAdapter;
     private TransferActivity srcActivity;
     private boolean processDone = true;
-    private List<BluetoothDevice> deviceList;
-    private BluetoothDevice partnerDevice;
+
+    private int discoverDur = 120;
+    private final UUID THE_UUID = UUID.fromString("9fb97589-7ad8-4e08-8a28-db02cb7625d9");
 
     public final int BLUETOOTH_ENABLE_REQUEST_CODE = 1;
+    public final int DISCOVERABILITY_ENABLE_REQUEST_CODE = 2;
 
+    //Listener for changes concerning Bluetooth state, device detection etc.
     public final BroadcastReceiver bluetoothChangeReceiver = new BroadcastReceiver() {
         /***
          * Listener for changes concerning Bluetooth on the device
@@ -56,20 +61,23 @@ public class BluetoothManager
             }
 
             //Processing when a device was found during the discovering process
-            if(BluetoothDevice.ACTION_FOUND.equals(action))
+            if(client != null && BluetoothDevice.ACTION_FOUND.equals(action))
             {
                 BluetoothDevice bDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                List<BluetoothDevice> deviceList = client.getDeviceList();
                 if(!deviceList.contains(bDevice)) {
                     deviceList.add(bDevice);
                 }
+                client.setDeviceList(deviceList);
                 srcActivity.updateDevices(deviceList);
             }
         }
     };
 
-    public BluetoothManager(AppCompatActivity srcActivity) throws Exception {
+    public BluetoothManager(AppCompatActivity srcActivity, String role) throws Exception {
         processDone = false;
         this.srcActivity = (TransferActivity) srcActivity;
+        this.role = role;
 
         //check Bluetooth availability
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -78,13 +86,15 @@ public class BluetoothManager
             throw new Exception("Device does not support bluetooth");
         }
 
-        enableBluetooth();
+        enableBluetoothDiscoverability();
+
+        //enableBluetooth();
     }
 
     /***
      * Method to enable Bluetooth on device
      */
-    private void enableBluetooth()
+    /*private void enableBluetooth()
     {
         if(!bluetoothAdapter.isEnabled())
         {
@@ -96,56 +106,83 @@ public class BluetoothManager
             srcActivity.informUser("Bluetooth turned on");
             queryPairedDevices();
         }
-    }
+    }*/
 
     /***
-     * Method to get paired devices and let the user decide on one
-     * resp. demand a discovering process
+     * Method to enable Bluetooth as well as the discoverability of the device to certain amount of time
      */
-    public void queryPairedDevices()
+    private void enableBluetoothDiscoverability()
     {
-        deviceList = bluetoothAdapter.getBondedDevices().stream().collect(Collectors.toList());
-        srcActivity.displayDevices(this, deviceList,
-                                                        "Paired Devices",
-                                                    "Please choose a paired device",
-                                                    "Discover Further Devices");
-        srcActivity.informUser("Querying paired devices");
+        if(!bluetoothAdapter.isEnabled()
+                || bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
+        {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, discoverDur);
+            srcActivity.startActivityForResult(discoverableIntent, DISCOVERABILITY_ENABLE_REQUEST_CODE);
+        }
+        else
+        {
+            srcActivity.informUser("Bluetooth enabled, discoverable for "+discoverDur+"s");
+            initDeviceRole();
+        }
     }
 
     /***
-     * Method to discover non-paired devices
+     * Method to define further actions due to the selected role
+     */
+    public void initDeviceRole()
+    {
+        if(role.equals("sender"))
+        {
+            //device will act as a client
+            client = new BluetoothClient(this, bluetoothAdapter, srcActivity, THE_UUID);
+            client.queryPairedDevices();
+        }
+        else if(role.equals("receiver"))
+        {
+            //device will act as a server
+            server = new BluetoothServer(this, THE_UUID);
+        }
+    }
+
+    /***
+     * Method that manages a discovering request
      */
     public void discoverDevices()
     {
-        if(partnerDevice == null)
-        {
-            bluetoothAdapter.startDiscovery();
-            srcActivity.informUser("Bluetooth discovery has started");
-            srcActivity.displayDevices(this, deviceList,
-                    "Discovered Devices",
-                    "Please wait and choose a discovered device",
-                    "Cancel");
-        }
+        client.discoverDevices();
     }
 
     /***
-     * Method to process a device selection
+     * Method that manages a request to define a partner device and connect to it
+     *
+     * @param device
      */
-    public void definePartnerDevice(BluetoothDevice selectedDevice)
+    public void connectWith(BluetoothDevice device)
     {
-        if(bluetoothAdapter.isDiscovering()) {
-            bluetoothAdapter.cancelDiscovery();
-            srcActivity.informUser("Bluetooth discovery has stopped");
+        client.connectWith(device);
+    }
+
+    /***
+     * Method to execute all relevant steps for an early termination of the Bluetooth Transfer process
+     */
+    public void terminate()
+    {
+        if(server != null) {
+            server.cancelListening();
         }
 
-        if(selectedDevice == null)
+        if(client != null)
         {
-            srcActivity.informUser("No device has been selected");
-            srcActivity.processFailed();
-            return;
+            client.closeConnection();
         }
+    }
 
-        partnerDevice = selectedDevice;
-        srcActivity.informUser("Selected device: " + partnerDevice.getName());
+    public BluetoothAdapter getBluetoothAdapter() {
+        return bluetoothAdapter;
+    }
+
+    public TransferActivity getSrcActivity() {
+        return srcActivity;
     }
 }

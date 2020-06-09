@@ -2,6 +2,8 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,6 +30,7 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+import at.htlkaindorf.twodoprojectmaxi.bl.VoiceRecordAdapter;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
@@ -54,6 +57,11 @@ public class CreationActivity extends AppCompatActivity{
     protected Spinner spCategories;
     protected Spinner spPriorities;
     protected Spinner spReminder;
+
+    private Button btFurtherItems;
+    private Button btRecordAudio;
+    private RecyclerView rvRecordings;
+    private VoiceRecordAdapter vra = new VoiceRecordAdapter(this, getSupportFragmentManager());
 
     protected ArrayAdapter<Category> categoryAdapter;
     protected ArrayAdapter<String> priorityAdapter;
@@ -149,7 +157,53 @@ public class CreationActivity extends AppCompatActivity{
 
         btCancel = findViewById(R.id.btCreationCancel);
         addCancelListener();
+
+        btRecordAudio = findViewById(R.id.btRecordAudio);
+        addRecordAudioHandler();
+
+        rvRecordings = findViewById(R.id.rvVoiceRecordings);
+        rvRecordings.setAdapter(vra);
+        rvRecordings.setLayoutManager(new LinearLayoutManager(this));
+
+        btFurtherItems = findViewById(R.id.btEntryFurtherItems);
+        addFurtherItemsListener();
     }
+
+    /***
+     * Handlermethod for clicking on the "Further Items" button
+     */
+    private void addFurtherItemsListener() {
+        btFurtherItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = (String)btFurtherItems.getText();
+                if(text.equalsIgnoreCase("Further Information")) {
+                    btRecordAudio.setVisibility(View.VISIBLE);
+                    rvRecordings.setVisibility(View.VISIBLE);
+                    btFurtherItems.setText("Less Information");
+                }
+                else if(text.equalsIgnoreCase("Less Information")) {
+                    btRecordAudio.setVisibility(View.GONE);
+                    rvRecordings.setVisibility(View.GONE);
+                    btFurtherItems.setText("Further Information");
+                }
+            }
+        });
+    }
+
+    /***
+     * Handlermethod for clicking on the Record Audio Button
+     */
+    private void addRecordAudioHandler()
+    {
+        btRecordAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
     //OnClick event for the OK Button which creates the entry with the input data
     public void addOkListener()
     {
