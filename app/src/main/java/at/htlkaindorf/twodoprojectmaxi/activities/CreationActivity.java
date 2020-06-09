@@ -1,6 +1,8 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
@@ -62,7 +67,6 @@ public class CreationActivity extends AppCompatActivity{
     private Button btFurtherItems;
     private Button btRecordAudio;
     private RecyclerView rvRecordings;
-    private VoiceRecordAdapter vra = new VoiceRecordAdapter(this, getSupportFragmentManager());
 
     protected ArrayAdapter<Category> categoryAdapter;
     protected ArrayAdapter<String> priorityAdapter;
@@ -72,10 +76,11 @@ public class CreationActivity extends AppCompatActivity{
 
     private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
-    private Entry entry;
-    private SoundRecorder soundRecorder = new SoundRecorder();
+    private Entry entry = new Entry();
     private Context helpContext = this;
     private Activity activity = this;
+    private boolean isRecording = false;
+
     /**
      * Method that inflates/creates the GUI
      * @param savedInstanceState
@@ -93,6 +98,10 @@ public class CreationActivity extends AppCompatActivity{
      *      -with OnClickEvents (for the detailed view/editing of the entry)
      */
     private void init(){
+        if(Proxy.getVra() == null){
+            Proxy.setVra(new VoiceRecordAdapter(this, getSupportFragmentManager()));
+        }
+        Proxy.getVra().setEntry(entry);
         //fetching the components and disabling the ReminderInterval until a date is selected
         tvHeader = findViewById(R.id.tv_creation_manipulation_title);
         etTitle = findViewById(R.id.etEntryTitle);
@@ -164,7 +173,7 @@ public class CreationActivity extends AppCompatActivity{
         addRecordAudioHandler();
 
         rvRecordings = findViewById(R.id.rvVoiceRecordings);
-        rvRecordings.setAdapter(vra);
+        rvRecordings.setAdapter(Proxy.getVra());
         rvRecordings.setLayoutManager(new LinearLayoutManager(this));
 
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
@@ -183,6 +192,7 @@ public class CreationActivity extends AppCompatActivity{
                     btRecordAudio.setVisibility(View.VISIBLE);
                     rvRecordings.setVisibility(View.VISIBLE);
                     btFurtherItems.setText("Less Information");
+                    Proxy.getVra().renew();
                 }
                 else if(text.equalsIgnoreCase("Less Information")) {
                     btRecordAudio.setVisibility(View.GONE);
@@ -201,13 +211,35 @@ public class CreationActivity extends AppCompatActivity{
         btRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(soundRecorder.checkAudioPremissionFromDevice()){
+                if(Proxy.getSoundRecorder().checkAudioPremissionFromDevice()){
+                    if(isRecording){
+                        Proxy.getSoundRecorder().stopRecordAudio();
+                        Proxy.getVra().renew();
+                        isRecording = false;
+                        btRecordAudio.setText("RECORD AUDIO");
 
+                    }else{
+                        btRecordAudio.setText("Stop Recording Audio");
+                        isRecording = true;
+                        Proxy.getSoundRecorder().recordAudio(entry);
+                    }
                 }else{
-                    soundRecorder.requestPermission(activity);
+                    Proxy.getSoundRecorder().requestPermission(activity);
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode){
+            case SoundRecorder.REQUEST_PERMISSION_CODE:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
     }
 
     //OnClick event for the OK Button which creates the entry with the input data
@@ -345,7 +377,11 @@ public class CreationActivity extends AppCompatActivity{
 
         int reminder_id = readReminder();
 
-        entry = new Entry(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat, getRequestID());
+        if(entry == null){
+            entry = new Entry(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat, getRequestID());
+        }else{
+            entry.setParameters(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat, getRequestID());
+        }
 
         return true;
     }

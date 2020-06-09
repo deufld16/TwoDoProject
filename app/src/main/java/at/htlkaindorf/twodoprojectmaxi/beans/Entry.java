@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import at.htlkaindorf.twodoprojectmaxi.notificationManager.NotificationHelper;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
@@ -54,11 +55,42 @@ public class Entry implements Serializable{
         NotificationHelper.startAlarm(this);
     }
 
+    public void setParameters(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category, int request_id){
+        this.creationDate = LocalDateTime.now();
+        this.dueDate = dueDate;
+        this.reminderDates = getReminderDatesInInit(reminderID);
+
+        this.title = title;
+        this.entryNote = entryNote;
+        this.priorityValue = priorityValue;
+        this.category = category;
+        this.status = Status.Working;
+        this.reminderID = reminderID;
+
+        this.request_id = request_id;
+        NotificationHelper.startAlarm(this);
+    }
+
+    public Entry(){
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entry entry = (Entry) o;
+        return request_id == entry.request_id;
+    }
+
     /**
      * Method that calculates all the dates on which a reminding message should be received
      * @param reminderID
      * @return
      */
+
+
+
     public List<LocalDateTime> getReminderDatesInInit(int reminderID){
         if(reminderID != 0 && reminderID != 5 && reminderID != 6){
             int plusNumber = 0;

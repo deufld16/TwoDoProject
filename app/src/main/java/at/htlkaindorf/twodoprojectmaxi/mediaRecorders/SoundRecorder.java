@@ -3,9 +3,12 @@ package at.htlkaindorf.twodoprojectmaxi.mediaRecorders;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,9 +47,10 @@ public class SoundRecorder {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        int audio_file_number = getUniqueAudioFileNumber();
-        String savePath = Environment.getExternalStorageState() +"/"+ audio_file_number + "_audio_record_3gp";
+        int audio_file_number = getUniqueAudioFileNumber(entry);
+        String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record_3gp";
         entry.getAllAudioFileLocations().add(savePath);
+        Log.d("VOICE2", "setupMediaRecorder: " + savePath);
         mediaRecorder.setOutputFile(savePath);
     }
 
@@ -62,6 +66,15 @@ public class SoundRecorder {
 
     public void stopRecordAudio(){
         mediaRecorder.stop();
+    }
+
+    public int getLengthOfAudio(String path){
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(path);
+
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+
+        return Integer.parseInt(durationStr);
     }
 
     public void playRecording(String pathToRecording){
@@ -84,11 +97,21 @@ public class SoundRecorder {
         }
     }
 
-    private int getUniqueAudioFileNumber(){
+    private int getUniqueAudioFileNumber(Entry currentEntry){
         int uniqueNumber = 0;
+        boolean isNew = true;
         for (Entry entry:
                 Proxy.getToDoAdapter().getEntries()) {
-            uniqueNumber += entry.getAllAudioFileLocations().size();
+            if(entry == currentEntry){
+                isNew = false;
+                uniqueNumber += currentEntry.getAllAudioFileLocations().size();
+            }else{
+                uniqueNumber += entry.getAllAudioFileLocations().size();
+            }
+        }
+
+        if(isNew){
+            uniqueNumber += currentEntry.getAllAudioFileLocations().size();
         }
 
         return uniqueNumber;

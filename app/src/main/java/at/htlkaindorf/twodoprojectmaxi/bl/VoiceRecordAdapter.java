@@ -1,6 +1,7 @@
 package at.htlkaindorf.twodoprojectmaxi.bl;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /***
@@ -32,14 +35,25 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
      *  - onBindViewHolder() to assign the particular values to the components
      */
 
-    List<String> test = Arrays.asList("Test");
+    List<String> displayedAudios = new LinkedList<>();
 
     private FragmentManager fm;
     private Context context;
+    private Entry entry;
+    private boolean isPlaying = false;
 
     public VoiceRecordAdapter(Context context, FragmentManager fm) {
         this.context = context;
         this.fm = fm;
+    }
+
+    public Entry getEntry() {
+        return entry;
+    }
+
+    public void setEntry(Entry entry) {
+        this.entry = entry;
+        renew();
     }
 
     @NonNull
@@ -53,14 +67,36 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
         return viewHolder;
     }
 
+    public void renew(){
+        displayedAudios.clear();
+        for (String audio:
+             entry.getAllAudioFileLocations()) {
+            displayedAudios.add(audio);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull VoiceRecordAdapter.ViewHolder holder, int position) {
+        holder.ivPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPlaying){
+                    Proxy.getSoundRecorder().playRecording(displayedAudios.get(position));
+                    Log.d("VOICE2", "onClick: " + displayedAudios.get(position) + " - " + position);
+                }else{
+                    Proxy.getSoundRecorder().stopRecording(entry);
+                }
 
+            }
+        });
+
+        holder.tvEndTime.setText(Proxy.getSoundRecorder().getLengthOfAudio(displayedAudios.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return test.size();
+        return displayedAudios.size();
     }
 
     /**
