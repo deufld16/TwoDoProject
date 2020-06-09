@@ -69,7 +69,12 @@ public class BluetoothServer
 
                 if (socket != null)
                 {
-                    bm.getSrcActivity().informUser("Connected");
+                    bm.getSrcActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bm.getSrcActivity().informUser("Connected");
+                        }
+                    });
                     //TODO: server-side process with opened connection
                     cancel();
                     break;

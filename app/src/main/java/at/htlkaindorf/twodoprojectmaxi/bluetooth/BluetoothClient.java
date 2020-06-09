@@ -121,9 +121,14 @@ public class BluetoothClient
             bluetoothAdapter.cancelDiscovery();
 
             try {
-                srcActivity.informUser("Connecting to: " + partnerDevice.getName());
+                //srcActivity.informUser("Connecting to: " + partnerDevice.getName());
                 socket.connect();
-                srcActivity.informUser("Connected to: " + partnerDevice.getName());
+                bm.getSrcActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.informUser("Connected to: " + partnerDevice.getName());
+                    }
+                });
                 //TODO: client-side process with opened connection
             } catch (IOException e) {
                 srcActivity.informUser("Unable to connect");
