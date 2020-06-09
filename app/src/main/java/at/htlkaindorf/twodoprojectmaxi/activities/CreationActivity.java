@@ -35,6 +35,7 @@ import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /**
  * This class is used for several purposes:
@@ -72,8 +73,9 @@ public class CreationActivity extends AppCompatActivity{
     private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
     private Entry entry;
+    private SoundRecorder soundRecorder = new SoundRecorder();
     private Context helpContext = this;
-
+    private Activity activity = this;
     /**
      * Method that inflates/creates the GUI
      * @param savedInstanceState
@@ -199,7 +201,11 @@ public class CreationActivity extends AppCompatActivity{
         btRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(soundRecorder.checkAudioPremissionFromDevice()){
 
+                }else{
+                    soundRecorder.requestPermission(activity);
+                }
             }
         });
     }

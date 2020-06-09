@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /***
  * Adapter-class for the voice-recordings recylcer-view

@@ -27,7 +27,6 @@ public class ManipulationActivity extends CreationActivity
     private Entry editEntry;
     private int position;
 
-    private SoundRecorder soundRecorder = new SoundRecorder();
 
     /**
      * Overrides the onCreate method from the CreatinActivity so that the components are filled
@@ -74,11 +73,6 @@ public class ManipulationActivity extends CreationActivity
 
         //recordButtonOnClickListener
 
-        if(soundRecorder.checkPermissionFromDevice()){
-
-        }else{
-            soundRecorder.requestPermission(this);
-        }
     }
 
 }
