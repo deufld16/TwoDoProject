@@ -220,7 +220,7 @@ public class CreationActivity extends AppCompatActivity{
                     intent.putExtra("newEntry", entry);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
-                    overridePendingTransition(R.anim.from_top_partial, 0);
+                    overridePendingTransition(0, R.anim.from_right);
                 }
             }
         });
@@ -233,7 +233,7 @@ public class CreationActivity extends AppCompatActivity{
             public void onClick(View view) {
                 setResult(Activity.RESULT_CANCELED);
                 finish();
-                overridePendingTransition(R.anim.from_top_partial, 0);
+                overridePendingTransition(0, R.anim.from_right);
             }
         });
     }

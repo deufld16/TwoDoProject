@@ -387,7 +387,7 @@ public class ToDoListActivity extends AppCompatActivity {
     {
         Intent creationIntent = new Intent(this, CreationActivity.class);
         startActivityForResult(creationIntent, RC_CREATION_ACTIVITY);
-        overridePendingTransition(R.anim.from_bottom_partial, 0);
+        overridePendingTransition(0, R.anim.from_left);
         //startActivity(creationIntent);
     }
 
