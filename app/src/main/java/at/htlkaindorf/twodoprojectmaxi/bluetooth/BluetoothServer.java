@@ -69,6 +69,7 @@ public class BluetoothServer
 
                 if (socket != null)
                 {
+                    bm.getSrcActivity().informUser("Connected");
                     //TODO: server-side process with opened connection
                     cancel();
                     break;
