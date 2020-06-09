@@ -173,7 +173,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         int indexOfEntry = filteredEntries.indexOf(entry);
         editIntent.putExtra("entryPos", indexOfEntry);
         srcActivity.startActivityForResult(editIntent, RC_MANIPULATION_ACTIVITY);
-        srcActivity.overridePendingTransition(R.anim.from_bottom_partial, 0);
+        srcActivity.overridePendingTransition(0, R.anim.from_left);
     }
 
     public int getRC_MANIPULATION_ACTIVITY() {

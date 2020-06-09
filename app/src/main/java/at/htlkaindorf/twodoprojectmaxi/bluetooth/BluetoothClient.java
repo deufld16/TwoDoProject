@@ -88,7 +88,9 @@ public class BluetoothClient
     public void closeConnection()
     {
         //ct.cancel();
-        ct.interrupt();
+    if(ct != null && ct.isAlive()) {
+            ct.interrupt();
+        }
     }
 
     public List<BluetoothDevice> getDeviceList() {

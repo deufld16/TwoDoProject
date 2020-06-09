@@ -32,7 +32,9 @@ public class BluetoothServer
     public void cancelListening()
     {
         //act.cancel();
-        act.interrupt();
+        if(act != null && act.isAlive()) {
+            act.interrupt();
+        }
     }
 
     /***
