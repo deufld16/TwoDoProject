@@ -1,5 +1,6 @@
 package at.htlkaindorf.twodoprojectmaxi.bl;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,10 +45,23 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
     private Context context;
     private Entry entry;
     private boolean isPlaying = false;
+    private Activity sourceActivity;
+    private UpdateCurrentTimeOfRecording updateThread;
+    private int positionOfPlayingEntry = -1;
+    private ProgressBar pbOfOldEntry = null;
+    private TextView tvOld = null;
 
     public VoiceRecordAdapter(Context context, FragmentManager fm) {
         this.context = context;
         this.fm = fm;
+    }
+
+    public Activity getSourceActivity() {
+        return sourceActivity;
+    }
+
+    public void setSourceActivity(Activity sourceActivity) {
+        this.sourceActivity = sourceActivity;
     }
 
     public Entry getEntry() {
@@ -78,20 +95,76 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull VoiceRecordAdapter.ViewHolder holder, int position) {
+        holder.pbProgress.setMax(Proxy.getSoundRecorder().getLengthOfAudio(displayedAudios.get(position)) * 1000);
+        holder.pbProgress.setMin(0);
+        holder.pbProgress.setProgress(0);
         holder.ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!isPlaying){
-                    Proxy.getSoundRecorder().playRecording(displayedAudios.get(position));
-                    Log.d("VOICE2", "onClick: " + displayedAudios.get(position) + " - " + position);
+                    startPlayingAudio(holder, position);
                 }else{
-                    Proxy.getSoundRecorder().stopRecording(entry);
+                    if(updateThread.isAlive()){
+                        updateThread.interrupt();
+                    }
+
+                    if(positionOfPlayingEntry == position){
+                        if(!Proxy.getSoundRecorder().getMediaPlayer().isPlaying()){
+                            holder.tvCurrentTime.setText(holder.tvEndTime.getText());
+                            holder.pbProgress.setProgress(holder.pbProgress.getMax());
+                        }
+                        Proxy.getSoundRecorder().pauseAudio();
+                        isPlaying = false;
+                    }else{
+                        while(updateThread.isAlive()){
+                            //idle
+                        }
+                        startPlayingAudio(holder, position);
+                    }
                 }
 
             }
         });
+        holder.tvEndTime.setText(Proxy.getSoundRecorder().getLengthOfAudioToString(displayedAudios.get(position)));
+        holder.tvCurrentTime.setText("00:00");
+    }
 
-        holder.tvEndTime.setText(Proxy.getSoundRecorder().getLengthOfAudio(displayedAudios.get(position)));
+    private void startPlayingAudio(VoiceRecordAdapter.ViewHolder holder, int position){
+        Log.d("VOICE2", "onClick: starting Audio Play");
+        if(position == positionOfPlayingEntry){
+            Log.d("VOICE2", "startPlayingAudio: same entry");
+            if(holder.pbProgress.getMax() == holder.pbProgress.getProgress()){
+                holder.pbProgress.setProgress(0);
+                holder.tvCurrentTime.setText("00:00");
+            }
+        }else{
+            Log.d("VOICE2", "startPlayingAudio: diffrent  entry");
+            if(pbOfOldEntry != null && tvOld != null){
+                pbOfOldEntry.setProgress(0);
+                tvOld.setText("00:00");
+            }
+        }
+
+        if(Proxy.getSoundRecorder().isPaused()){
+            if(position == positionOfPlayingEntry){
+                Proxy.getSoundRecorder().playRecording(displayedAudios.get(position));
+            }else{
+                Proxy.getSoundRecorder().stopPlayingAudio();
+                Proxy.getSoundRecorder().playRecording(displayedAudios.get(position));
+            }
+        }else{
+            if(isPlaying){
+                Proxy.getSoundRecorder().stopPlayingAudio();
+            }
+            Proxy.getSoundRecorder().playRecording(displayedAudios.get(position));
+        }
+
+        updateThread = new UpdateCurrentTimeOfRecording(holder.tvCurrentTime,  holder.tvEndTime, holder.pbProgress);
+        updateThread.start();
+        isPlaying = true;
+        positionOfPlayingEntry = position;
+        pbOfOldEntry = holder.pbProgress;
+        tvOld = holder.tvCurrentTime;
     }
 
     @Override
@@ -117,5 +190,106 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
             pbProgress = itemView.findViewById(R.id.pbRecordingProgress);
             tvEndTime = itemView.findViewById(R.id.tvEndTime);
         }
+    }
+
+    /**
+     * Class/Thread that is resposible for updating the progressbar according to the played seconds of the audio
+     *
+     *  @author Florian Deutschmann
+     */
+    private class UpdateCurrentTimeOfRecording extends Thread{
+
+        private TextView tvCurrentTime;
+        private TextView tvEndTime;
+        private ProgressBar pbProgress;
+        private LocalDateTime helpDate;
+        private LocalDateTime progressBarDate;
+        private int currentSeconds = 0;
+        private int minutes = 0;
+
+        public UpdateCurrentTimeOfRecording(TextView tvCurrentTime, TextView tvEndTime, ProgressBar pbProgress){
+            this.tvCurrentTime = tvCurrentTime;
+            this.tvEndTime = tvEndTime;
+            this.pbProgress = pbProgress;
+
+            if(!tvCurrentTime.getText().equals("00:00")){
+                minutes = Integer.parseInt(tvCurrentTime.getText().toString().split(":")[0]);
+                currentSeconds = Integer.parseInt(tvCurrentTime.getText().toString().split(":")[1]);
+            }
+        }
+
+
+
+        @Override
+        public void run() {
+            helpDate = LocalDateTime.now();
+            progressBarDate = LocalDateTime.now();
+
+            while(!Thread.interrupted()){
+
+                if(!Proxy.getSoundRecorder().getMediaPlayer().isPlaying()){
+                    sourceActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pbProgress.setProgress(pbProgress.getMax());
+                            tvCurrentTime.setText(tvEndTime.getText());
+                            interrupt();
+                        }
+                    });
+                }else{
+                    if(progressBarDate.plusNanos(200000000).isEqual(LocalDateTime.now())){
+                        progressBarDate = LocalDateTime.now();
+                        sourceActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(Proxy.getSoundRecorder().getMediaPlayer().isPlaying()){
+                                    pbProgress.setProgress(pbProgress.getProgress() + 200);
+                                }else{
+                                    pbProgress.setProgress(pbProgress.getMax());
+                                }
+                            }
+                        });
+                    }else if(progressBarDate.plusNanos(200000000).isBefore(LocalDateTime.now())){
+                        progressBarDate = LocalDateTime.now();
+                        sourceActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!tvEndTime.getText().equals(tvCurrentTime.getText())){
+                                    pbProgress.setProgress(pbProgress.getProgress() + 200);
+                                }else{
+                                    pbProgress.setProgress(pbProgress.getMax());
+                                }
+                            }
+                        });
+                    }
+
+                    if(helpDate.plusSeconds(1).isEqual(LocalDateTime.now())){
+                        helpDate = LocalDateTime.now();
+                        currentSeconds ++;
+                        if(currentSeconds == 60){
+                            currentSeconds = 0;
+                            minutes ++;
+                        }
+                        sourceActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!tvEndTime.getText().equals(tvCurrentTime.getText())){
+                                    tvCurrentTime.setText(String.format("%02d:%02d", minutes, currentSeconds));
+                                }
+                            }
+                        });
+                        if(tvEndTime.getText().equals(tvCurrentTime.getText())){
+                            this.interrupt();
+                            isPlaying = false;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    public List<String> getDisplayedAudios() {
+        return displayedAudios;
     }
 }

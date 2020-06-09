@@ -102,6 +102,7 @@ public class CreationActivity extends AppCompatActivity{
             Proxy.setVra(new VoiceRecordAdapter(this, getSupportFragmentManager()));
         }
         Proxy.getVra().setEntry(entry);
+        Proxy.getVra().setSourceActivity(this);
         //fetching the components and disabling the ReminderInterval until a date is selected
         tvHeader = findViewById(R.id.tv_creation_manipulation_title);
         etTitle = findViewById(R.id.etEntryTitle);
@@ -219,9 +220,13 @@ public class CreationActivity extends AppCompatActivity{
                         btRecordAudio.setText("RECORD AUDIO");
 
                     }else{
-                        btRecordAudio.setText("Stop Recording Audio");
-                        isRecording = true;
-                        Proxy.getSoundRecorder().recordAudio(entry);
+                        if(Proxy.getVra().getDisplayedAudios().size() < 4){
+                            btRecordAudio.setText("Stop Recording Audio");
+                            isRecording = true;
+                            Proxy.getSoundRecorder().recordAudio(entry);
+                        }else{
+                            Toast.makeText(helpContext, "The maximum number of recordings has been reached", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }else{
                     Proxy.getSoundRecorder().requestPermission(activity);

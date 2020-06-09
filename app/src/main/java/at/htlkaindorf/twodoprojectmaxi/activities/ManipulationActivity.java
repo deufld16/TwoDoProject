@@ -47,6 +47,7 @@ public class ManipulationActivity extends CreationActivity
         super.onCreate(savedInstanceState);
         editEntry = (Entry) intent.getSerializableExtra("oldEntry");
         Proxy.getVra().setEntry(editEntry);
+        Proxy.getVra().setSourceActivity(this);
         position = intent.getIntExtra("entryPos", 0);
         intent.putExtra("position", position);
 

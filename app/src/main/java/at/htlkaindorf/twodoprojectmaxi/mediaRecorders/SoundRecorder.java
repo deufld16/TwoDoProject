@@ -24,6 +24,7 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 public class SoundRecorder {
     private MediaRecorder mediaRecorder = new MediaRecorder();
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private boolean isPaused = false;
 
     public static final int REQUEST_PERMISSION_CODE = 1000;
 
@@ -65,7 +66,16 @@ public class SoundRecorder {
     }
 
     public void stopRecordAudio(){
+        try{
+            Thread.sleep(300);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         mediaRecorder.stop();
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     public int getLengthOfAudio(String path){
@@ -73,27 +83,59 @@ public class SoundRecorder {
         mmr.setDataSource(path);
 
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int lengthInSeconds = Integer.parseInt(durationStr) % 1000 >= 500 ? Integer.parseInt(durationStr)/1000 + 1 : Integer.parseInt(durationStr) /1000;
+        return  lengthInSeconds;
+    }
 
-        return Integer.parseInt(durationStr);
+    public String getLengthOfAudioToString(String path){
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(path);
+
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int lengthInSeconds = Integer.parseInt(durationStr) % 1000 >= 500 ? Integer.parseInt(durationStr)/1000 + 1 : Integer.parseInt(durationStr) /1000;
+
+        String displayString = "";
+        int minutes = lengthInSeconds / 60;
+        if(minutes > 99){
+            return "99:59";
+        }
+
+        lengthInSeconds = lengthInSeconds % 60;
+
+        return String.format("%02d:%02d", minutes, lengthInSeconds);
     }
 
     public void playRecording(String pathToRecording){
-        mediaPlayer = new MediaPlayer();
+        if(!isPaused){
+            mediaPlayer = new MediaPlayer();
+        }
 
         try{
-            mediaPlayer.setDataSource(pathToRecording);
-            mediaPlayer.prepare();
+            if(!isPaused){
+                mediaPlayer.setDataSource(pathToRecording);
+                mediaPlayer.prepare();
+            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
+        isPaused = false;
         mediaPlayer.start();
     }
 
-    public void stopRecording(Entry entry){
+    public void pauseAudio(){
+        if(mediaPlayer != null){
+            mediaPlayer.pause();
+            isPaused = true;
+        }
+    }
+
+
+    public void stopPlayingAudio(){
         if(mediaPlayer != null){
             mediaPlayer.stop();
             mediaPlayer.release();
-            setupMediaRecorder(entry);
+            //setupMediaRecorder(entry);
+            isPaused = false;
         }
     }
 
@@ -115,5 +157,13 @@ public class SoundRecorder {
         }
 
         return uniqueNumber;
+    }
+
+    public MediaRecorder getMediaRecorder() {
+        return mediaRecorder;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 }
