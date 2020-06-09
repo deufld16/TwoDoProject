@@ -49,7 +49,12 @@ public class BluetoothServer
             try{
                 bss = bm.getBluetoothAdapter().listenUsingRfcommWithServiceRecord(NAME, THE_UUID);
             } catch (IOException e) {
-                bm.getSrcActivity().informUser("Error while establishing connection");
+                bm.getSrcActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bm.getSrcActivity().informUser("Error while establishing connection");
+                    }
+                });
                 bm.getSrcActivity().processFailed();
             }
         }
@@ -58,7 +63,12 @@ public class BluetoothServer
         public void run()
         {
             BluetoothSocket socket = null;
-            bm.getSrcActivity().informUser("Device waits for connection attempt");
+            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    bm.getSrcActivity().informUser("Device waits for connection attempt");
+                }
+            });
             while (!Thread.interrupted())
             {
                 try {
@@ -90,7 +100,12 @@ public class BluetoothServer
             try {
                 bss.close();
             } catch (IOException e) {
-                bm.getSrcActivity().informUser("Error with Bluetooth connection");
+                bm.getSrcActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bm.getSrcActivity().informUser("Error with Bluetooth connection");
+                    }
+                });
             }
         }
     }
