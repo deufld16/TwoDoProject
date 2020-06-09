@@ -28,7 +28,12 @@ public class BluetoothTransfer extends Thread
             oos.flush();
             ois = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            srcActivity.informUser("Error while transferring data");
+            srcActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    srcActivity.informUser("Error while transferring data");
+                }
+            });
         }
     }
 
@@ -72,7 +77,12 @@ public class BluetoothTransfer extends Thread
             ois.close();
             oos.close();
         } catch (IOException e) {
-            srcActivity.informUser("Error while transfer process");
+            srcActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    srcActivity.informUser("Error while transfer process");
+                }
+            });
         }
     }
 }

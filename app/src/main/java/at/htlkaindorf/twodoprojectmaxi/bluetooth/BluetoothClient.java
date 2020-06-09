@@ -87,8 +87,10 @@ public class BluetoothClient
      */
     public void closeConnection()
     {
-        ct.cancel();
-        ct.interrupt();
+        //ct.cancel();
+    if(ct != null && ct.isAlive()) {
+            ct.interrupt();
+        }
     }
 
     public List<BluetoothDevice> getDeviceList() {
@@ -112,7 +114,12 @@ public class BluetoothClient
             try {
                 socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
             } catch (IOException e) {
-                srcActivity.informUser("Error while trying to connect");
+                srcActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.informUser("Error while trying to connect");
+                    }
+                });
             }
         }
 
@@ -121,7 +128,12 @@ public class BluetoothClient
             bluetoothAdapter.cancelDiscovery();
 
             try {
-                //srcActivity.informUser("Connecting to: " + partnerDevice.getName());
+                srcActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.informUser("Connecting to: " + partnerDevice.getName());
+                    }
+                });
                 socket.connect();
                 bm.getSrcActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -130,8 +142,14 @@ public class BluetoothClient
                     }
                 });
                 //TODO: client-side process with opened connection
+                cancel();
             } catch (IOException e) {
-                srcActivity.informUser("Unable to connect");
+                bm.getSrcActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.informUser("Unable to connect");
+                    }
+                });
                 cancel();
             }
         }
@@ -144,7 +162,12 @@ public class BluetoothClient
             try {
                 socket.close();
             } catch (IOException e) {
-                srcActivity.informUser("Error with Bluetooth connection");
+                bm.getSrcActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.informUser("Error with Bluetooth connection");
+                    }
+                });
             }
         }
     }
