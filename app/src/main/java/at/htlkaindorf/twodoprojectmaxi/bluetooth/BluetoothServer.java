@@ -45,6 +45,8 @@ public class BluetoothServer
     {
         private BluetoothServerSocket bss = null;
         private final String NAME = "TWO_DO";
+        private BluetoothSocket socket;
+        private BluetoothTransfer bt;
 
         public AcceptConnectionThread()
         {
@@ -64,7 +66,7 @@ public class BluetoothServer
         @Override
         public void run()
         {
-            BluetoothSocket socket = null;
+            socket = null;
             bm.getSrcActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -87,11 +89,20 @@ public class BluetoothServer
                             bm.getSrcActivity().informUser("Connected");
                         }
                     });
-                    //TODO: server-side process with opened connection
+                    receiveData();
                     cancel();
                     break;
                 }
             }
+        }
+
+        /***
+         * Method to handle a successful connection and start wait for the data
+         */
+        private void receiveData()
+        {
+            bt = new BluetoothTransfer(socket, bm.getSrcActivity(), true);
+            bt.start();
         }
 
         /***

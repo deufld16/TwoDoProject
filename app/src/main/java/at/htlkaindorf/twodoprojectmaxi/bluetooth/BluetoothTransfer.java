@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.SocketTimeoutException;
+import java.util.LinkedList;
 import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
@@ -70,6 +71,7 @@ public class BluetoothTransfer extends Thread
                     });
                 }
             }
+            terminate();
         }
         else
         {
@@ -83,6 +85,7 @@ public class BluetoothTransfer extends Thread
                     }
                 });
             }
+            terminate();
         }
     }
 
@@ -91,6 +94,15 @@ public class BluetoothTransfer extends Thread
      */
     private void read() throws IOException, ClassNotFoundException {
         Object o = ois.readObject();
+        List<Object> uncategorizedItems = new LinkedList<>();
+        if (o instanceof List)
+        {
+            uncategorizedItems = (List<Object>) o;
+            if(uncategorizedItems.get(0) instanceof File)
+            {
+                IO_Methods.convertFilesToAudios(new LinkedList(uncategorizedItems));
+            }
+        }
     }
 
     /***

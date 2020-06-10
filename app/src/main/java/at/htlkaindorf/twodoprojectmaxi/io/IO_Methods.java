@@ -1,5 +1,7 @@
 package at.htlkaindorf.twodoprojectmaxi.io;
 
+import android.util.Log;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,7 +34,13 @@ public class IO_Methods {
         for (File file:
              allAudioFiles) {
             try{
-                file.createNewFile();
+                if(file.createNewFile()) {
+                    Log.d("TRANSFER_DATA", "successfully created");
+                }
+                else
+                {
+                    Log.d("TRANSFER_DATA", "unsuccessfully created");
+                }
             }catch (Exception ex){
                 ex.printStackTrace();
             }
