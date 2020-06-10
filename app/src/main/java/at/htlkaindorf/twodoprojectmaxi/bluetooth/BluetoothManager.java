@@ -65,7 +65,11 @@ public class BluetoothManager
             {
                 BluetoothDevice bDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 List<BluetoothDevice> deviceList = client.getDeviceList();
-                if(!deviceList.contains(bDevice)) {
+                if(bDevice != null
+                        && deviceList != null
+                        && bDevice.getName() != null
+                        && !bDevice.getName().equals("")
+                        && !deviceList.contains(bDevice)) {
                     deviceList.add(bDevice);
                 }
                 client.setDeviceList(deviceList);
