@@ -40,6 +40,7 @@ public class BluetoothTransfer extends Thread
                     srcActivity.informUser("Error while transferring data");
                 }
             });
+            e.printStackTrace();
         }
     }
 
@@ -62,6 +63,7 @@ public class BluetoothTransfer extends Thread
                             srcActivity.informUser("Error while transferring data");
                         }
                     });
+                    e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     srcActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -69,6 +71,7 @@ public class BluetoothTransfer extends Thread
                             srcActivity.informUser("Error while transferring data");
                         }
                     });
+                    e.printStackTrace();
                 }
             }
             terminate();
@@ -84,6 +87,7 @@ public class BluetoothTransfer extends Thread
                         srcActivity.informUser("Error while transferring data");
                     }
                 });
+                e.printStackTrace();
             }
             terminate();
         }
@@ -130,6 +134,7 @@ public class BluetoothTransfer extends Thread
                     srcActivity.informUser("Error while transfer process");
                 }
             });
+            e.printStackTrace();
         }
     }
 }
