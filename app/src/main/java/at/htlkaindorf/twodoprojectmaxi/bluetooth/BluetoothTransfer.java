@@ -2,12 +2,17 @@ package at.htlkaindorf.twodoprojectmaxi.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.SocketTimeoutException;
+import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
 
 public class BluetoothTransfer extends Thread
 {
@@ -43,29 +48,59 @@ public class BluetoothTransfer extends Thread
         {
             while(!Thread.interrupted())
             {
-                read();
+                try {
+                    read();
+                }
+                catch (SocketTimeoutException ex)
+                {
+
+                } catch (IOException e) {
+                    srcActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            srcActivity.informUser("Error while transferring data");
+                        }
+                    });
+                } catch (ClassNotFoundException e) {
+                    srcActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            srcActivity.informUser("Error while transferring data");
+                        }
+                    });
+                }
             }
         }
         else
         {
-            write();
+            try {
+                write();
+            } catch (IOException e) {
+                srcActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.informUser("Error while transferring data");
+                    }
+                });
+            }
         }
     }
 
     /***
      * Method to read the data sent via Bluetooth
      */
-    private void read()
-    {
-
+    private void read() throws IOException, ClassNotFoundException {
+        Object o = ois.readObject();
     }
 
     /***
      * Method to send the data via Bluetooth
      */
-    private void write()
-    {
-
+    private void write() throws IOException {
+        List<File> files = IO_Methods.convertAudiosToFiles();
+        oos.writeObject(files);
+        oos.writeObject(Proxy.getToDoAdapter().getEntries());
+        oos.writeObject(Proxy.getClm().getAllCategories());
     }
 
     /***

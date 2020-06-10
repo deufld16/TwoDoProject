@@ -108,6 +108,7 @@ public class BluetoothClient
      */
     private class ConnectThread extends Thread {
         private BluetoothSocket socket = null;
+        private BluetoothTransfer bt;
 
         public ConnectThread()
         {
@@ -141,7 +142,7 @@ public class BluetoothClient
                         srcActivity.informUser("Connected to: " + partnerDevice.getName());
                     }
                 });
-                //TODO: client-side process with opened connection
+                sendData();
                 cancel();
             } catch (IOException e) {
                 cancel();
@@ -153,6 +154,15 @@ public class BluetoothClient
                     }
                 });
             }
+        }
+
+        /***
+         * Method to process a succesfull connection and send the data
+         */
+        private void sendData()
+        {
+            bt = new BluetoothTransfer(socket, srcActivity, false);
+            bt.start();
         }
 
         /***
