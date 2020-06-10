@@ -66,6 +66,7 @@ public class CreationActivity extends AppCompatActivity{
 
     private Button btFurtherItems;
     private Button btRecordAudio;
+    private Button btTakePhoto;
     private RecyclerView rvRecordings;
 
     protected ArrayAdapter<Category> categoryAdapter;
@@ -177,8 +178,19 @@ public class CreationActivity extends AppCompatActivity{
         rvRecordings.setAdapter(Proxy.getVra());
         rvRecordings.setLayoutManager(new LinearLayoutManager(this));
 
+        btTakePhoto = findViewById(R.id.btTakePhoto);
+        addTakePhotoHandler();
+
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
         addFurtherItemsListener();
+    }
+
+    /***
+     * Handler method for initiating a camera capture
+     */
+    private void addTakePhotoHandler()
+    {
+
     }
 
     /***
@@ -192,12 +204,14 @@ public class CreationActivity extends AppCompatActivity{
                 if(text.equalsIgnoreCase("Further Information")) {
                     btRecordAudio.setVisibility(View.VISIBLE);
                     rvRecordings.setVisibility(View.VISIBLE);
+                    btTakePhoto.setVisibility(View.VISIBLE);
                     btFurtherItems.setText("Less Information");
                     Proxy.getVra().renew();
                 }
                 else if(text.equalsIgnoreCase("Less Information")) {
                     btRecordAudio.setVisibility(View.GONE);
                     rvRecordings.setVisibility(View.GONE);
+                    btTakePhoto.setVisibility(View.GONE);
                     btFurtherItems.setText("Further Information");
                 }
             }
