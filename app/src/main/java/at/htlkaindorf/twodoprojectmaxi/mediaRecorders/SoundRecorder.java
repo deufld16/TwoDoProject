@@ -83,7 +83,7 @@ public class SoundRecorder {
         mmr.setDataSource(path);
 
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        int lengthInSeconds = Integer.parseInt(durationStr) % 1000 >= 500 ? Integer.parseInt(durationStr)/1000 + 1 : Integer.parseInt(durationStr) /1000;
+        int lengthInSeconds = Integer.parseInt(durationStr);
         return  lengthInSeconds;
     }
 

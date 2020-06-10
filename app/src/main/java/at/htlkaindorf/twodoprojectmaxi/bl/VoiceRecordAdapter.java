@@ -50,6 +50,7 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
     private int positionOfPlayingEntry = -1;
     private ProgressBar pbOfOldEntry = null;
     private TextView tvOld = null;
+    private ImageView ivOld = null;
 
     public VoiceRecordAdapter(Context context, FragmentManager fm) {
         this.context = context;
@@ -95,7 +96,7 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull VoiceRecordAdapter.ViewHolder holder, int position) {
-        holder.pbProgress.setMax(Proxy.getSoundRecorder().getLengthOfAudio(displayedAudios.get(position)) * 1000);
+        holder.pbProgress.setMax(Proxy.getSoundRecorder().getLengthOfAudio(displayedAudios.get(position)));
         holder.pbProgress.setMin(0);
         holder.pbProgress.setProgress(0);
         holder.ivPlay.setOnClickListener(new View.OnClickListener() {
@@ -103,11 +104,12 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
             public void onClick(View view) {
                 if(!isPlaying){
                     startPlayingAudio(holder, position);
+                    holder.ivPlay.setImageResource(R.drawable.ic_pause_black_24dp);
                 }else{
                     if(updateThread.isAlive()){
                         updateThread.interrupt();
                     }
-
+                    holder.ivPlay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
                     if(positionOfPlayingEntry == position){
                         if(!Proxy.getSoundRecorder().getMediaPlayer().isPlaying()){
                             holder.tvCurrentTime.setText(holder.tvEndTime.getText());
@@ -142,6 +144,7 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
             if(pbOfOldEntry != null && tvOld != null){
                 pbOfOldEntry.setProgress(0);
                 tvOld.setText("00:00");
+                ivOld.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             }
         }
 
