@@ -11,6 +11,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+import at.htlkaindorf.twodoprojectmaxi.bl.VoiceRecordAdapter;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
@@ -39,8 +41,13 @@ public class ManipulationActivity extends CreationActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Proxy.getVra() == null){
+            Proxy.setVra(new VoiceRecordAdapter(this, getSupportFragmentManager()));
+        }
         super.onCreate(savedInstanceState);
         editEntry = (Entry) intent.getSerializableExtra("oldEntry");
+        Proxy.getVra().setEntry(editEntry);
+        Proxy.getVra().setSourceActivity(this);
         position = intent.getIntExtra("entryPos", 0);
         intent.putExtra("position", position);
 
@@ -70,6 +77,7 @@ public class ManipulationActivity extends CreationActivity
         spReminder.setAdapter(reminderAdapter);
         spReminder.setEnabled(true);
         spReminder.setSelection(reminderAdapter.getPosition((reminder.getReminder_identifierString())));
+
 
         //recordButtonOnClickListener
 

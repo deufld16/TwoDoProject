@@ -16,6 +16,7 @@ import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.CategoriesManagementActivity;
 import at.htlkaindorf.twodoprojectmaxi.activities.ToDoListActivity;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /**
  * Proxy-class for a central access of specific data
@@ -30,6 +31,23 @@ public class Proxy {
     private static AppCompatActivity activeNavActivity;
     private static ToDoAdapter toDoAdapter;
     private static Context context;
+    private static SoundRecorder soundRecorder = new SoundRecorder();
+    private static VoiceRecordAdapter vra;
+    public static SoundRecorder getSoundRecorder() {
+        return soundRecorder;
+    }
+
+    public static void setSoundRecorder(SoundRecorder soundRecorder) {
+        Proxy.soundRecorder = soundRecorder;
+    }
+
+    public static VoiceRecordAdapter getVra() {
+        return vra;
+    }
+
+    public static void setVra(VoiceRecordAdapter vra) {
+        Proxy.vra = vra;
+    }
 
     public static Context getContext(){
         return context;

@@ -3,9 +3,12 @@ package at.htlkaindorf.twodoprojectmaxi.mediaRecorders;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 public class SoundRecorder {
     private MediaRecorder mediaRecorder = new MediaRecorder();
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private boolean isPaused = false;
 
     public static final int REQUEST_PERMISSION_CODE = 1000;
 
@@ -44,9 +48,10 @@ public class SoundRecorder {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        int audio_file_number = getUniqueAudioFileNumber();
-        String savePath = Environment.getExternalStorageState() +"/"+ audio_file_number + "_audio_record_3gp";
+        int audio_file_number = getUniqueAudioFileNumber(entry);
+        String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record_3gp";
         entry.getAllAudioFileLocations().add(savePath);
+        Log.d("VOICE2", "setupMediaRecorder: " + savePath);
         mediaRecorder.setOutputFile(savePath);
     }
 
@@ -61,36 +66,104 @@ public class SoundRecorder {
     }
 
     public void stopRecordAudio(){
+        try{
+            Thread.sleep(300);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         mediaRecorder.stop();
     }
 
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public int getLengthOfAudio(String path){
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(path);
+
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int lengthInSeconds = Integer.parseInt(durationStr) % 1000 >= 500 ? Integer.parseInt(durationStr)/1000 + 1 : Integer.parseInt(durationStr) /1000;
+        return  lengthInSeconds;
+    }
+
+    public String getLengthOfAudioToString(String path){
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(path);
+
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int lengthInSeconds = Integer.parseInt(durationStr) % 1000 >= 500 ? Integer.parseInt(durationStr)/1000 + 1 : Integer.parseInt(durationStr) /1000;
+
+        String displayString = "";
+        int minutes = lengthInSeconds / 60;
+        if(minutes > 99){
+            return "99:59";
+        }
+
+        lengthInSeconds = lengthInSeconds % 60;
+
+        return String.format("%02d:%02d", minutes, lengthInSeconds);
+    }
+
     public void playRecording(String pathToRecording){
-        mediaPlayer = new MediaPlayer();
+        if(!isPaused){
+            mediaPlayer = new MediaPlayer();
+        }
 
         try{
-            mediaPlayer.setDataSource(pathToRecording);
-            mediaPlayer.prepare();
+            if(!isPaused){
+                mediaPlayer.setDataSource(pathToRecording);
+                mediaPlayer.prepare();
+            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
+        isPaused = false;
         mediaPlayer.start();
     }
 
-    public void stopRecording(Entry entry){
+    public void pauseAudio(){
         if(mediaPlayer != null){
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            setupMediaRecorder(entry);
+            mediaPlayer.pause();
+            isPaused = true;
         }
     }
 
-    private int getUniqueAudioFileNumber(){
+
+    public void stopPlayingAudio(){
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            //setupMediaRecorder(entry);
+            isPaused = false;
+        }
+    }
+
+    private int getUniqueAudioFileNumber(Entry currentEntry){
         int uniqueNumber = 0;
+        boolean isNew = true;
         for (Entry entry:
                 Proxy.getToDoAdapter().getEntries()) {
-            uniqueNumber += entry.getAllAudioFileLocations().size();
+            if(entry == currentEntry){
+                isNew = false;
+                uniqueNumber += currentEntry.getAllAudioFileLocations().size();
+            }else{
+                uniqueNumber += entry.getAllAudioFileLocations().size();
+            }
+        }
+
+        if(isNew){
+            uniqueNumber += currentEntry.getAllAudioFileLocations().size();
         }
 
         return uniqueNumber;
+    }
+
+    public MediaRecorder getMediaRecorder() {
+        return mediaRecorder;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 }
