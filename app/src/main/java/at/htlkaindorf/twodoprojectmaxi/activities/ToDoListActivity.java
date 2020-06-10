@@ -376,6 +376,9 @@ public class ToDoListActivity extends AppCompatActivity {
                 startActivity(transferIntent);
                 overridePendingTransition(0, R.anim.from_left);
                 return true;
+            case R.id.mi_change_language:
+
+                return true;
         }
         return false;
     }
