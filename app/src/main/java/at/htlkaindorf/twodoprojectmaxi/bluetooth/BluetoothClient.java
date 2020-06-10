@@ -144,13 +144,14 @@ public class BluetoothClient
                 //TODO: client-side process with opened connection
                 cancel();
             } catch (IOException e) {
+                cancel();
                 bm.getSrcActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         srcActivity.informUser("Unable to connect");
+                        srcActivity.processFailed();
                     }
                 });
-                cancel();
             }
         }
 
