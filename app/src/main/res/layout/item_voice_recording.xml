@@ -9,6 +9,8 @@
         android:id="@+id/ivRecordingBg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/ivRecordingBg"
         app:layout_constraintStart_toStartOf="@+id/ivRecordingBg"
         app:layout_constraintTop_toTopOf="@+id/ivRecordingBg"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
 
     <TextView
         android:id="@+id/tvCurrentTime"
