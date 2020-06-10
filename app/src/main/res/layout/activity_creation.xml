@@ -242,7 +242,8 @@
                 android:id="@+id/rvVoiceRecordings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:visibility="gone">
 
             </androidx.recyclerview.widget.RecyclerView>
@@ -252,10 +253,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/ic_bg_record_audio"
                 android:fontFamily="Open Sans"
                 android:text="Record Audio"
+                android:textColor="#000000"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btTakePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_bg_record_audio"
+                android:fontFamily="Open Sans"
+                android:text="Take Photo"
                 android:textColor="#000000"
                 android:visibility="gone" />
 
