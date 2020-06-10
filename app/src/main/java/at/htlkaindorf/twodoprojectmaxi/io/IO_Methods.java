@@ -28,4 +28,15 @@ public class IO_Methods {
         return allAudioFiles;
     }
 
+    public static void convertFilesToAudios(List<File> allAudioFiles){
+        for (File file:
+             allAudioFiles) {
+            try{
+                file.createNewFile();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
 }
