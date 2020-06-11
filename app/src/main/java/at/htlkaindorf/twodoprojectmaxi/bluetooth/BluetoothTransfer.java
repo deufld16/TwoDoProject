@@ -74,7 +74,7 @@ public class BluetoothTransfer extends Thread
                     e.printStackTrace();
                 }
             }
-            terminate();
+            //terminate();
         }
         else
         {
@@ -89,7 +89,7 @@ public class BluetoothTransfer extends Thread
                 });
                 e.printStackTrace();
             }
-            terminate();
+            //terminate();
         }
     }
 
