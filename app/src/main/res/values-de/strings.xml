@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">T(W)O DO</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Benachrichtigungen</string>
+    <string name="transfer_via_bluetooth">Datenübertragung via Bluetooth</string>
+    <string name="select_language">Sprache ändern</string>
+    <string name="navbar_done">Fertig</string>
+    <string name="navbar_deleted">Gelöscht</string>
+    <string name="navbar_to_do">Zu erledigen</string>
+    <string name="navbar_categories">Kategorien</string>
+    <string name="cat_management_title">Kategorien</string>
+    <string name="cat_managment_creation_dialog_title">Neue Kategorie Hinzufügen</string>
+    <string name="cat_managment_creation_dialog_body">Bitte gib den namen der neuen Kategorie ein</string>
+    <string name="cat_managment_change_name_dialog_title">Kategorienamen ändern</string>
+    <string name="cat_managment_change_name_dialog_body">Bitte gib den neuen Kategorienamen ein</string>
+    <string name="cat_managment_deletion_dialog_title">Kategorie löschen</string>
+    <string name="cat_managment_deletion_dialog_body">Bist du dir Sicher, dass du diese Kategorie löschen möchtest</string>
+    <string name="dialog_accept">Übernehmen</string>
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="dialog_agree">Ja</string>
+    <string name="dialog_disagree">Nein</string>
+    <string name="bluetooth_title">Bluetooth Übertragung</string>
+    <string name="bluetooth_role">Rolle:</string>
+    <string name="bluetooth_information_text">Drücken Sie das Bluetooth-Icon um den\nÜbertragungsprozess zu starten</string>
+    <string name="bluetooth_sender">Sender</string>
+    <string name="bluetooth_receiver">Empfänger</string>
+    <string name="bluetooth_discovered_devices_body_1">Bitte wählen Sie ein gepaartes Gerät aus</string>
+    <string name="bluetooth_discovered_devices_body_2">Bitte warten sie einen Moment und wählen\nsie ein entdecktes Gerät aus</string>
+    <string name="bluetooth_discovered_devices_discover_devices_btn">WEITERE GERÄTE SUCHEN</string>
+    <string name="bluetooth_discovered_devices_title_1">Entdeckte Geräte</string>
+    <string name="bluetooth_discovered_devices_title_2">Gepaarte Geräte</string>
+</resources>

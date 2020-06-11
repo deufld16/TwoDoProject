@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="12dp"
-        android:text="Delete Category"
+        android:text="@string/cat_managment_deletion_dialog_title"
         android:textSize="20sp" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="102dp"
-        android:text="Are you sure that you want to \ndelete this category?"
+        android:text="@string/cat_managment_deletion_dialog_body"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="14sp"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_dlg_btn_cancel"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="No"
+            android:text="@string/dialog_disagree"
             android:textSize="12sp" />
 
         <Button
@@ -50,7 +50,7 @@
             android:layout_marginStart="20dp"
             android:background="@drawable/ic_dlg_btn_ok"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="Ok"
+            android:text="@string/dialog_agree"
             android:textSize="12sp" />
 
     </LinearLayout>

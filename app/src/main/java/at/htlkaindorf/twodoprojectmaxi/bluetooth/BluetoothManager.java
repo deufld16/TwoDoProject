@@ -5,13 +5,16 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 import java.util.UUID;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
 /***
  * Class that handles all relevant steps for the bluetooth communication
@@ -136,13 +139,13 @@ public class BluetoothManager
      */
     public void initDeviceRole()
     {
-        if(role.equals("sender"))
+        if(role.equals(Proxy.getContext().getString(R.string.bluetooth_sender)))
         {
             //device will act as a client
             client = new BluetoothClient(this, bluetoothAdapter, srcActivity, THE_UUID);
             client.queryPairedDevices();
         }
-        else if(role.equals("receiver"))
+        else if(role.equals(Proxy.getContext().getString(R.string.bluetooth_receiver)))
         {
             //device will act as a server
             server = new BluetoothServer(this, THE_UUID);
