@@ -4,21 +4,21 @@
     <item
         android:id="@+id/navigation_categories"
         android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="Categories" />
+        android:title="@string/navbar_categories" />
 
     <item
         android:id="@+id/navigation_deleted"
         android:icon="@android:drawable/ic_menu_delete"
-        android:title="Deleted" />
+        android:title="@string/navbar_deleted" />
 
     <item
         android:id="@+id/navigation_to_do"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="To Do" />
+        android:title="@string/navbar_to_do" />
 
     <item
         android:id="@+id/navigation_done"
         android:icon="@drawable/ic_checkmark"
-        android:title="Done" />
+        android:title="@string/navbar_done" />
 
 </menu>

@@ -6,6 +6,7 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
@@ -50,4 +51,5 @@ public class App extends Application {
             Log.d("NOTIFICATION_TODO", "createNotificationChannels: erstellt");
         }
     }
+
 }

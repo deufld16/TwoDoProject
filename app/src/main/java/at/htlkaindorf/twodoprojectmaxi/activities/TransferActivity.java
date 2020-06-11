@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -43,8 +44,8 @@ public class TransferActivity extends AppCompatActivity {
     private TextView tvCancel;
     private BluetoothDevicesFragment bluetoothDevicesDlg = null;
 
-    private List<String> roles = Arrays.asList("sender", "receiver");
-    private String activeRole = roles.get(0);
+    private List<String> roles;
+    private String activeRole;
     private ArrayAdapter<String> roleAdapter;
 
     private BluetoothManager bm;
@@ -58,6 +59,10 @@ public class TransferActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        roles = new LinkedList<>();
+        roles.add(getString(R.string.bluetooth_sender));
+        roles.add(getString(R.string.bluetooth_receiver));
+        activeRole = roles.get(0);
         setContentView(R.layout.activity_transfer);
 
         spRole = findViewById(R.id.spTransferRole);

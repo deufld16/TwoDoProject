@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bluetooth.BluetoothManager;
 
 /***
@@ -85,14 +86,10 @@ public class BluetoothDevicesFragment extends DialogFragment
         btAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (buttonText.toLowerCase())
-                {
-                    case "discover further devices":
-                        discoverFurther();
-                        break;
-                    case "cancel":
-                        selectionDone(null);
-                        break;
+                if(buttonText.equalsIgnoreCase(Proxy.getContext().getString(R.string.bluetooth_discovered_devices_discover_devices_btn))){
+                    discoverFurther();
+                }else if(buttonText.equalsIgnoreCase(Proxy.getContext().getString(R.string.dialog_cancel))){
+                    selectionDone(null);
                 }
             }
         });

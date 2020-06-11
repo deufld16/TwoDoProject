@@ -1,7 +1,13 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -35,6 +44,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
@@ -64,8 +74,12 @@ public class ToDoListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager lm;
     private CategoryListModel clm = new CategoryListModel();
     private BottomNavigationView vNavBottom;
+    private static final String [] SUPPORTED_LANGUAGES = {"German", "English"};
+    private static final String [] SUPPORTED_LANGUAGES_PREFIX = {"de", "en"};
+    private String currentLanguage = "de";
 
     private final int RC_CREATION_ACTIVITY = 2;
+    private final int RC_TO_DO_LIST_ACITIVTY = 0;
 
     /**
      * This is used to enable swiping for setting the status of an entry to done/deleted.
@@ -224,7 +238,10 @@ public class ToDoListActivity extends AppCompatActivity {
                     break;
             }
         }
-
+        String currentLanguage = (String) theIntent.getStringExtra("currentLang");
+        if(currentLanguage != null){
+            this.currentLanguage = currentLanguage;
+        }
         Proxy.setvNavBottom(vNavBottom);
         Proxy.setToDoAdapter(toDoAdapter);
         Proxy.addNavigationBarListener();
@@ -344,6 +361,13 @@ public class ToDoListActivity extends AppCompatActivity {
 
         ItemTouchHelper ith = new ItemTouchHelper(ithSimpleCallback);
         ith.attachToRecyclerView(rvToDo);
+
+        //loadLocale();
+        TextView test = findViewById(R.id.tvMainListTitle);
+        test.setText(R.string.app_name);
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.setTitle(getResources().getString(R.string.app_name));
+
     }
 
     /**
@@ -377,7 +401,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 overridePendingTransition(0, R.anim.from_left);
                 return true;
             case R.id.mi_change_language:
-
+                showChangeLanguageDialog();
                 return true;
         }
         return false;
@@ -428,6 +452,59 @@ public class ToDoListActivity extends AppCompatActivity {
                 toDoAdapter.setEntries(currentEntries);
             }
         }
+
         toDoAdapter.notifyDataSetChanged();
     }
+
+
+    private void showChangeLanguageDialog(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ToDoListActivity.this);
+        mBuilder.setTitle("Choose Language");
+        int checkedItem = -1;
+        for (int i = 0; i < SUPPORTED_LANGUAGES_PREFIX.length; i++) {
+            if(currentLanguage.equals(SUPPORTED_LANGUAGES_PREFIX[i])){
+                checkedItem = i;
+            }
+        }
+        mBuilder.setSingleChoiceItems(SUPPORTED_LANGUAGES, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        //German
+                        setLocale("de");
+                        break;
+                    case 1:
+                        //English
+                        setLocale("en");
+                        break;
+                    case 2:
+                        //Spanish
+                        setLocale("es");
+                        break;
+                }
+                dialog.dismiss();
+            }
+        });
+        mBuilder.show();
+    }
+
+    private void setLocale(String languageIdentifier){
+        if(!currentLanguage.equals(languageIdentifier)){
+            Locale locale = new Locale(languageIdentifier);
+            Locale.setDefault(locale);
+            Resources res = getResources();
+            Configuration config = res.getConfiguration();
+            config.locale = locale;
+            res.updateConfiguration(config, res.getDisplayMetrics());
+            finish();
+            Intent intent = getIntent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            intent.putExtra("currentLang", languageIdentifier);
+            finish();
+            startActivity(getIntent());
+        }
+    }
+
+
 }

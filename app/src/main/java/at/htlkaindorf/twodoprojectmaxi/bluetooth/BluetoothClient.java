@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 
 public class BluetoothClient
@@ -37,9 +38,9 @@ public class BluetoothClient
     {
         deviceList = bluetoothAdapter.getBondedDevices().stream().collect(Collectors.toList());
         srcActivity.displayDevices(bm, deviceList,
-                "Paired Devices",
-                "Please choose a paired device",
-                "Discover Further Devices");
+                bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_title_2),
+                bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_body_1),
+                bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_discover_devices_btn));
         srcActivity.informUser("Querying paired devices");
     }
 
@@ -53,9 +54,9 @@ public class BluetoothClient
             bluetoothAdapter.startDiscovery();
             srcActivity.informUser("Bluetooth discovery has started");
             srcActivity.displayDevices(bm, deviceList,
-                    "Discovered Devices",
-                    "Please wait and choose a discovered device",
-                    "Cancel");
+                    bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_title_1),
+                    bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_body_2),
+                    bm.getSrcActivity().getString(R.string.dialog_cancel));
         }
     }
 

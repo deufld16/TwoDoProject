@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mi_transfer"
-        android:title="Transfer via Bluetooth" />
+        android:title="@string/transfer_via_bluetooth" />
     <item
         android:id="@+id/mi_change_language"
-        android:title="Change Language" />
+        android:title="@string/select_language" />
 </menu>
