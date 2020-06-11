@@ -168,6 +168,7 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
         positionOfPlayingEntry = position;
         pbOfOldEntry = holder.pbProgress;
         tvOld = holder.tvCurrentTime;
+        ivOld = holder.ivPlay;
     }
 
     @Override
