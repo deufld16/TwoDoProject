@@ -1,6 +1,7 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
@@ -11,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,12 +36,14 @@ import java.util.List;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.bl.PhotographAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.VoiceRecordAdapter;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.ImageRecorder;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /**
@@ -68,6 +72,8 @@ public class CreationActivity extends AppCompatActivity{
     private Button btRecordAudio;
     private Button btTakePhoto;
     private RecyclerView rvRecordings;
+    private RecyclerView rvPhotos;
+    private PhotographAdapter photoAdpt;
 
     protected ArrayAdapter<Category> categoryAdapter;
     protected ArrayAdapter<String> priorityAdapter;
@@ -181,8 +187,32 @@ public class CreationActivity extends AppCompatActivity{
         btTakePhoto = findViewById(R.id.btTakePhoto);
         addTakePhotoHandler();
 
+        rvPhotos = findViewById(R.id.rvPhotos);
+        photoAdpt = new PhotographAdapter();
+        rvPhotos.setAdapter(photoAdpt);
+        rvPhotos.setLayoutManager(new LinearLayoutManager(this));
+
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
         addFurtherItemsListener();
+    }
+
+    /***
+     * Method to handle results from called intents
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == ImageRecorder.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+        {
+            Bundle extras = data.getExtras();
+            Bitmap imgBitmap = (Bitmap) extras.get("data");
+            photoAdpt.addThumbnail(imgBitmap);
+        }
     }
 
     /***
@@ -190,7 +220,7 @@ public class CreationActivity extends AppCompatActivity{
      */
     private void addTakePhotoHandler()
     {
-
+        ImageRecorder.takePhoto(this);
     }
 
     /***

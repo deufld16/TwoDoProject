@@ -158,7 +158,7 @@ public class BluetoothClient
         }
 
         /***
-         * Method to process a succesfull connection and send the data
+         * Method to process a successful connection and send the data
          */
         private void sendData()
         {
