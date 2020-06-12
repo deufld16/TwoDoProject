@@ -162,12 +162,13 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
             Proxy.getSoundRecorder().playRecording(displayedAudios.get(position));
         }
 
-        updateThread = new UpdateCurrentTimeOfRecording(holder.tvCurrentTime,  holder.tvEndTime, holder.pbProgress);
+        updateThread = new UpdateCurrentTimeOfRecording(holder.tvCurrentTime,  holder.tvEndTime, holder.pbProgress, holder.ivPlay);
         updateThread.start();
         isPlaying = true;
         positionOfPlayingEntry = position;
         pbOfOldEntry = holder.pbProgress;
         tvOld = holder.tvCurrentTime;
+        ivOld = holder.ivPlay;
     }
 
     @Override
@@ -204,16 +205,18 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
 
         private TextView tvCurrentTime;
         private TextView tvEndTime;
+        private ImageView ivPlayStopButton;
         private ProgressBar pbProgress;
         private LocalDateTime helpDate;
         private LocalDateTime progressBarDate;
         private int currentSeconds = 0;
         private int minutes = 0;
 
-        public UpdateCurrentTimeOfRecording(TextView tvCurrentTime, TextView tvEndTime, ProgressBar pbProgress){
+        public UpdateCurrentTimeOfRecording(TextView tvCurrentTime, TextView tvEndTime, ProgressBar pbProgress, ImageView ivPlayStopButton){
             this.tvCurrentTime = tvCurrentTime;
             this.tvEndTime = tvEndTime;
             this.pbProgress = pbProgress;
+            this.ivPlayStopButton = ivPlayStopButton;
 
             if(!tvCurrentTime.getText().equals("00:00")){
                 minutes = Integer.parseInt(tvCurrentTime.getText().toString().split(":")[0]);
@@ -236,6 +239,8 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
                         public void run() {
                             pbProgress.setProgress(pbProgress.getMax());
                             tvCurrentTime.setText(tvEndTime.getText());
+                            isPlaying = false;
+                            ivPlayStopButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
                             interrupt();
                         }
                     });
