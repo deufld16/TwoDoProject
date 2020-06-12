@@ -13,7 +13,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +31,12 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -74,6 +85,9 @@ public class CreationActivity extends AppCompatActivity{
     private RecyclerView rvRecordings;
     private RecyclerView rvPhotos;
     private PhotographAdapter photoAdpt;
+    public TextView tvPhotoCount;
+
+    private Uri imgUri;
 
     protected ArrayAdapter<Category> categoryAdapter;
     protected ArrayAdapter<String> priorityAdapter;
@@ -188,9 +202,11 @@ public class CreationActivity extends AppCompatActivity{
         addTakePhotoHandler();
 
         rvPhotos = findViewById(R.id.rvPhotos);
-        photoAdpt = new PhotographAdapter();
+        photoAdpt = new PhotographAdapter(this);
         rvPhotos.setAdapter(photoAdpt);
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
+
+        tvPhotoCount = findViewById(R.id.tvPhotoCount);
 
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
         addFurtherItemsListener();
@@ -209,9 +225,34 @@ public class CreationActivity extends AppCompatActivity{
 
         if(requestCode == ImageRecorder.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
         {
-            Bundle extras = data.getExtras();
-            Bitmap imgBitmap = (Bitmap) extras.get("data");
-            photoAdpt.addThumbnail(imgBitmap);
+            //Bundle extras = data.getExtras();
+            //Bitmap imgBitmap = (Bitmap) extras.get("data");
+            //photoAdpt.addThumbnail(
+                    //Bitmap.createScaledBitmap(imgBitmap, 600, 600, false));
+            Bitmap bitmap = null;
+            try {
+                if (Build.VERSION.SDK_INT < 28) {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imgUri);
+                } else {
+                    ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), imgUri);
+                    bitmap = ImageDecoder.decodeBitmap(source);
+                }
+                Log.d("PHOTO_STORAGE", bitmap.getWidth() + " - " + bitmap.getHeight());
+
+                double bmWidth = bitmap.getWidth();
+                double bmHeight = bitmap.getHeight();
+                double targetWidth = 600.;
+                bitmap = Bitmap.createScaledBitmap(bitmap,
+                        (int)targetWidth,
+                        (int)(bmHeight / bmWidth * targetWidth),
+                        false);
+
+                photoAdpt.addPhoto(imgUri, bitmap);
+                //ImageRecorder.addPhotoToGallery(helpContext, imgUri);
+                Log.d("PHOTO_STORAGE", imgUri.toString()+" created");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -220,7 +261,12 @@ public class CreationActivity extends AppCompatActivity{
      */
     private void addTakePhotoHandler()
     {
-        ImageRecorder.takePhoto(this);
+        btTakePhoto.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                imgUri = ImageRecorder.takePhoto(activity);
+            }
+        });
     }
 
     /***
@@ -235,6 +281,8 @@ public class CreationActivity extends AppCompatActivity{
                     btRecordAudio.setVisibility(View.VISIBLE);
                     rvRecordings.setVisibility(View.VISIBLE);
                     btTakePhoto.setVisibility(View.VISIBLE);
+                    rvPhotos.setVisibility(View.VISIBLE);
+                    tvPhotoCount.setVisibility(View.VISIBLE);
                     btFurtherItems.setText("Less Information");
                     Proxy.getVra().renew();
                 }
@@ -242,6 +290,8 @@ public class CreationActivity extends AppCompatActivity{
                     btRecordAudio.setVisibility(View.GONE);
                     rvRecordings.setVisibility(View.GONE);
                     btTakePhoto.setVisibility(View.GONE);
+                    rvPhotos.setVisibility(View.GONE);
+                    tvPhotoCount.setVisibility(View.GONE);
                     btFurtherItems.setText("Further Information");
                 }
             }
@@ -313,6 +363,18 @@ public class CreationActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 setResult(Activity.RESULT_CANCELED);
+                for (Uri uri : photoAdpt.getImageUris())
+                {
+                    Log.d("PHOTO_STORAGE", "checking: "+uri.toString());
+                    getContentResolver().delete(uri, null, null);
+                    Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
+                    /*if(uri != null) {
+                        File file = new File(uri.getPath());
+                        if (file.exists() && file.delete()) {
+                                Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
+                        }
+                    }*/
+                }
                 finish();
                 overridePendingTransition(0, R.anim.from_right);
             }

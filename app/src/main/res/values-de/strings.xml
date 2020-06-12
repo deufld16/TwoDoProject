@@ -31,4 +31,7 @@
     <string name="bluetooth_discovered_devices_discover_devices_btn">WEITERE GERÄTE SUCHEN</string>
     <string name="bluetooth_discovered_devices_title_1">Entdeckte Geräte</string>
     <string name="bluetooth_discovered_devices_title_2">Gepaarte Geräte</string>
+
+    <!-- Creation/Manipulation Site -->
+    <string name="photo_count">%d Foto(s) angehängt</string>
 </resources>

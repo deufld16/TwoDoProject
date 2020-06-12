@@ -264,6 +264,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:visibility="gone">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tvPhotoCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
                 android:visibility="gone" />
 
@@ -272,7 +282,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/ic_bg_record_audio"
                 android:fontFamily="Open Sans"
                 android:text="Take Photo"

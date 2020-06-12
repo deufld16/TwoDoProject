@@ -42,4 +42,7 @@
     <string name="dialog_cancel">CANCEL</string>
     <string name="dialog_agree">Yes</string>
     <string name="dialog_disagree">No</string>
+
+    <!--Creation/Manipulation Site-->
+    <string name="photo_count">%d picture(s) attached</string>
 </resources>
