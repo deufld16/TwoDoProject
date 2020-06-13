@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.LinkedList;
@@ -19,12 +21,22 @@ import java.util.List;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.CreationActivity;
+import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.dialogs.PhotoDeletionDlg;
+
+/***
+ * Adapter class for the photograph-recycler-view
+ *
+ * @author Maximilian Strohmaier
+ */
 
 public class PhotographAdapter extends RecyclerView.Adapter<PhotographAdapter.ViewHolder>  {
 
-    List<Bitmap> bitmaps = new LinkedList<>();
-    List<Uri> imgUris = new LinkedList<>();
-    Context context;
+    private List<Bitmap> bitmaps = new LinkedList<>();
+    private List<Uri> imgUris = new LinkedList<>();
+    private List<Uri> imgUrisDel = new LinkedList<>();
+    private Context context;
+    private PhotographAdapter thisPhotographAdapter = this;
 
     public PhotographAdapter(Context context) {
         this.context = context;
@@ -37,9 +49,22 @@ public class PhotographAdapter extends RecyclerView.Adapter<PhotographAdapter.Vi
         notifyDataSetChanged();
     }
 
+    public void removePhoto(Uri imgUri, Bitmap bitmap)
+    {
+        bitmaps.remove(bitmap);
+        imgUrisDel.add(imgUri);
+        imgUris.remove(imgUri);
+        notifyDataSetChanged();
+        updatePhotoCount();
+    }
+
     public List<Uri> getImageUris()
     {
         return imgUris;
+    }
+
+    public List<Uri> getImgUrisDel() {
+        return imgUrisDel;
     }
 
     @NonNull
@@ -52,7 +77,24 @@ public class PhotographAdapter extends RecyclerView.Adapter<PhotographAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull PhotographAdapter.ViewHolder holder, int position) {
-        holder.ivPhoto.setImageBitmap(bitmaps.get(position));
+        Bitmap bitmap = bitmaps.get(position);
+        holder.ivPhoto.setImageBitmap(bitmap);
+        holder.ivPhoto.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                DialogFragment deletionDlg = new PhotoDeletionDlg(thisPhotographAdapter, bitmap, imgUris.get(position));
+                deletionDlg.show(((CreationActivity)context).getSupportFragmentManager(), "deletePhoto");
+                return true;
+            }
+        });
+        updatePhotoCount();
+    }
+
+    /***
+     * Method to update the displayed number of attached photos
+     */
+    private void updatePhotoCount()
+    {
         ((CreationActivity) context).tvPhotoCount.setText(String.format(context.getString(R.string.photo_count), getItemCount()));
     }
 

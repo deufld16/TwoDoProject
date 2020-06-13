@@ -1,6 +1,7 @@
 package at.htlkaindorf.twodoprojectmaxi.beans;
 
 import android.app.PendingIntent;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class Entry implements Serializable{
     private int reminderID;
 
     private List<String> allAudioFileLocations = new LinkedList<>();
+    private List<String> allPhotoLocations = new LinkedList<>();
 
     private int request_id;
 
@@ -237,6 +239,14 @@ public class Entry implements Serializable{
 
     public void setAllAudioFileLocations(List<String> allAudioFileLocations) {
         this.allAudioFileLocations = allAudioFileLocations;
+    }
+
+    public List<String> getAllPhotoLocations() {
+        return allPhotoLocations;
+    }
+
+    public void setAllPhotoLocations(List<String> allPhotoLocations) {
+        this.allPhotoLocations = allPhotoLocations;
     }
 }
 

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -81,5 +83,24 @@ public class ImageRecorder
         String suffix = ".jpg";
         //Log.d("PHOTO_STORAGE", "Photo File Name: "+fileName);
         return File.createTempFile(fileName, suffix, storageDir);
+    }
+
+    public static Bitmap createScaledBitmap(Context context, Uri uri, double targetWidth) throws IOException {
+        Bitmap bitmap = null;
+        if (Build.VERSION.SDK_INT < 28) {
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+        } else {
+            ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), uri);
+            bitmap = ImageDecoder.decodeBitmap(source);
+        }
+        Log.d("PHOTO_STORAGE", bitmap.getWidth() + " - " + bitmap.getHeight());
+
+        double bmWidth = bitmap.getWidth();
+        double bmHeight = bitmap.getHeight();
+        bitmap = Bitmap.createScaledBitmap(bitmap,
+                (int)targetWidth,
+                (int)(bmHeight / bmWidth * targetWidth),
+                false);
+        return bitmap;
     }
 }

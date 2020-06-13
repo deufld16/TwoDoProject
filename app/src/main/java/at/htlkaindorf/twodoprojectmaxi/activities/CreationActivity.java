@@ -43,6 +43,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
@@ -84,7 +85,7 @@ public class CreationActivity extends AppCompatActivity{
     private Button btTakePhoto;
     private RecyclerView rvRecordings;
     private RecyclerView rvPhotos;
-    private PhotographAdapter photoAdpt;
+    protected PhotographAdapter photoAdpt;
     public TextView tvPhotoCount;
 
     private Uri imgUri;
@@ -98,7 +99,7 @@ public class CreationActivity extends AppCompatActivity{
     private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
     private Entry entry = new Entry();
-    private Context helpContext = this;
+    protected Context helpContext = this;
     private Activity activity = this;
     private boolean isRecording = false;
 
@@ -229,24 +230,8 @@ public class CreationActivity extends AppCompatActivity{
             //Bitmap imgBitmap = (Bitmap) extras.get("data");
             //photoAdpt.addThumbnail(
                     //Bitmap.createScaledBitmap(imgBitmap, 600, 600, false));
-            Bitmap bitmap = null;
             try {
-                if (Build.VERSION.SDK_INT < 28) {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imgUri);
-                } else {
-                    ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), imgUri);
-                    bitmap = ImageDecoder.decodeBitmap(source);
-                }
-                Log.d("PHOTO_STORAGE", bitmap.getWidth() + " - " + bitmap.getHeight());
-
-                double bmWidth = bitmap.getWidth();
-                double bmHeight = bitmap.getHeight();
-                double targetWidth = 600.;
-                bitmap = Bitmap.createScaledBitmap(bitmap,
-                        (int)targetWidth,
-                        (int)(bmHeight / bmWidth * targetWidth),
-                        false);
-
+                Bitmap bitmap = ImageRecorder.createScaledBitmap(this, imgUri, 600.);
                 photoAdpt.addPhoto(imgUri, bitmap);
                 //ImageRecorder.addPhotoToGallery(helpContext, imgUri);
                 Log.d("PHOTO_STORAGE", imgUri.toString()+" created");
@@ -368,12 +353,6 @@ public class CreationActivity extends AppCompatActivity{
                     Log.d("PHOTO_STORAGE", "checking: "+uri.toString());
                     getContentResolver().delete(uri, null, null);
                     Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
-                    /*if(uri != null) {
-                        File file = new File(uri.getPath());
-                        if (file.exists() && file.delete()) {
-                                Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
-                        }
-                    }*/
                 }
                 finish();
                 overridePendingTransition(0, R.anim.from_right);
@@ -493,6 +472,14 @@ public class CreationActivity extends AppCompatActivity{
         }else{
             entry.setParameters(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat, getRequestID());
         }
+
+        List<Uri> urisToDelete = photoAdpt.getImageUris();
+        urisToDelete.addAll(photoAdpt.getImgUrisDel());
+        entry.setAllPhotoLocations(
+                urisToDelete
+                        .stream()
+                        .map(Uri::toString)
+                        .collect(Collectors.toList()));
 
         return true;
     }

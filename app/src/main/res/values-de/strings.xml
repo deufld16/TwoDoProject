@@ -34,4 +34,8 @@
 
     <!-- Creation/Manipulation Site -->
     <string name="photo_count">%d Foto(s) angehängt</string>
+    <string name="info_img_load_error">Bild konnte nicht geladen werden. Wurde es händisch gelöscht?</string>
+    <string name="delete_photo_title">Foto löschen</string>
+    <string name="delete_photo">Sind Sie sicher, dass Sie\ndas gewählte Foto löschen wollen?</string>
+
 </resources>

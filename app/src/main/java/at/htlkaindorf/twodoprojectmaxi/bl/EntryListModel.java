@@ -1,5 +1,8 @@
 package at.htlkaindorf.twodoprojectmaxi.bl;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
