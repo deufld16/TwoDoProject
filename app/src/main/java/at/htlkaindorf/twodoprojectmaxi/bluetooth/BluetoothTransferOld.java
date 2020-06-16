@@ -15,7 +15,7 @@ import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
 
-public class BluetoothTransfer extends Thread
+public class BluetoothTransferOld extends Thread
 {
     private BluetoothSocket socket;
     private TransferActivity srcActivity;
@@ -24,7 +24,7 @@ public class BluetoothTransfer extends Thread
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
 
-    public BluetoothTransfer(BluetoothSocket socket, TransferActivity srcActivity, boolean listen)
+    public BluetoothTransferOld(BluetoothSocket socket, TransferActivity srcActivity, boolean listen)
     {
         this.socket = socket;
         this.srcActivity = srcActivity;
