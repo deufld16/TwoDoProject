@@ -79,9 +79,12 @@ public class CreationActivity extends AppCompatActivity{
     protected Spinner spCategories;
     protected Spinner spPriorities;
     protected Spinner spReminder;
+    protected Button btRecordAudio;
+    protected boolean isRecording = false;
+    protected Activity activity = this;
+    protected Context helpContext = this;
 
     private Button btFurtherItems;
-    private Button btRecordAudio;
     private Button btTakePhoto;
     private RecyclerView rvRecordings;
     private RecyclerView rvPhotos;
@@ -97,11 +100,8 @@ public class CreationActivity extends AppCompatActivity{
     protected DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
-    private List<String> remindingIntervalls = Arrays.asList("No Reminder", "Daily", "Weekly", "Monthly", "Yearly", "Specific Date", "Specific Interval");
+    private List<String> remindingIntervalls;
     private Entry entry = new Entry();
-    protected Context helpContext = this;
-    private Activity activity = this;
-    private boolean isRecording = false;
 
     /**
      * Method that inflates/creates the GUI
@@ -125,6 +125,9 @@ public class CreationActivity extends AppCompatActivity{
         }
         Proxy.getVra().setEntry(entry);
         Proxy.getVra().setSourceActivity(this);
+        remindingIntervalls = Arrays.asList(getString(R.string.add_entry_page_no_reminder), getString(R.string.add_entry_page_daily_reminder), getString(R.string.add_entry_page_weekly_reminder),
+                getString(R.string.add_entry_page_monthly_reminder), getString(R.string.add_entry_page_yearly_reminder), getString(R.string.add_entry_page_specific_reminder),
+                getString(R.string.add_entry_page_specific_interval));
         //fetching the components and disabling the ReminderInterval until a date is selected
         tvHeader = findViewById(R.id.tv_creation_manipulation_title);
         etTitle = findViewById(R.id.etEntryTitle);
@@ -156,7 +159,7 @@ public class CreationActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                if((adapterView.getSelectedItem()+"").equals("ADD CATEGORY"))
+                if((adapterView.getSelectedItem()+"").equals(getString(R.string.add_entry_page_add_category)))
                 {
                     DialogFragment textInputDlg = new TextInputFragment("Add Category",
                             "Please enter the name for the new category:", Proxy.getClm(),
@@ -262,22 +265,24 @@ public class CreationActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 String text = (String)btFurtherItems.getText();
-                if(text.equalsIgnoreCase("Further Information")) {
+                if(text.equalsIgnoreCase(getString(R.string.add_entry_page_further_information))) {
                     btRecordAudio.setVisibility(View.VISIBLE);
                     rvRecordings.setVisibility(View.VISIBLE);
                     btTakePhoto.setVisibility(View.VISIBLE);
+                    btFurtherItems.setText(getString(R.string.add_entry_page_less_information));
                     rvPhotos.setVisibility(View.VISIBLE);
                     tvPhotoCount.setVisibility(View.VISIBLE);
-                    btFurtherItems.setText("Less Information");
+                    btFurtherItems.setText(getString(R.string.add_entry_page_less_information));
                     Proxy.getVra().renew();
                 }
-                else if(text.equalsIgnoreCase("Less Information")) {
+                else if(text.equalsIgnoreCase(getString(R.string.add_entry_page_less_information))) {
                     btRecordAudio.setVisibility(View.GONE);
                     rvRecordings.setVisibility(View.GONE);
                     btTakePhoto.setVisibility(View.GONE);
+                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));
                     rvPhotos.setVisibility(View.GONE);
                     tvPhotoCount.setVisibility(View.GONE);
-                    btFurtherItems.setText("Further Information");
+                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));btFurtherItems.setText("Further Information");
                 }
             }
         });
@@ -286,7 +291,7 @@ public class CreationActivity extends AppCompatActivity{
     /***
      * Handlermethod for clicking on the Record Audio Button
      */
-    private void addRecordAudioHandler()
+    protected void addRecordAudioHandler()
     {
         btRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,15 +301,15 @@ public class CreationActivity extends AppCompatActivity{
                         Proxy.getSoundRecorder().stopRecordAudio();
                         Proxy.getVra().renew();
                         isRecording = false;
-                        btRecordAudio.setText("RECORD AUDIO");
+                        btRecordAudio.setText(getString(R.string.add_entry_page_record_audio));
 
                     }else{
-                        if(Proxy.getVra().getDisplayedAudios().size() < 4){
-                            btRecordAudio.setText("Stop Recording Audio");
+                        if(Proxy.getVra().getDisplayedAudios().size() < 3){
+                            btRecordAudio.setText(getString(R.string.add_entry_page_stop_recording_audio));
                             isRecording = true;
                             Proxy.getSoundRecorder().recordAudio(entry);
                         }else{
-                            Toast.makeText(helpContext, "The maximum number of recordings has been reached", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(helpContext, getString(R.string.add_entry_page_information_max_recordings), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
@@ -445,7 +450,7 @@ public class CreationActivity extends AppCompatActivity{
         String titleStr = readTitle();
         if(titleStr == null)
         {
-            Snackbar.make(view, "Please enter a Title for your Entry", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, getString(R.string.add_entry_page_information_enter_name), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             return false;
         }
@@ -456,7 +461,7 @@ public class CreationActivity extends AppCompatActivity{
         LocalDateTime dueDate = readDueDate();
         if(dueDate == null)
         {
-            Snackbar.make(view, "Please enter a Date for your Entry", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, getString(R.string.add_entry_page_information_enter_date), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             return false;
         }

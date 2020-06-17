@@ -1,16 +1,19 @@
 package at.htlkaindorf.twodoprojectmaxi.enums;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+
 /**
  * Enum for the Reminder Spinner with the text that should be displayed and a number which is used for distinguishing the reminder dates
  */
 public enum ReminderEnum {
-    NO_REMINDER("No Reminder", 0),
-    DAILY("Daily", 1),
-    WEEKLY("Weekly", 2),
-    MONTHLY("Monthly", 3),
-    YEARLY("Yearly", 4),
-    CUSTOM_REMINDER_PERIOD("Specific Interval", 5),
-    CUSTOM_REMINDER_DATE("Specific Date", 6);
+    NO_REMINDER(Proxy.getContext().getString(R.string.add_entry_page_no_reminder), 0),
+    DAILY(Proxy.getContext().getString(R.string.add_entry_page_daily_reminder), 1),
+    WEEKLY(Proxy.getContext().getString(R.string.add_entry_page_weekly_reminder), 2),
+    MONTHLY(Proxy.getContext().getString(R.string.add_entry_page_monthly_reminder), 3),
+    YEARLY(Proxy.getContext().getString(R.string.add_entry_page_yearly_reminder), 4),
+    CUSTOM_REMINDER_PERIOD(Proxy.getContext().getString(R.string.add_entry_page_specific_interval), 5),
+    CUSTOM_REMINDER_DATE(Proxy.getContext().getString(R.string.add_entry_page_specific_reminder), 6);
 
     private int reminder_id;
     private String reminder_identifierString;

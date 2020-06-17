@@ -132,7 +132,6 @@ public class Entry implements Serializable{
                 reminderDates.add(dueDate);
             }
         }else if(reminderID == 0){
-            reminderDates.add(dueDate.minusDays(1));
             reminderDates.add(dueDate);
         }
         return reminderDates;
@@ -140,6 +139,12 @@ public class Entry implements Serializable{
 
     public boolean needsReminder(){
         Log.d("RestartAppReceiver", title + ": " + dueDate + "\n" + LocalDateTime.now());
+        for (LocalDateTime reminder:
+             new LinkedList<>(reminderDates)) {
+            if(reminder.isBefore(LocalDateTime.now().minusDays(1))){
+                reminderDates.remove(reminder);
+            }
+        }
         return dueDate.isAfter(LocalDateTime.now());
     }
 

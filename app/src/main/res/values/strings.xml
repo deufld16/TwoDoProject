@@ -37,6 +37,41 @@
     <string name="bluetooth_discovered_devices_body_2">Please wait and choose a discovered device</string>
     <string name="bluetooth_discovered_devices_discover_devices_btn">DISCOVER FURHTER DEVICES</string>
 
+    <!---entry creation/adaptation page-->
+    <string name="add_entry_page_title">Add Entry</string>
+    <string name="add_entry_page_description">Description</string>
+    <string name="add_entry_page_default">Default</string>
+    <string name="add_entry_page_add_category">ADD CATEGORY</string>
+    <string name="add_entry_page_date">Date</string>
+    <string name="add_entry_page_no_reminder">No reminder</string>
+    <string name="add_entry_page_daily_reminder">Daily</string>
+    <string name="add_entry_page_weekly_reminder">Weekly</string>
+    <string name="add_entry_page_monthly_reminder">Monthly</string>
+    <string name="add_entry_page_yearly_reminder">Yearly</string>
+    <string name="add_entry_page_specific_reminder">Specific date</string>
+    <string name="add_entry_page_specific_interval">Specific interval</string>
+    <string name="add_entry_page_further_information">FURTHER INFORMATION</string>
+    <string name="add_entry_page_less_information">LESS INFORMATION</string>
+    <string name="add_entry_page_record_audio">RECORD AUDIO</string>
+    <string name="add_entry_page_record_image">TAKE PHOTO</string>
+    <string name="add_entry_page_title_2">Title</string>
+    <string name="add_entry_page_stop_recording_audio">STOP RECORDING AUDIO</string>
+    <string name="add_entry_page_information_max_recordings">The maximum number of recordings has been reached</string>
+    <string name="add_entry_page_information_enter_name">Please enter a Title for your Entry</string>
+    <string name="add_entry_page_information_enter_date">Please enter a Date for your Entry</string>
+    <string name="default_category_name">New Category</string>
+
+    <!---Edit Entry Page-->
+    <string name="edit_entry_page_Title">Edit Entry</string>
+
+    <!--Notifications-->
+    <string name="notifications_this_is_a_reminder">This is a reminder that this activity has to be done until </string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="today">today</string>
+    <string name="the_day_after_tomorrow">the day after tomorrow</string>
+    <string name="notifications_reminder_for">Reminder for </string>
+    <string name="language_is_stupid"></string>
+
     <!---Akzeptieren/Ablehnen von Dialogen-->
     <string name="dialog_accept">OK</string>
     <string name="dialog_cancel">CANCEL</string>

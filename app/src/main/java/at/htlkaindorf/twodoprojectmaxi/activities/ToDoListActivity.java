@@ -72,14 +72,14 @@ public class ToDoListActivity extends AppCompatActivity {
     private Spinner spCategoryMain;
     private ToDoAdapter toDoAdapter = new ToDoAdapter(this);
     private RecyclerView.LayoutManager lm;
-    private CategoryListModel clm = new CategoryListModel();
+    private CategoryListModel clm;
     private BottomNavigationView vNavBottom;
     private static final String [] SUPPORTED_LANGUAGES = {"German", "English"};
     private static final String [] SUPPORTED_LANGUAGES_PREFIX = {"de", "en"};
     private String currentLanguage = "de";
 
     private final int RC_CREATION_ACTIVITY = 2;
-    private final int RC_TO_DO_LIST_ACITIVTY = 0;
+
 
     /**
      * This is used to enable swiping for setting the status of an entry to done/deleted.
@@ -247,7 +247,8 @@ public class ToDoListActivity extends AppCompatActivity {
         Proxy.addNavigationBarListener();
         Proxy.setActiveNavActivity(this);
         //Navbar End
-
+        Proxy.setLanguageContext(this);
+        clm = new CategoryListModel();
         Proxy.setClm(clm);
 
         try {
@@ -269,7 +270,7 @@ public class ToDoListActivity extends AppCompatActivity {
             if(categoriesFileExists){
                 clm.loadCategories(this);
             }else{
-                clm.addCategory(new Category("ADD CATEGORY"));
+                clm.addCategory(new Category(getString(R.string.add_entry_page_add_category)));
             }
 
         }catch (Exception ex){
@@ -301,16 +302,7 @@ public class ToDoListActivity extends AppCompatActivity {
             }
         });
 
-        List<Category> allCategories = new LinkedList<>(Proxy.getClm().getAllCategories());
-        List<String> allFilterCategories = new LinkedList<>();
-        for (Entry filterCategory:
-             toDoAdapter.getEntries()) {
-            if(!allFilterCategories.contains(filterCategory.getCategory().getCategory_name())){
-                allFilterCategories.add(filterCategory.getCategory().getCategory_name());
-            }
-        }
-        allFilterCategories.add(0, "All Categories");
-        allCategories.removeIf(category -> category.getCategory_name().equalsIgnoreCase("ADD CATEGORY"));
+        List<String> allFilterCategories = getFilterCategories();
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this,
                R.layout.spinner_item, allFilterCategories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -368,6 +360,22 @@ public class ToDoListActivity extends AppCompatActivity {
         //ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle(getResources().getString(R.string.app_name));
 
+    }
+
+    private List<String> getFilterCategories(){
+        List<Category> allCategories = new LinkedList<>(Proxy.getClm().getAllCategories());
+        List<String> allFilterCategories = new LinkedList<>();
+        for (Entry filterCategory:
+                toDoAdapter.getEntries()) {
+            Log.d("MLANGUAGE", "onCreate: " + filterCategory.getCategory().getCategory_name());
+            if(!allFilterCategories.contains(filterCategory.getCategory().getCategory_name())){
+                allFilterCategories.add(filterCategory.getCategory().getCategory_name());
+            }
+        }
+        allFilterCategories.add(0, "All Categories");
+        allCategories.removeIf(category -> category.getCategory_name().equalsIgnoreCase(getString(R.string.add_entry_page_add_category)));
+
+        return allFilterCategories;
     }
 
     /**
@@ -441,6 +449,12 @@ public class ToDoListActivity extends AppCompatActivity {
                 Toast.makeText(this, Html.fromHtml("New Entry <i>"+entry+"</i> created")
                         ,Toast.LENGTH_SHORT).show();
                 toDoAdapter.addEntry(entry);
+                List<String> allFilterCategories = getFilterCategories();
+                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this,
+                        R.layout.spinner_item, allFilterCategories);
+                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spCategoryMain = findViewById(R.id.spCategoryMain);
+                spCategoryMain.setAdapter(categoryAdapter);
             }
         }
         if(requestCode == toDoAdapter.getRC_MANIPULATION_ACTIVITY())
@@ -491,20 +505,34 @@ public class ToDoListActivity extends AppCompatActivity {
 
     private void setLocale(String languageIdentifier){
         if(!currentLanguage.equals(languageIdentifier)){
+            Category add_category = null;
+            Category default_category = null;
+
+            for (Category cat:
+                    Proxy.getClm().getAllCategories()) {
+                if(cat.getCategory_name().equalsIgnoreCase(getString(R.string.add_entry_page_add_category))){
+                    add_category = cat;
+                }else if(cat.getCategory_name().equalsIgnoreCase(getString(R.string.add_entry_page_default))){
+                    default_category = cat;
+                }
+            }
+
+            Log.d("MLANGUAGE", "setLocale: " + add_category + " - " + default_category + " - " + languageIdentifier);
+
             Locale locale = new Locale(languageIdentifier);
             Locale.setDefault(locale);
             Resources res = getResources();
             Configuration config = res.getConfiguration();
             config.locale = locale;
             res.updateConfiguration(config, res.getDisplayMetrics());
+            Proxy.getClm().languageChanged(add_category, default_category);
             finish();
             Intent intent = getIntent();
+            Intent intent1 = new Intent(this, CreationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.putExtra("currentLang", languageIdentifier);
             finish();
             startActivity(getIntent());
         }
     }
-
-
 }
