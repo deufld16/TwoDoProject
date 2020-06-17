@@ -3,7 +3,10 @@ package at.htlkaindorf.twodoprojectmaxi.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,11 +15,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.VoiceRecordAdapter;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.ImageRecorder;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /**
@@ -30,6 +41,7 @@ public class ManipulationActivity extends CreationActivity
 {
     private Entry editEntry;
     private int position;
+    private List<Uri> savepointUris = new LinkedList<>();
 
 
     /**
@@ -80,7 +92,16 @@ public class ManipulationActivity extends CreationActivity
         spReminder.setEnabled(true);
         spReminder.setSelection(reminderAdapter.getPosition((reminder.getReminder_identifierString())));
 
-
+        savepointUris = editEntry.getAllPhotoLocations().stream().map(s -> Uri.parse(s)).collect(Collectors.toList());
+        for (Uri uri : savepointUris)
+        {
+            try {
+                photoAdpt.addPhoto(uri, ImageRecorder.createScaledBitmap(this, uri, 600.));
+            } catch (IOException e) {
+                Toast.makeText(helpContext, getString(R.string.info_img_load_error), Toast.LENGTH_LONG);
+                e.printStackTrace();
+            }
+        }
         //recordButtonOnClickListener
 
     }
@@ -109,6 +130,25 @@ public class ManipulationActivity extends CreationActivity
                 }else{
                     Proxy.getSoundRecorder().requestPermission(activity);
                 }
+            }
+        });
+    }
+    @Override
+    public void addCancelListener() {
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(Activity.RESULT_CANCELED);
+                List<Uri> urisToDelete = photoAdpt.getImageUris();
+                urisToDelete.removeAll(savepointUris);
+                for (Uri uri : urisToDelete)
+                {
+                    Log.d("PHOTO_STORAGE", "checking: "+uri.toString());
+                    getContentResolver().delete(uri, null, null);
+                    Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
+                }
+                finish();
+                overridePendingTransition(0, R.anim.from_right);
             }
         });
     }

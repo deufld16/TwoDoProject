@@ -4,13 +4,17 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
 
 public class BluetoothClient
 {
@@ -21,7 +25,7 @@ public class BluetoothClient
 
     private List<BluetoothDevice> deviceList;
     private BluetoothDevice partnerDevice;
-    private ConnectThread ct;
+    private BluetoothSocket socket;
 
     public BluetoothClient(BluetoothManager bm, BluetoothAdapter bluetoothAdapter, TransferActivity srcActivity, UUID THE_UUID) {
         this.bm = bm;
@@ -79,19 +83,57 @@ public class BluetoothClient
 
         partnerDevice = selectedDevice;
 
-        ct = new ConnectThread();
-        ct.start();
+        try {
+            socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
+
+            bluetoothAdapter.cancelDiscovery();
+            printToUI("Connecting to: " + partnerDevice.getName());
+            socket.connect();
+            printToUI("Connected to: " + partnerDevice.getName());
+
+            sendData();
+            disconnect();
+        } catch (IOException e) {
+            printToUI("Error with connection");
+            srcActivity.processFailed();
+        }
     }
 
     /***
-     * Method to terminate the Bluetooth-Client process
+     * Method to send Data after a successful connection process
      */
-    public void closeConnection()
+    private void sendData()
     {
-        //ct.cancel();
-    if(ct != null && ct.isAlive()) {
-            ct.interrupt();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            List<File> files = IO_Methods.convertAudiosToFiles();
+            oos.writeObject(files);
+            oos.writeObject(Proxy.getToDoAdapter().getEntries());
+            oos.writeObject(Proxy.getClm().getAllCategories());
+            //ToDo: add sending process for photographs
+            oos.close();
+        } catch (IOException e) {
+            printToUI("Error while transferring data");
+            srcActivity.processFailed();
         }
+    }
+
+    /***
+     * Method to close the socket
+     */
+    private void disconnect() throws IOException {
+        socket.close();
+        printToUI("Disconnected");
+    }
+
+    private void printToUI(String msg)
+    {
+        srcActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                srcActivity.informUser(msg);
+            }
+        });
     }
 
     public List<BluetoothDevice> getDeviceList() {
@@ -100,87 +142,5 @@ public class BluetoothClient
 
     public void setDeviceList(List<BluetoothDevice> deviceList) {
         this.deviceList = deviceList;
-    }
-
-    /***
-     * Class to attempt a connection to the partner device
-     *
-     * @author Maximilian Strohmaier
-     */
-    private class ConnectThread extends Thread {
-        private BluetoothSocket socket = null;
-        private BluetoothTransfer bt;
-
-        public ConnectThread()
-        {
-            try {
-                socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
-            } catch (IOException e) {
-                srcActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        srcActivity.informUser("Error while trying to connect");
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void run() {
-            bluetoothAdapter.cancelDiscovery();
-
-            try {
-                srcActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        srcActivity.informUser("Connecting to: " + partnerDevice.getName());
-                    }
-                });
-                socket.connect();
-                bm.getSrcActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        srcActivity.informUser("Connected to: " + partnerDevice.getName());
-                    }
-                });
-                sendData();
-                cancel();
-            } catch (IOException e) {
-                cancel();
-                bm.getSrcActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        srcActivity.informUser("Unable to connect");
-                        srcActivity.processFailed();
-                    }
-                });
-            }
-        }
-
-        /***
-         * Method to process a succesfull connection and send the data
-         */
-        private void sendData()
-        {
-            bt = new BluetoothTransfer(socket, srcActivity, false);
-            bt.start();
-        }
-
-        /***
-         * Method to close the socket
-         */
-        private void cancel()
-        {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                bm.getSrcActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        srcActivity.informUser("Error with Bluetooth connection");
-                    }
-                });
-            }
-        }
     }
 }

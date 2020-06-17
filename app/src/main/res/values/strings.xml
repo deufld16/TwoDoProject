@@ -77,4 +77,11 @@
     <string name="dialog_cancel">CANCEL</string>
     <string name="dialog_agree">Yes</string>
     <string name="dialog_disagree">No</string>
+
+    <!--Creation/Manipulation Site-->
+    <string name="photo_count">%d picture(s) attached</string>
+    <string name="info_img_load_error">Image could not be loaded. Was it manually deleted?</string>
+    <string name="delete_photo_title">Delete Photograph</string>
+    <string name="delete_photo">Are you sure you want to\ndelete the selected photograph?</string>
+
 </resources>

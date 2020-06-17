@@ -1,6 +1,7 @@
 package at.htlkaindorf.twodoprojectmaxi.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
@@ -11,7 +12,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,22 +31,31 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
+import at.htlkaindorf.twodoprojectmaxi.bl.PhotographAdapter;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.bl.VoiceRecordAdapter;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.DatePickerFragment;
 import at.htlkaindorf.twodoprojectmaxi.dialogs.TextInputFragment;
 import at.htlkaindorf.twodoprojectmaxi.enums.PriorityEnum;
 import at.htlkaindorf.twodoprojectmaxi.enums.ReminderEnum;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.ImageRecorder;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /**
@@ -66,10 +82,16 @@ public class CreationActivity extends AppCompatActivity{
     protected Button btRecordAudio;
     protected boolean isRecording = false;
     protected Activity activity = this;
+    protected Context helpContext = this;
 
     private Button btFurtherItems;
     private Button btTakePhoto;
     private RecyclerView rvRecordings;
+    private RecyclerView rvPhotos;
+    protected PhotographAdapter photoAdpt;
+    public TextView tvPhotoCount;
+
+    private Uri imgUri;
 
     protected ArrayAdapter<Category> categoryAdapter;
     protected ArrayAdapter<String> priorityAdapter;
@@ -80,7 +102,6 @@ public class CreationActivity extends AppCompatActivity{
     private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
     private List<String> remindingIntervalls;
     private Entry entry = new Entry();
-    private Context helpContext = this;
 
     /**
      * Method that inflates/creates the GUI
@@ -184,8 +205,43 @@ public class CreationActivity extends AppCompatActivity{
         btTakePhoto = findViewById(R.id.btTakePhoto);
         addTakePhotoHandler();
 
+        rvPhotos = findViewById(R.id.rvPhotos);
+        photoAdpt = new PhotographAdapter(this);
+        rvPhotos.setAdapter(photoAdpt);
+        rvPhotos.setLayoutManager(new LinearLayoutManager(this));
+
+        tvPhotoCount = findViewById(R.id.tvPhotoCount);
+
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
         addFurtherItemsListener();
+    }
+
+    /***
+     * Method to handle results from called intents
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == ImageRecorder.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+        {
+            //Bundle extras = data.getExtras();
+            //Bitmap imgBitmap = (Bitmap) extras.get("data");
+            //photoAdpt.addThumbnail(
+                    //Bitmap.createScaledBitmap(imgBitmap, 600, 600, false));
+            try {
+                Bitmap bitmap = ImageRecorder.createScaledBitmap(this, imgUri, 600.);
+                photoAdpt.addPhoto(imgUri, bitmap);
+                //ImageRecorder.addPhotoToGallery(helpContext, imgUri);
+                Log.d("PHOTO_STORAGE", imgUri.toString()+" created");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /***
@@ -193,7 +249,12 @@ public class CreationActivity extends AppCompatActivity{
      */
     private void addTakePhotoHandler()
     {
-
+        btTakePhoto.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                imgUri = ImageRecorder.takePhoto(activity);
+            }
+        });
     }
 
     /***
@@ -209,6 +270,9 @@ public class CreationActivity extends AppCompatActivity{
                     rvRecordings.setVisibility(View.VISIBLE);
                     btTakePhoto.setVisibility(View.VISIBLE);
                     btFurtherItems.setText(getString(R.string.add_entry_page_less_information));
+                    rvPhotos.setVisibility(View.VISIBLE);
+                    tvPhotoCount.setVisibility(View.VISIBLE);
+                    btFurtherItems.setText(getString(R.string.add_entry_page_less_information));
                     Proxy.getVra().renew();
                 }
                 else if(text.equalsIgnoreCase(getString(R.string.add_entry_page_less_information))) {
@@ -216,6 +280,9 @@ public class CreationActivity extends AppCompatActivity{
                     rvRecordings.setVisibility(View.GONE);
                     btTakePhoto.setVisibility(View.GONE);
                     btFurtherItems.setText(getString(R.string.add_entry_page_further_information));
+                    rvPhotos.setVisibility(View.GONE);
+                    tvPhotoCount.setVisibility(View.GONE);
+                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));btFurtherItems.setText("Further Information");
                 }
             }
         });
@@ -224,7 +291,7 @@ public class CreationActivity extends AppCompatActivity{
     /***
      * Handlermethod for clicking on the Record Audio Button
      */
-    protected void addRecordAudioHandler()
+    private void addRecordAudioHandler()
     {
         btRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,6 +353,12 @@ public class CreationActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 setResult(Activity.RESULT_CANCELED);
+                for (Uri uri : photoAdpt.getImageUris())
+                {
+                    Log.d("PHOTO_STORAGE", "checking: "+uri.toString());
+                    getContentResolver().delete(uri, null, null);
+                    Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
+                }
                 finish();
                 overridePendingTransition(0, R.anim.from_right);
             }
@@ -404,6 +477,14 @@ public class CreationActivity extends AppCompatActivity{
         }else{
             entry.setParameters(reminder_id, dueDate, titleStr, descriptionStr, priorityNumber, cat, getRequestID());
         }
+
+        List<Uri> urisToDelete = photoAdpt.getImageUris();
+        urisToDelete.addAll(photoAdpt.getImgUrisDel());
+        entry.setAllPhotoLocations(
+                urisToDelete
+                        .stream()
+                        .map(Uri::toString)
+                        .collect(Collectors.toList()));
 
         return true;
     }

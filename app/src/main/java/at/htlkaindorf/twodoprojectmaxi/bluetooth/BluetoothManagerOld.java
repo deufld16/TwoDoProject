@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,11 +21,11 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
  * @author Maximilian Strohmaier
  */
 
-public class BluetoothManager
+public class BluetoothManagerOld
 {
     private String role = "";
-    private BluetoothServer server = null;
-    private BluetoothClient client = null;
+    private BluetoothServerOld server = null;
+    private BluetoothClientOld client = null;
 
     private BluetoothAdapter bluetoothAdapter;
     private TransferActivity srcActivity;
@@ -81,7 +80,7 @@ public class BluetoothManager
         }
     };
 
-    public BluetoothManager(AppCompatActivity srcActivity, String role) throws Exception {
+    public BluetoothManagerOld(AppCompatActivity srcActivity, String role) throws Exception {
         processDone = false;
         this.srcActivity = (TransferActivity) srcActivity;
         this.role = role;
@@ -142,14 +141,13 @@ public class BluetoothManager
         if(role.equals(Proxy.getContext().getString(R.string.bluetooth_sender)))
         {
             //device will act as a client
-            client = new BluetoothClient(this, bluetoothAdapter, srcActivity, THE_UUID);
-            client.queryPairedDevices();
+            //client = new BluetoothClientOld(this, bluetoothAdapter, srcActivity, THE_UUID);
+            //client.queryPairedDevices();
         }
         else if(role.equals(Proxy.getContext().getString(R.string.bluetooth_receiver)))
         {
             //device will act as a server
-            server = new BluetoothServer(this, THE_UUID);
-            server.runServer();
+            //server = new BluetoothServerOld(this, THE_UUID);
         }
     }
 
@@ -178,6 +176,11 @@ public class BluetoothManager
     {
         if(server != null) {
             server.cancelListening();
+        }
+
+        if(client != null)
+        {
+            client.closeConnection();
         }
     }
 

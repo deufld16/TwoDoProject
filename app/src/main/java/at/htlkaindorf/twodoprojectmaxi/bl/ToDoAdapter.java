@@ -2,6 +2,7 @@ package at.htlkaindorf.twodoprojectmaxi.bl;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -308,6 +309,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public void releaseEntry(int position, Entry entry)
     {
         entries.remove(position);
+        for (String photoLocStr : entry.getAllPhotoLocations())
+        {
+            Log.d("PHOTO_STORAGE", "checking: "+photoLocStr);
+            Uri uri = Uri.parse(photoLocStr);
+            context.getContentResolver().delete(uri, null, null);
+            Log.d("PHOTO_STORAGE", photoLocStr + " deleted");
+        }
     }
 
     /***
