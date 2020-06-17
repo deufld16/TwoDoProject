@@ -287,7 +287,7 @@ public class CreationActivity extends AppCompatActivity{
                     btFurtherItems.setText(getString(R.string.add_entry_page_further_information));
                     rvPhotos.setVisibility(View.GONE);
                     tvPhotoCount.setVisibility(View.GONE);
-                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));btFurtherItems.setText("Further Information");
+                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));
                 }
             }
         });
