@@ -291,7 +291,7 @@ public class CreationActivity extends AppCompatActivity{
     /***
      * Handlermethod for clicking on the Record Audio Button
      */
-    private void addRecordAudioHandler()
+    protected void addRecordAudioHandler()
     {
         btRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
