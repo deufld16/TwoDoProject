@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -206,11 +207,15 @@ public class CreationActivity extends AppCompatActivity{
         addTakePhotoHandler();
 
         rvPhotos = findViewById(R.id.rvPhotos);
+        rvPhotos.setHasFixedSize(false);
+        rvPhotos.setNestedScrollingEnabled(false);
+        //rvPhotos.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        rvPhotos.setLayoutManager(new LinearLayoutManager(this));
         photoAdpt = new PhotographAdapter(this);
         rvPhotos.setAdapter(photoAdpt);
-        rvPhotos.setLayoutManager(new LinearLayoutManager(this));
 
         tvPhotoCount = findViewById(R.id.tvPhotoCount);
+        tvPhotoCount.setText(String.format(getString(R.string.photo_count), 0));
 
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
         addFurtherItemsListener();
