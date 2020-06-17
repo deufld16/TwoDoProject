@@ -31,6 +31,7 @@ public class Proxy {
     private static AppCompatActivity activeNavActivity;
     private static ToDoAdapter toDoAdapter;
     private static Context context;
+    private static Context languageContext;
     private static SoundRecorder soundRecorder = new SoundRecorder();
     private static VoiceRecordAdapter vra;
     public static SoundRecorder getSoundRecorder() {
@@ -39,6 +40,14 @@ public class Proxy {
 
     public static void setSoundRecorder(SoundRecorder soundRecorder) {
         Proxy.soundRecorder = soundRecorder;
+    }
+
+    public static Context getLanguageContext() {
+        return languageContext;
+    }
+
+    public static void setLanguageContext(Context languageContext) {
+        Proxy.languageContext = languageContext;
     }
 
     public static VoiceRecordAdapter getVra() {

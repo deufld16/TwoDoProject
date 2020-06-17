@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 
 /**
@@ -26,8 +27,8 @@ public class CategoryListModel {
     private static final String FILE_NAME = "categories.ser";
 
     public CategoryListModel(){
-        addCategory(new Category("default"));
-        addCategory(new Category("ADD CATEGORY"));
+        addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_default)));
+        addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
     }
 
     private List<Category> allCategories = new LinkedList<>();
@@ -48,6 +49,7 @@ public class CategoryListModel {
     }
 
     public void remCategory(Category cat){
+        Log.d("ERROR", "remCategory: " + cat);
         allCategories.remove(cat);
     }
 
@@ -93,8 +95,8 @@ public class CategoryListModel {
         ObjectInputStream ois = new ObjectInputStream(fis);
         //Log.d("ERROR", "load Categories: " + (List<Category>)ois.readObject());;
         allCategories = new LinkedList<>((List<Category>)ois.readObject());
-        addCategory(new Category("default"));
-        addCategory(new Category("ADD CATEGORY"));
+        addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_default)));
+        addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
         ois.close();
         Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
@@ -108,9 +110,21 @@ public class CategoryListModel {
     public void saveCategories(Context context, boolean isAddCatIncluded)throws IOException{
         FileOutputStream fos = context.openFileOutput(FILE_NAME, context.MODE_PRIVATE);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
+        allCategories.remove(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
+        allCategories.remove(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_default)));
         oos.writeObject(allCategories);
+        allCategories.add(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_default)));
+        allCategories.add(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
         Log.d("ERROR", "saveCategories: " + allCategories);;
         oos.close();
         Toast.makeText(context, "Categories Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
+    }
+
+    public void languageChanged(Category addCategory, Category defaultCategory){
+        allCategories.remove(addCategory);
+        allCategories.remove(defaultCategory);
+
+        allCategories.add(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_default)));
+        allCategories.add(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
     }
 }

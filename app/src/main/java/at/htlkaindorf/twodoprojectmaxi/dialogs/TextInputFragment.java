@@ -21,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.bl.CategoryListModel;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
 /***
  * DialogFragment for text-based user input
@@ -79,11 +80,11 @@ public class TextInputFragment extends DialogFragment
                 String catName = etName.getText().toString();
                 if(catName == null || catName.equals(""))
                 {
-                    catName = "New Category";
+                    catName = Proxy.getLanguageContext().getString(R.string.default_category_name);
                 }
                 boolean changeSuccessful = clm.setCategoryName(position, catName);
                 if(changeSuccessful) {
-                    clm.addCategory(new Category("ADD CATEGORY"));
+                    clm.addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
                 }
                 else
                 {

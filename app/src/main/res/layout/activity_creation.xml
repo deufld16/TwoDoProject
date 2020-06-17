@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="Open Sans"
-                android:text="Add Entry"
+                android:text="@string/add_entry_page_title"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
@@ -58,7 +58,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="Open Sans"
-                        android:text="Title"
+                        android:text="@string/add_entry_page_title_2"
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp"
@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="Open Sans"
-                        android:text="Description"
+                        android:text="@string/add_entry_page_description"
                         android:textAlignment="textStart"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
@@ -190,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="Open Sans"
-                        android:text="Date"
+                        android:text="@string/add_entry_page_date"
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp"
@@ -235,7 +235,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_btfurtheritems"
                 android:fontFamily="Open Sans"
-                android:text="Further Information"
+                android:text="@string/add_entry_page_further_information"
                 android:textColor="#FFFFFF" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -255,7 +255,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/ic_bg_record_audio"
                 android:fontFamily="Open Sans"
-                android:text="Record Audio"
+                android:text="@string/add_entry_page_record_audio"
                 android:textColor="#000000"
                 android:visibility="gone" />
 
@@ -267,7 +267,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_bg_record_audio"
                 android:fontFamily="Open Sans"
-                android:text="Take Photo"
+                android:text="@string/add_entry_page_record_image"
                 android:textColor="#000000"
                 android:visibility="gone" />
 
@@ -286,7 +286,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_ecp_button_ok"
                 android:fontFamily="Open Sans"
-                android:text="Ok"
+                android:text="@string/dialog_accept"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
@@ -299,7 +299,7 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/ic_ecp_button_cancel"
                 android:fontFamily="Open Sans"
-                android:text="cancel"
+                android:text="@string/dialog_cancel"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
