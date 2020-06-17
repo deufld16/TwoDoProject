@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import at.htlkaindorf.twodoprojectmaxi.beans.Category;
+import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
 
@@ -118,7 +120,16 @@ public class BluetoothServer
                     if (o instanceof List) {
                         uncategorizedItems = (List<Object>) o;
                         if (uncategorizedItems.get(0) instanceof File) {
+                            //File sent
                             IO_Methods.convertFilesToAudios(new LinkedList(uncategorizedItems));
+                        }
+                        else if(uncategorizedItems.get(0) instanceof Entry) {
+                            //Entry sent
+                            Proxy.getToDoAdapter().setEntries(new LinkedList(uncategorizedItems));
+                        }
+                        else if(uncategorizedItems.get(0) instanceof Category) {
+                            //Category sent
+
                         }
                     }
                     //ToDo: handle further received data

@@ -126,6 +126,10 @@ public class BluetoothClient
         printToUI("Disconnected");
     }
 
+    /***
+     * Method to print a message to the user
+     * @param msg
+     */
     private void printToUI(String msg)
     {
         srcActivity.runOnUiThread(new Runnable() {
