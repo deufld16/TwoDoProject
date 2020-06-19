@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class BluetoothClient
     private List<BluetoothDevice> deviceList;
     private BluetoothDevice partnerDevice;
     private BluetoothSocket socket;
+    private Thread ct;
 
     public BluetoothClient(BluetoothManager bm, BluetoothAdapter bluetoothAdapter, TransferActivity srcActivity, UUID THE_UUID) {
         this.bm = bm;
@@ -83,15 +85,11 @@ public class BluetoothClient
         partnerDevice = selectedDevice;
 
         try {
-            socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
-
             bluetoothAdapter.cancelDiscovery();
             printToUI("Connecting to: " + partnerDevice.getName());
-            socket.connect();
-            printToUI("Connected to: " + partnerDevice.getName());
-
-            sendData();
-            disconnect();
+            socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
+            ct = new Thread(new ConnectThread());
+            ct.start();
         } catch (IOException e) {
             printToUI("Error with connection");
             srcActivity.processFailed();
@@ -108,7 +106,6 @@ public class BluetoothClient
             oos.writeObject(AttachmentIO.getAllAttachments());
             oos.writeObject(Proxy.getClm().getAllCategories());
             oos.writeObject(Proxy.getToDoAdapter().getEntries());
-            //ToDo: add sending process for photographs
             oos.close();
         } catch (IOException e) {
             printToUI("Error while transferring data");
@@ -122,6 +119,20 @@ public class BluetoothClient
     private void disconnect() throws IOException {
         socket.close();
         printToUI("Disconnected");
+    }
+
+    /***
+     * Method to take necessary steps to cancel a connection process
+     */
+    public void cancelConnection()
+    {
+        if(ct != null && ct.isAlive())
+        {
+            ct.interrupt();
+            try {
+                disconnect();
+            } catch (IOException e) {}
+        }
     }
 
     /***
@@ -144,5 +155,29 @@ public class BluetoothClient
 
     public void setDeviceList(List<BluetoothDevice> deviceList) {
         this.deviceList = deviceList;
+    }
+
+    /***
+     * Class that handles a connection to a server
+     */
+    class ConnectThread implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                socket.connect();
+                printToUI("Connected to: " + partnerDevice.getName());
+                sendData();
+                disconnect();
+            } catch (IOException e) {
+                printToUI("Error while connecting");
+                srcActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.processFailed();
+                    }
+                });
+            }
+        }
     }
 }

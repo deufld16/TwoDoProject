@@ -29,6 +29,9 @@ public class BluetoothServer
     private final String NAME = "TWO_DO";
 
     private ObjectInputStream ois;
+    private BluetoothServerSocket bss;
+    private BluetoothSocket socket;
+    private Thread at;
     private Thread lt;
 
     public BluetoothServer(BluetoothManager bm, UUID THE_UUID)
@@ -39,7 +42,7 @@ public class BluetoothServer
 
     /***
      * Method to initialize all relevant steps for the device acting as a Bluetooth Server
-     */
+
     public void runServer() {
         try
         {
@@ -59,18 +62,35 @@ public class BluetoothServer
             printToUI("Error while establishing connection");
             bm.getSrcActivity().processFailed();
         }
+    }*/
+
+    /***
+     * Method to initialize all relevant steps for the device acting as a Bluetooth Server
+     */
+    public void runServer() {
+        try
+        {
+            bss = bm.getBluetoothAdapter().listenUsingRfcommWithServiceRecord(NAME, THE_UUID);
+            printToUI("Device waits for connection attempt");
+            at = new Thread(new AcceptThread());
+            at.start();
+        }
+        catch (IOException e)
+        {
+            printToUI("Error while establishing connection");
+            bm.getSrcActivity().processFailed();
+        }
     }
 
     /***
      * Method to handle a successful connection and start wait for the data
      */
-    private void receiveData(BluetoothSocket socket)
+    private void receiveData()
     {
         try {
             ois = new ObjectInputStream(socket.getInputStream());
             lt = new Thread(new ListenerThread());
             lt.start();
-            ois.close();
         } catch (IOException e) {
             printToUI("Error while receiving data");
             bm.getSrcActivity().processFailed();
@@ -96,9 +116,40 @@ public class BluetoothServer
      */
     public void cancelListening()
     {
-        if(lt.isAlive())
+        if(lt != null && lt.isAlive())
         {
             lt.interrupt();
+        }
+
+        if(at != null && at.isAlive())
+        {
+            at.interrupt();
+            try {
+                socket.close();
+                bss.close();
+            } catch (IOException e) {}
+        }
+    }
+
+    /***
+     * Class to wait for an connection attempt
+     *
+     * @author Maximilian Strohmaier
+     */
+    class AcceptThread implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                socket = bss.accept();
+                if(socket != null)
+                {
+                    printToUI("Connected");
+                    receiveData();
+                }
+            } catch (IOException e) {
+                printToUI("No connection was requested");
+            }
         }
     }
 
@@ -123,7 +174,7 @@ public class BluetoothServer
                         }
                         else if(uncategorizedItems.get(0) instanceof Category) {
                             //Category sent
-
+                            Proxy.getClm().setAllCategories(new LinkedList(uncategorizedItems));
                         }
                     }
                     else if(o instanceof Map)
@@ -131,9 +182,11 @@ public class BluetoothServer
                         //Attachment sent
                         AttachmentIO.saveAttachments((Map<String, List<File>>) o);
                     }
-                    //ToDo: handle further received data
                 }
                 while (!Thread.interrupted());
+                ois.close();
+                socket.close();
+                bss.close();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
