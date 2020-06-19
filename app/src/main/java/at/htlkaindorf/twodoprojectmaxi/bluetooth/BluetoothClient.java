@@ -104,8 +104,11 @@ public class BluetoothClient
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(AttachmentIO.getAllAttachments());
+            printToUI(srcActivity.getString(R.string.bt_attachments_sent));
             oos.writeObject(Proxy.getClm().getAllCategories());
+            printToUI(srcActivity.getString(R.string.bt_categories_sent));
             oos.writeObject(Proxy.getToDoAdapter().getEntries());
+            printToUI(srcActivity.getString(R.string.bt_entries_sent));
             oos.close();
         } catch (IOException e) {
             printToUI("Error while transferring data");

@@ -21,6 +21,8 @@
     <string name="dialog_cancel">Abbrechen</string>
     <string name="dialog_agree">Ja</string>
     <string name="dialog_disagree">Nein</string>
+
+    <!-- Bluetooth -->
     <string name="bluetooth_title">Bluetooth Übertragung</string>
     <string name="bluetooth_role">Rolle:</string>
     <string name="bluetooth_information_text">Drücken Sie das Bluetooth-Icon um den\nÜbertragungsprozess zu starten</string>
@@ -31,6 +33,13 @@
     <string name="bluetooth_discovered_devices_discover_devices_btn">WEITERE GERÄTE SUCHEN</string>
     <string name="bluetooth_discovered_devices_title_1">Entdeckte Geräte</string>
     <string name="bluetooth_discovered_devices_title_2">Gepaarte Geräte</string>
+    <string name="bt_attachments_sent">Anhang gesendet</string>
+    <string name="bt_categories_sent">Kategorien gesendet</string>
+    <string name="bt_entries_sent">To-Do-Einträge gesendet</string>
+    <string name="bt_attachments_received">Anhang empfangen</string>
+    <string name="bt_categories_received">Kategorien empfangen</string>
+    <string name="bt_entries_received">To-Do-Einträge empfangen</string>
+
     <string name="add_entry_page_title">Eintrag hinzufügen</string>
     <string name="add_entry_page_description">Beschreibung</string>
     <string name="add_entry_page_default">Default</string>

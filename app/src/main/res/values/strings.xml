@@ -36,6 +36,12 @@
     <string name="bluetooth_discovered_devices_body_1">Please choose a paired device</string>
     <string name="bluetooth_discovered_devices_body_2">Please wait and choose a discovered device</string>
     <string name="bluetooth_discovered_devices_discover_devices_btn">DISCOVER FURHTER DEVICES</string>
+    <string name="bt_attachments_sent">Attachments sent</string>
+    <string name="bt_categories_sent">Categories sent</string>
+    <string name="bt_entries_sent">To-Do-Entries sent</string>
+    <string name="bt_attachments_received">Attachments received</string>
+    <string name="bt_categories_received">Categories received</string>
+    <string name="bt_entries_received">To-Do-Entries received</string>
 
     <!---entry creation/adaptation page-->
     <string name="add_entry_page_title">Add Entry</string>

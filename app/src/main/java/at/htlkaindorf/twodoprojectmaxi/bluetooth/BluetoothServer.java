@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
@@ -171,16 +172,19 @@ public class BluetoothServer
                         if(uncategorizedItems.get(0) instanceof Entry) {
                             //Entry sent
                             Proxy.getToDoAdapter().setEntries(new LinkedList(uncategorizedItems));
+                            printToUI(bm.getSrcActivity().getString(R.string.bt_entries_received));
                         }
                         else if(uncategorizedItems.get(0) instanceof Category) {
                             //Category sent
                             Proxy.getClm().setAllCategories(new LinkedList(uncategorizedItems));
+                            printToUI(bm.getSrcActivity().getString(R.string.bt_categories_received));
                         }
                     }
                     else if(o instanceof Map)
                     {
                         //Attachment sent
                         AttachmentIO.saveAttachments((Map<String, List<File>>) o);
+                        printToUI(bm.getSrcActivity().getString(R.string.bt_attachments_received));
                     }
                 }
                 while (!Thread.interrupted());
