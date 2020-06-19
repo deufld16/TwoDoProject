@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
-import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
+import at.htlkaindorf.twodoprojectmaxi.io.AttachmentIO;
 
 public class BluetoothClient
 {
@@ -106,10 +105,9 @@ public class BluetoothClient
     {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            List<File> files = IO_Methods.convertAudiosToFiles();
-            oos.writeObject(files);
-            oos.writeObject(Proxy.getToDoAdapter().getEntries());
+            oos.writeObject(AttachmentIO.getAllAttachments());
             oos.writeObject(Proxy.getClm().getAllCategories());
+            oos.writeObject(Proxy.getToDoAdapter().getEntries());
             //ToDo: add sending process for photographs
             oos.close();
         } catch (IOException e) {

@@ -5,17 +5,16 @@ import android.bluetooth.BluetoothSocket;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
-import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
+import at.htlkaindorf.twodoprojectmaxi.io.AttachmentIO;
 
 /***
  * Class that handles all relevant steps for the Bluetooth connection as a server
@@ -116,14 +115,9 @@ public class BluetoothServer
             try {
                 do {
                     Object o = ois.readObject();
-                    List<Object> uncategorizedItems = new LinkedList<>();
                     if (o instanceof List) {
-                        uncategorizedItems = (List<Object>) o;
-                        if (uncategorizedItems.get(0) instanceof File) {
-                            //File sent
-                            IO_Methods.convertFilesToAudios(new LinkedList(uncategorizedItems));
-                        }
-                        else if(uncategorizedItems.get(0) instanceof Entry) {
+                        List<Object> uncategorizedItems = new LinkedList<>((List<Object>) o);
+                        if(uncategorizedItems.get(0) instanceof Entry) {
                             //Entry sent
                             Proxy.getToDoAdapter().setEntries(new LinkedList(uncategorizedItems));
                         }
@@ -131,6 +125,11 @@ public class BluetoothServer
                             //Category sent
 
                         }
+                    }
+                    else if(o instanceof Map)
+                    {
+                        //Attachment sent
+                        AttachmentIO.saveAttachments((Map<String, List<File>>) o);
                     }
                     //ToDo: handle further received data
                 }
