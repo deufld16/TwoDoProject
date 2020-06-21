@@ -159,6 +159,7 @@ public class Entry implements Serializable{
                 }
             }
         }else if(reminderID == 0){
+            reminderDates.add(dueDate);
         }
         return reminderDates;
     }

@@ -75,7 +75,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private CategoryListModel clm;
     private BottomNavigationView vNavBottom;
     private static String [] supported_languages;
-    private static final String [] SUPPORTED_LANGUAGES_PREFIX = {"de", "en"};
+    private static final String [] SUPPORTED_LANGUAGES_PREFIX = {"de", "en", "fr"};
     private String currentLanguage = "de";
 
     private final int RC_CREATION_ACTIVITY = 2;
@@ -210,9 +210,10 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
-        supported_languages = new String[2];
+        supported_languages = new String[3];
         supported_languages[0] = getString(R.string.lang_german);
         supported_languages[1] = getString(R.string.lang_english);
+        supported_languages[2] = getString(R.string.lang_french);
         ImageView ivPopoupmenu = findViewById(R.id.ivPopupMenu);
         ivPopoupmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,13 +325,8 @@ public class ToDoListActivity extends AppCompatActivity {
             }
         });
 
-        List<SortingType> allSortingTypes = Arrays.asList(SortingType.values());
-        List<String> allSortingTypesDisplayName = new LinkedList<>();
-        for (SortingType sortingType:
-             allSortingTypes) {
-            allSortingTypesDisplayName.add(sortingType.getDisplay_text());
-        }
-
+        List<String> allSortingTypesDisplayName = Arrays.asList(getString(R.string.sorting_1), getString(R.string.sorting_2),
+                getString(R.string.sorting_3), getString(R.string.sorting_4));
         ArrayAdapter<String> sortingTypeAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item, allSortingTypesDisplayName);
         sortingTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -496,8 +492,8 @@ public class ToDoListActivity extends AppCompatActivity {
                         setLocale("en");
                         break;
                     case 2:
-                        //Spanish
-                        setLocale("es");
+                        //French
+                        setLocale("fr");
                         break;
                 }
                 dialog.dismiss();
