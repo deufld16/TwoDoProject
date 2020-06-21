@@ -211,8 +211,8 @@ public class ToDoListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
         supported_languages = new String[2];
-        supported_languages[0] = getString(R.string.lang_english);
-        supported_languages[1] = getString(R.string.lang_german);
+        supported_languages[0] = getString(R.string.lang_german);
+        supported_languages[1] = getString(R.string.lang_english);
         ImageView ivPopoupmenu = findViewById(R.id.ivPopupMenu);
         ivPopoupmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -462,7 +462,8 @@ public class ToDoListActivity extends AppCompatActivity {
         if(requestCode == toDoAdapter.getRC_MANIPULATION_ACTIVITY())
         {
             if(resultCode == Activity.RESULT_OK) {
-                List<Entry> currentEntries = toDoAdapter.getEntries();
+                Log.d("ERRORFIXING", "onActivityResult: " + "Eintrag wurde bearbeitet");
+                List<Entry> currentEntries = new LinkedList<>(toDoAdapter.getEntries());
                 int position = data.getIntExtra("position", 0);
                 currentEntries.set(position, entry);
                 toDoAdapter.setEntries(currentEntries);

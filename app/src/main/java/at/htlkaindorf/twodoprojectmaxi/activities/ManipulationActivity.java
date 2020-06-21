@@ -102,8 +102,6 @@ public class ManipulationActivity extends CreationActivity
                 e.printStackTrace();
             }
         }
-        //recordButtonOnClickListener
-
     }
 
     @Override
@@ -145,7 +143,6 @@ public class ManipulationActivity extends CreationActivity
                 {
                     Log.d("PHOTO_STORAGE", "checking: "+uri.toString());
                     getContentResolver().delete(uri, null, null);
-                    Log.d("PHOTO_STORAGE", uri.toString() + " deleted");
                 }
                 finish();
                 overridePendingTransition(0, R.anim.from_right);
@@ -153,11 +150,17 @@ public class ManipulationActivity extends CreationActivity
         });
     }
 
-    @Override
+    /*@Override
     protected void addOkListener() {
-        intent.putExtra("newEntry", editEntry);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
-        overridePendingTransition(0, R.anim.from_right);
-    }
+
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent.putExtra("newEntry", editEntry);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                overridePendingTransition(0, R.anim.from_right);
+                }
+            });
+    }*/
 }

@@ -85,12 +85,12 @@
     <string name="lang_english">Englisch</string>
     <string name="lang_french">Französisch</string>
     <string name="lang_spanish">Spanisch</string>
-    <string name="sorting_1">Fälligkeitsdatum ⋀</string>
-    <string name="sorting_2">Fälligkeitsdatum ⋁</string>
+    <string name="sorting_1">Fälligkeitsdat. ⋀</string>
+    <string name="sorting_2">Fälligkeitsdat. ⋁</string>
     <string name="sorting_3">Priorität ⋀</string>
     <string name="sorting_4">Priorität ⋁</string>
     <string name="bluetooth_inform_user_error">Ein Fehler ist während des Anmachen des Bluetooths aufgetreten</string>
-    <string name="bluetooth_inform_user_enabled">"Bluetooth angeschalten, andere Geräte können diese Gerät nun für "</string>
+    <string name="bluetooth_inform_user_enabled">"Bluetooth angeschalten, andere Geräte\nkönnen diese Gerät nun für "</string>
     <string name="bluetooth_inform_user_query">Suche gekopplete Geräte</string>
     <string name="bluetooth_inform_user_start">Bluetooth Suche hat gestartet</string>
     <string name="bluetooth_inform_user_stop">Bluetooth Suche wurde gestoppt</string>

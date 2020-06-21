@@ -173,6 +173,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         editIntent.putExtra("oldEntry", entry);
         int indexOfEntry = filteredEntries.indexOf(entry);
         editIntent.putExtra("entryPos", indexOfEntry);
+        Log.d("ERRORFIXING", "editEntry: " + "i am here");
         srcActivity.startActivityForResult(editIntent, RC_MANIPULATION_ACTIVITY);
         srcActivity.overridePendingTransition(0, R.anim.from_left);
     }
@@ -337,6 +338,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         for (Entry entry:
                 helpList) {
+            Log.d("ERRORFIXING", "filter: " + entry
+            );
             if((filterCategory.equalsIgnoreCase(Proxy.getLanguageContext().getString(R.string.all_categories)) ||
                     filterCategory.equalsIgnoreCase(entry.getCategory().getCategory_name())) && entry.getStatus() == displayStatus){
                 filteredEntries.add(entry);

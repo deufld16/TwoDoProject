@@ -491,7 +491,7 @@ public class CreationActivity extends AppCompatActivity{
                         .stream()
                         .map(Uri::toString)
                         .collect(Collectors.toList()));
-
+        entry.setAllAudioFileLocations(Proxy.getVra().getDisplayedAudios());
         return true;
     }
 
