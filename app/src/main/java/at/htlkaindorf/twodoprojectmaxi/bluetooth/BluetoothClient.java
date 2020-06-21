@@ -4,8 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.TransferActivity;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
-import at.htlkaindorf.twodoprojectmaxi.io.IO_Methods;
+import at.htlkaindorf.twodoprojectmaxi.io.AttachmentIO;
 
 public class BluetoothClient
 {
@@ -26,6 +26,7 @@ public class BluetoothClient
     private List<BluetoothDevice> deviceList;
     private BluetoothDevice partnerDevice;
     private BluetoothSocket socket;
+    private Thread ct;
 
     public BluetoothClient(BluetoothManager bm, BluetoothAdapter bluetoothAdapter, TransferActivity srcActivity, UUID THE_UUID) {
         this.bm = bm;
@@ -84,15 +85,11 @@ public class BluetoothClient
         partnerDevice = selectedDevice;
 
         try {
-            socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
-
             bluetoothAdapter.cancelDiscovery();
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
-            socket.connect();
-            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
-
-            sendData();
-            disconnect();
+            socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
+            ct = new Thread(new ConnectThread());
+            ct.start();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_1));
             srcActivity.processFailed();
@@ -106,11 +103,12 @@ public class BluetoothClient
     {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            List<File> files = IO_Methods.convertAudiosToFiles();
-            oos.writeObject(files);
-            oos.writeObject(Proxy.getToDoAdapter().getEntries());
+            oos.writeObject(AttachmentIO.getAllAttachments());
+            printToUI(srcActivity.getString(R.string.bt_attachments_sent));
             oos.writeObject(Proxy.getClm().getAllCategories());
-            //ToDo: add sending process for photographs
+            printToUI(srcActivity.getString(R.string.bt_categories_sent));
+            oos.writeObject(Proxy.getToDoAdapter().getEntries());
+            printToUI(srcActivity.getString(R.string.bt_entries_sent));
             oos.close();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_2));
@@ -124,6 +122,20 @@ public class BluetoothClient
     private void disconnect() throws IOException {
         socket.close();
         printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_disconnected));
+    }
+
+    /***
+     * Method to take necessary steps to cancel a connection process
+     */
+    public void cancelConnection()
+    {
+        if(ct != null && ct.isAlive())
+        {
+            ct.interrupt();
+            try {
+                disconnect();
+            } catch (IOException e) {}
+        }
     }
 
     /***
@@ -146,5 +158,29 @@ public class BluetoothClient
 
     public void setDeviceList(List<BluetoothDevice> deviceList) {
         this.deviceList = deviceList;
+    }
+
+    /***
+     * Class that handles a connection to a server
+     */
+    class ConnectThread implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                socket.connect();
+                printToUI("Connected to: " + partnerDevice.getName());
+                sendData();
+                disconnect();
+            } catch (IOException e) {
+                printToUI("Error while connecting");
+                srcActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        srcActivity.processFailed();
+                    }
+                });
+            }
+        }
     }
 }

@@ -4,9 +4,9 @@ package at.htlkaindorf.twodoprojectmaxi.enums;
  * Enum for the Priority with the Text that should be displayed and the value for the filtering/sorting
  */
 public enum PriorityEnum {
-    LOW_PRIORITY("Low Priority",1),
-    MEDIUM_PRIORITY("Medium Priority", 5),
-    HIGH_PRIORITY("High Priority", 9);
+    LOW_PRIORITY("!",1),
+    MEDIUM_PRIORITY("! !", 5),
+    HIGH_PRIORITY("! ! !", 9);
 
     private int prioirty_value;
     private String prioirty_text;

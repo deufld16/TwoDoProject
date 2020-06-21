@@ -179,6 +179,10 @@ public class BluetoothManager
         if(server != null) {
             server.cancelListening();
         }
+        if (client != null)
+        {
+            client.cancelConnection();
+        }
     }
 
     public BluetoothAdapter getBluetoothAdapter() {

@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -99,7 +100,7 @@ public class CreationActivity extends AppCompatActivity{
     protected Intent intent;
     protected DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
+    private List<String> priorities = Arrays.asList("!", "! !", "! ! !");
     private List<String> remindingIntervalls;
     private Entry entry = new Entry();
 
@@ -206,11 +207,15 @@ public class CreationActivity extends AppCompatActivity{
         addTakePhotoHandler();
 
         rvPhotos = findViewById(R.id.rvPhotos);
+        rvPhotos.setHasFixedSize(false);
+        rvPhotos.setNestedScrollingEnabled(false);
+        //rvPhotos.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        rvPhotos.setLayoutManager(new LinearLayoutManager(this));
         photoAdpt = new PhotographAdapter(this);
         rvPhotos.setAdapter(photoAdpt);
-        rvPhotos.setLayoutManager(new LinearLayoutManager(this));
 
         tvPhotoCount = findViewById(R.id.tvPhotoCount);
+        tvPhotoCount.setText(String.format(getString(R.string.photo_count), 0));
 
         btFurtherItems = findViewById(R.id.btEntryFurtherItems);
         addFurtherItemsListener();
@@ -282,7 +287,7 @@ public class CreationActivity extends AppCompatActivity{
                     btFurtherItems.setText(getString(R.string.add_entry_page_further_information));
                     rvPhotos.setVisibility(View.GONE);
                     tvPhotoCount.setVisibility(View.GONE);
-                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));btFurtherItems.setText("Further Information");
+                    btFurtherItems.setText(getString(R.string.add_entry_page_further_information));
                 }
             }
         });
@@ -417,7 +422,8 @@ public class CreationActivity extends AppCompatActivity{
         int priorityNumber = 0;
         for (PriorityEnum prio:
                 PriorityEnum.values()) {
-            if(prio.getPrioirty_text().equalsIgnoreCase(spPriorities.getSelectedItem().toString())){
+            String selItem = spPriorities.getSelectedItem().toString();
+            if(prio.getPrioirty_text().equalsIgnoreCase(selItem)){
                 priorityNumber = prio.getPrioirty_value();
             }
         }

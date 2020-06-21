@@ -72,7 +72,8 @@ public class PhotographAdapter extends RecyclerView.Adapter<PhotographAdapter.Vi
     public PhotographAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photo,
                                         parent, false);
-        return new PhotographAdapter.ViewHolder(view);
+        PhotographAdapter.ViewHolder holder = new PhotographAdapter.ViewHolder(view);
+        return holder;
     }
 
     @Override
@@ -89,6 +90,8 @@ public class PhotographAdapter extends RecyclerView.Adapter<PhotographAdapter.Vi
         });
         updatePhotoCount();
     }
+
+
 
     /***
      * Method to update the displayed number of attached photos
