@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class TextInputFragment extends DialogFragment
     private Spinner spCategories;
     private ArrayAdapter<Category> categoryAdapter;
     private Context context;
+    private final double MAX_WIDTH = 40.;
 
     public TextInputFragment(String title, String infoText, CategoryListModel clm, int position,
                              Spinner spCategories, Context context) {
@@ -76,11 +78,17 @@ public class TextInputFragment extends DialogFragment
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((TextView) dlgView.findViewById(R.id.tvNewCatNameNotValid)).setText("");
                 EditText etName = dlgView.findViewById(R.id.etNewCatName);
                 String catName = etName.getText().toString();
                 if(catName == null || catName.equals(""))
                 {
                     catName = Proxy.getLanguageContext().getString(R.string.default_category_name);
+                }
+                if(!Proxy.widthOk(catName, MAX_WIDTH))
+                {
+                    ((TextView) dlgView.findViewById(R.id.tvNewCatNameNotValid)).setText(context.getString(R.string.cat_dialog_width));
+                    return;
                 }
                 boolean changeSuccessful = clm.setCategoryName(position, catName);
                 if(changeSuccessful) {

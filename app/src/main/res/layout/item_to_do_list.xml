@@ -54,7 +54,7 @@
         android:foregroundGravity="center"
         android:text="TextView"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_entry_content"
         app:layout_constraintStart_toStartOf="@+id/iv_entry_content"
         app:layout_constraintTop_toBottomOf="@+id/iv_entry_title" />
@@ -68,7 +68,7 @@
         android:foregroundGravity="center"
         android:text="."
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_entry_content"
         app:layout_constraintStart_toEndOf="@+id/tv_entry_category"
         app:layout_constraintTop_toBottomOf="@+id/iv_entry_title" />
@@ -82,7 +82,7 @@
         android:foregroundGravity="center"
         android:text="TextView"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_entry_content"
         app:layout_constraintStart_toEndOf="@+id/tv_entry_info_seperator_1"
         app:layout_constraintTop_toBottomOf="@+id/iv_entry_title" />
@@ -96,7 +96,7 @@
         android:foregroundGravity="center"
         android:text="."
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_entry_content"
         app:layout_constraintStart_toEndOf="@+id/tv_entry_due_date"
         app:layout_constraintTop_toBottomOf="@+id/iv_entry_title" />
@@ -110,7 +110,7 @@
         android:foregroundGravity="center"
         android:text="TextView"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_entry_content"
         app:layout_constraintStart_toEndOf="@+id/tv_entry_info_seperator_2"
         app:layout_constraintTop_toBottomOf="@+id/iv_entry_title" />

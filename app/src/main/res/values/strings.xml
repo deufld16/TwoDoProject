@@ -24,6 +24,7 @@
     <string name="cat_managment_change_name_dialog_body">Please enter a new name for the category</string>
     <string name="cat_managment_deletion_dialog_title">Delete category</string>
     <string name="cat_managment_deletion_dialog_body">Are you sure you want to\ndelete this category</string>
+    <string name="cat_dialog_width">Name for new category too long!</string>
 
     <!---Bluetooth Side-->
     <string name="bluetooth_title">Bluetooth Transfer</string>

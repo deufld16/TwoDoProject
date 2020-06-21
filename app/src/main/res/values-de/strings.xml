@@ -17,6 +17,8 @@
     <string name="cat_managment_change_name_dialog_body">Bitte geben Sie den neuen Kategorienamen ein</string>
     <string name="cat_managment_deletion_dialog_title">Kategorie löschen</string>
     <string name="cat_managment_deletion_dialog_body">Sind Sie sich Sicher, dass Sie diese Kategorie löschen möchten</string>
+    <string name="cat_dialog_width">Name für neue Kategorie zu lang!</string>
+
     <string name="dialog_accept">Übernehmen</string>
     <string name="dialog_cancel">Abbrechen</string>
     <string name="dialog_agree">Ja</string>
