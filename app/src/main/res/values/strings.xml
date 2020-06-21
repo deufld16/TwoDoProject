@@ -96,6 +96,7 @@
     <string name="the_day_after_tomorrow">the day after tomorrow</string>
     <string name="notifications_reminder_for">Reminder for </string>
     <string name="language_is_stupid"></string>
+    <string name="language_is_stupid_2"></string>
 
     <!---Akzeptieren/Ablehnen von Dialogen-->
     <string name="dialog_accept">OK</string>

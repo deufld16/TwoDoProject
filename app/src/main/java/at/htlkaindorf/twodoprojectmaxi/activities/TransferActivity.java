@@ -248,7 +248,11 @@ public class TransferActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    informUser(getString(R.string.bluetooth_inform_user_enabled)+resultCode+"s");
+                    if(getString(R.string.language_is_stupid_2).equalsIgnoreCase("")){
+                        informUser(getString(R.string.bluetooth_inform_user_enabled)+resultCode+"s");
+                    }else{
+                        informUser(getString(R.string.bluetooth_inform_user_enabled) + resultCode +"s " + getString(R.string.language_is_stupid_2));
+                    }
                     bm.initDeviceRole();
                 }
             }

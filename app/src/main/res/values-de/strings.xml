@@ -79,5 +79,32 @@
     <string name="info_img_load_error">Bild konnte nicht geladen werden. Wurde es händisch gelöscht?</string>
     <string name="delete_photo_title">Foto löschen</string>
     <string name="delete_photo">Sind Sie sicher, dass Sie\ndas gewählte Foto löschen wollen?</string>
+    <string name="channel_descritption">Dieser Channel wird für die Übertragung der Erinnerungsnachrichten verwendet</string>
+    <string name="all_categories">Alle Kategorien</string>
+    <string name="lang_german">Deutsch</string>
+    <string name="lang_english">Englisch</string>
+    <string name="lang_french">Französisch</string>
+    <string name="lang_spanish">Spanisch</string>
+    <string name="sorting_1">Fälligkeitsdatum ⋀</string>
+    <string name="sorting_2">Fälligkeitsdatum ⋁</string>
+    <string name="sorting_3">Priorität ⋀</string>
+    <string name="sorting_4">Priorität ⋁</string>
+    <string name="bluetooth_inform_user_error">Ein Fehler ist während des Anmachen des Bluetooths aufgetreten</string>
+    <string name="bluetooth_inform_user_enabled">"Bluetooth angeschalten, andere Geräte können diese Gerät nun für "</string>
+    <string name="bluetooth_inform_user_query">Suche gekopplete Geräte</string>
+    <string name="bluetooth_inform_user_start">Bluetooth Suche hat gestartet</string>
+    <string name="bluetooth_inform_user_stop">Bluetooth Suche wurde gestoppt</string>
+    <string name="bluetooth_inform_user_no_device">Kein Gerät wurde ausgewählt</string>
+    <string name="bluetooth_inform_user_error_1">Fehler mit der Verbindung</string>
+    <string name="bluetooth_inform_user_error_2">Fehler bei der Übertragung der Daten</string>
+    <string name="bluetooth_inform_user_error_3">Das Gerät unterstützt kein Bluetooth</string>
+    <string name="bluetooth_inform_user_error_4">Fehler während des Versuches eine Verbindung herzustellen</string>
+    <string name="bluetooth_inform_user_error_5">Fehler beim Empfangen der Daten</string>
+    <string name="bluetooth_inform_user_connect">"Verbunden mit: "</string>
+    <string name="bluetooth_inform_user_disconnected">Verbindung gertrennt</string>
+    <string name="bluetooth_inform_user_connected">Verbunden</string>
+    <string name="bluetooth_inform_user_turned_off">Bluetooth wurde ausgeschalten</string>
+    <string name="bluetooth_inform_user_waiting">Gerät wartet auf einen Verbindungsversuch</string>
+    <string name="language_is_stupid_2">finden</string>
 
 </resources>
