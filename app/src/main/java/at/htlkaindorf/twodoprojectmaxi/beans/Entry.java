@@ -114,25 +114,51 @@ public class Entry implements Serializable{
                     creationDate = creationDate.plusDays(plusNumber);
                     reminderDates.add(creationDate);
                 }
-                reminderDates.add(dueDate.minusDays(1));
-                reminderDates.add(dueDate);
+                if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0)
+                        .isBefore(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                    if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0).plusDays(1)
+                            .isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                        reminderDates.add(dueDate.minusDays(1));
+                    }
+                    if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0)
+                            .isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                        reminderDates.add(dueDate);
+                    }
+                }
             }else if(type == 1){
                 while(creationDate.plusMonths(plusNumber).isBefore(dueDate)){
                     creationDate = creationDate.plusMonths(plusNumber);
                     reminderDates.add(creationDate);
                 }
-                reminderDates.add(dueDate.minusDays(1));
-                reminderDates.add(dueDate);
+                if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0)
+                        .isBefore(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                    if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0).plusDays(1)
+                            .isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                        reminderDates.add(dueDate.minusDays(1));
+                    }
+                    if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0)
+                            .isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                        reminderDates.add(dueDate);
+                    }
+                }
             }else if(type == 2){
                 while(creationDate.plusYears(plusNumber).isBefore(dueDate)){
                     creationDate = creationDate.plusYears(plusNumber);
                     reminderDates.add(creationDate);
                 }
-                reminderDates.add(dueDate.minusDays(1));
-                reminderDates.add(dueDate);
+                if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0)
+                        .isBefore(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                    if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0).plusDays(1)
+                            .isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                        reminderDates.add(dueDate.minusDays(1));
+                    }
+                    if(!LocalDateTime.of(dueDate.getYear(), dueDate.getMonth().getValue(), dueDate.getDayOfMonth(),0,0)
+                            .isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue(), LocalDateTime.now().getDayOfMonth(), 0,0))){
+                        reminderDates.add(dueDate);
+                    }
+                }
             }
         }else if(reminderID == 0){
-            reminderDates.add(dueDate);
         }
         return reminderDates;
     }

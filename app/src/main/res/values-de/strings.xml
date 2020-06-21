@@ -67,7 +67,7 @@
     <string name="priority_high">Wichtig</string>
 
     <string name="edit_entry_page_Title">Eintrag ändern</string>
-    <string name="notifications_this_is_a_reminder">"Dies ist eine Erinnerung dafür, dass diese Aktivität  bis zum "</string>
+    <string name="notifications_this_is_a_reminder">"Dies ist eine Erinnerung dafür, dass diese Aktivität  bis "</string>
     <string name="tomorrow">morgen</string>
     <string name="today">heute</string>
     <string name="the_day_after_tomorrow">übermorgen</string>
@@ -106,5 +106,7 @@
     <string name="bluetooth_inform_user_turned_off">Bluetooth wurde ausgeschalten</string>
     <string name="bluetooth_inform_user_waiting">Gerät wartet auf einen Verbindungsversuch</string>
     <string name="language_is_stupid_2">finden</string>
+    <string name="notifications_stupid_language_3">zum</string>
+    <string name="choose_language_title">Sprache auswählen</string>
 
 </resources>

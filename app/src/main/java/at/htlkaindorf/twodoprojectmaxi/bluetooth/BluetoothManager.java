@@ -129,7 +129,7 @@ public class BluetoothManager
         }
         else
         {
-            if(Proxy.getLanguageContext().getString(R.string.language_is_stupid_2).equalsIgnoreCase("")){
+            if(Proxy.getLanguageContext().getString(R.string.language_is_stupid_2).equalsIgnoreCase("-")){
                 srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_enabled)+discoverDur+"s");
             }else{
                 srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_enabled)+discoverDur+"s " + Proxy.getLanguageContext().getString(R.string.language_is_stupid_2));

@@ -43,12 +43,12 @@
     <string name="bluetooth_inform_user_stop">Bluetooth discovery has stopped</string>
     <string name="bluetooth_inform_user_no_device">No device has been selected</string>
     <string name="bluetooth_inform_user_error_1">Error with connection</string>
-    <string name="bluetooth_inform_user_error_2">Error while transferring data</string>
+    <string name="bluetooth_inform_user_error_2">Error while transfering data</string>
     <string name="bluetooth_inform_user_error_3">Device does not support bluetooth</string>
     <string name="bluetooth_inform_user_error_4">Error while establishing connection</string>
     <string name="bluetooth_inform_user_error_5">Error while receiving data</string>
     <string name="bluetooth_inform_user_connect">Connected to: </string>
-    <string name="bluetooth_inform_user_disconnected">"Disconnected"</string>
+    <string name="bluetooth_inform_user_disconnected">Disconnected</string>
     <string name="bluetooth_inform_user_connected">"Connected"</string>
     <string name="bluetooth_inform_user_turned_off">Bluetooth turned off</string>
     <string name="bluetooth_inform_user_waiting">Device waits for connection attempt</string>
@@ -95,8 +95,7 @@
     <string name="today">today</string>
     <string name="the_day_after_tomorrow">the day after tomorrow</string>
     <string name="notifications_reminder_for">Reminder for </string>
-    <string name="language_is_stupid"></string>
-    <string name="language_is_stupid_2"></string>
+    <string name="language_is_stupid_2">-</string>
 
     <!---Akzeptieren/Ablehnen von Dialogen-->
     <string name="dialog_accept">OK</string>
@@ -121,4 +120,8 @@
     <string name="sorting_2">Due Date ⋁</string>
     <string name="sorting_3">Priority ⋀</string>
     <string name="sorting_4">Priority ⋁</string>
+
+    <string name="choose_language_title">Choose Language</string>
+    <string name="language_is_stupid">-</string>
+    <string name="notifications_stupid_language_3">-</string>
 </resources>

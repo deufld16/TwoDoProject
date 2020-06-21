@@ -476,7 +476,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
     private void showChangeLanguageDialog(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ToDoListActivity.this);
-        mBuilder.setTitle("Choose Language");
+        mBuilder.setTitle(getString(R.string.choose_language_title));
         int checkedItem = -1;
         for (int i = 0; i < SUPPORTED_LANGUAGES_PREFIX.length; i++) {
             if(currentLanguage.equals(SUPPORTED_LANGUAGES_PREFIX[i])){

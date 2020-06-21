@@ -35,7 +35,7 @@ public class AlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //Log.d("NOTIFICATION_TESTING", "onReceive: Started message sending process");
 
-        String displayText = Proxy.getLanguageContext().getString(R.string.notifications_reminder_for);
+        String displayText = Proxy.getLanguageContext().getString(R.string.notifications_this_is_a_reminder);
         String parts[] = intent.getStringExtra("doneUntil").split("\\.");
         LocalDateTime help = LocalDateTime.of(Integer.parseInt(parts[2]), Integer.parseInt(parts[1]),Integer.parseInt(parts[0]), 0, 0);
         if(help.minusDays(1).isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0))){
@@ -46,9 +46,12 @@ public class AlertReceiver extends BroadcastReceiver {
         else if(help.minusDays(2).isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0))){
             displayText += Proxy.getLanguageContext().getString(R.string.the_day_after_tomorrow);
         }else{
+            if(!Proxy.getLanguageContext().getString(R.string.notifications_stupid_language_3).equalsIgnoreCase("-")){
+                displayText += Proxy.getLanguageContext().getString(R.string.notifications_stupid_language_3) + " ";
+            }
             displayText += intent.getStringExtra("doneUntil");
         }
-        if(!Proxy.getLanguageContext().getString(R.string.language_is_stupid).equalsIgnoreCase("")){
+        if(!Proxy.getLanguageContext().getString(R.string.language_is_stupid).equalsIgnoreCase("-")){
             displayText += Proxy.getLanguageContext().getString(R.string.language_is_stupid);
         }
         Intent notificationIntent = new Intent(Proxy.getContext(), ToDoListActivity.class);
