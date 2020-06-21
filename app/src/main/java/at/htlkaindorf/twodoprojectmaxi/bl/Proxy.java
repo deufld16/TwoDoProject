@@ -3,6 +3,8 @@ package at.htlkaindorf.twodoprojectmaxi.bl;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
@@ -34,6 +38,79 @@ public class Proxy {
     private static Context languageContext;
     private static SoundRecorder soundRecorder = new SoundRecorder();
     private static VoiceRecordAdapter vra;
+    private static final Map<Character, Double> CHARACTER_WIDTH;
+
+    static
+    {
+        CHARACTER_WIDTH = new HashMap<>();
+        CHARACTER_WIDTH.put('a', 2.5);
+        CHARACTER_WIDTH.put('b', 2.5);
+        CHARACTER_WIDTH.put('c', 2.);
+        CHARACTER_WIDTH.put('d', 2.5);
+        CHARACTER_WIDTH.put('e', 2.5);
+        CHARACTER_WIDTH.put('f', 1.5);
+        CHARACTER_WIDTH.put('g', 2.);
+        CHARACTER_WIDTH.put('h', 2.5);
+        CHARACTER_WIDTH.put('i', 1.);
+        CHARACTER_WIDTH.put('j', 1.);
+        CHARACTER_WIDTH.put('k', 2.);
+        CHARACTER_WIDTH.put('l', 1.);
+        CHARACTER_WIDTH.put('m', 3.5);
+        CHARACTER_WIDTH.put('n', 2.5);
+        CHARACTER_WIDTH.put('o', 2.5);
+        CHARACTER_WIDTH.put('p', 2.5);
+        CHARACTER_WIDTH.put('q', 2.5);
+        CHARACTER_WIDTH.put('r', 1.5);
+        CHARACTER_WIDTH.put('s', 1.5);
+        CHARACTER_WIDTH.put('t', 1.5);
+        CHARACTER_WIDTH.put('u', 2.5);
+        CHARACTER_WIDTH.put('v', 2.);
+        CHARACTER_WIDTH.put('w', 3.);
+        CHARACTER_WIDTH.put('x', 2.);
+        CHARACTER_WIDTH.put('y', 2.);
+        CHARACTER_WIDTH.put('z', 1.5);
+        CHARACTER_WIDTH.put('A', 2.5);
+        CHARACTER_WIDTH.put('B', 2.5);
+        CHARACTER_WIDTH.put('C', 2.5);
+        CHARACTER_WIDTH.put('D', 2.5);
+        CHARACTER_WIDTH.put('E', 2.);
+        CHARACTER_WIDTH.put('F', 2.);
+        CHARACTER_WIDTH.put('G', 3.);
+        CHARACTER_WIDTH.put('H', 2.5);
+        CHARACTER_WIDTH.put('I', 1.);
+        CHARACTER_WIDTH.put('J', 1.5);
+        CHARACTER_WIDTH.put('K', 2.5);
+        CHARACTER_WIDTH.put('L', 2.);
+        CHARACTER_WIDTH.put('M', 4.);
+        CHARACTER_WIDTH.put('N', 3.);
+        CHARACTER_WIDTH.put('O', 3.);
+        CHARACTER_WIDTH.put('P', 2.5);
+        CHARACTER_WIDTH.put('Q', 3.);
+        CHARACTER_WIDTH.put('R', 2.5);
+        CHARACTER_WIDTH.put('S', 2.);
+        CHARACTER_WIDTH.put('T', 2.);
+        CHARACTER_WIDTH.put('U', 3.);
+        CHARACTER_WIDTH.put('V', 2.5);
+        CHARACTER_WIDTH.put('W', 4.);
+        CHARACTER_WIDTH.put('X', 2.5);
+        CHARACTER_WIDTH.put('Y', 2.);
+        CHARACTER_WIDTH.put('Z', 2.);
+        CHARACTER_WIDTH.put('0', 2.5);
+        CHARACTER_WIDTH.put('1', 2.);
+        CHARACTER_WIDTH.put('2', 2.5);
+        CHARACTER_WIDTH.put('3', 2.5);
+        CHARACTER_WIDTH.put('4', 2.5);
+        CHARACTER_WIDTH.put('5', 2.5);
+        CHARACTER_WIDTH.put('6', 2.5);
+        CHARACTER_WIDTH.put('7', 2.5);
+        CHARACTER_WIDTH.put('8', 2.5);
+        CHARACTER_WIDTH.put('9', 2.5);
+    }
+
+    public static Map<Character, Double> getCharacterWidth() {
+        return CHARACTER_WIDTH;
+    }
+
     public static SoundRecorder getSoundRecorder() {
         return soundRecorder;
     }
@@ -149,5 +226,27 @@ public class Proxy {
                 return false;
             }
         });
+    }
+
+    public static boolean widthOk(String msg, double targetWidth)
+    {
+        double actualWidth = 0.;
+        for (int i = 0; i < msg.length(); i++)
+        {
+            char character = msg.charAt(i);
+            double characterW = 2.;
+            if(CHARACTER_WIDTH.containsKey(character))
+            {
+                characterW = CHARACTER_WIDTH.get(character);
+            }
+            actualWidth += characterW;
+        }
+
+        if(actualWidth <= targetWidth)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
