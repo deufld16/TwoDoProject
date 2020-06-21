@@ -100,7 +100,7 @@ public class CreationActivity extends AppCompatActivity{
     protected Intent intent;
     protected DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    private List<String> priorities = Arrays.asList("Low Priority", "Medium Priority", "High Priority");
+    private List<String> priorities = Arrays.asList("!", "! !", "! ! !");
     private List<String> remindingIntervalls;
     private Entry entry = new Entry();
 
@@ -422,7 +422,8 @@ public class CreationActivity extends AppCompatActivity{
         int priorityNumber = 0;
         for (PriorityEnum prio:
                 PriorityEnum.values()) {
-            if(prio.getPrioirty_text().equalsIgnoreCase(spPriorities.getSelectedItem().toString())){
+            String selItem = spPriorities.getSelectedItem().toString();
+            if(prio.getPrioirty_text().equalsIgnoreCase(selItem)){
                 priorityNumber = prio.getPrioirty_value();
             }
         }

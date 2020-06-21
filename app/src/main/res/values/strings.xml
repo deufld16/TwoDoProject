@@ -66,6 +66,9 @@
     <string name="add_entry_page_information_enter_name">Please enter a Title for your Entry</string>
     <string name="add_entry_page_information_enter_date">Please enter a Date for your Entry</string>
     <string name="default_category_name">New Category</string>
+    <string name="priority_low">Low</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_high">High</string>
 
     <!---Edit Entry Page-->
     <string name="edit_entry_page_Title">Edit Entry</string>

@@ -62,6 +62,10 @@
     <string name="add_entry_page_information_enter_name">Bitte geben Sie einen Titel für den Eintrag ein</string>
     <string name="add_entry_page_information_enter_date">Bitte geben Sie ein Datum für den Eintrag ein</string>
     <string name="default_category_name">Neue Kategorie</string>
+    <string name="priority_low">Unwichtig</string>
+    <string name="priority_medium">Halbwichtig</string>
+    <string name="priority_high">Wichtig</string>
+
     <string name="edit_entry_page_Title">Eintrag ändern</string>
     <string name="notifications_this_is_a_reminder">"Dies ist eine Erinnerung dafür, dass diese Aktivität  bis zum "</string>
     <string name="tomorrow">morgen</string>
