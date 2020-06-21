@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
@@ -45,11 +46,11 @@ public class BluetoothServer
         try
         {
             BluetoothServerSocket bss = bm.getBluetoothAdapter().listenUsingRfcommWithServiceRecord(NAME, THE_UUID);
-            printToUI("Device waits for connection attempt");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_waiting));
             BluetoothSocket socket = bss.accept();
             if(socket != null)
             {
-                printToUI("Connected");
+                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connected));
                 receiveData(socket);
                 socket.close();
             }
@@ -57,7 +58,7 @@ public class BluetoothServer
         }
         catch (IOException e)
         {
-            printToUI("Error while establishing connection");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_4));
             bm.getSrcActivity().processFailed();
         }
     }
@@ -73,7 +74,7 @@ public class BluetoothServer
             lt.start();
             ois.close();
         } catch (IOException e) {
-            printToUI("Error while receiving data");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_5));
             bm.getSrcActivity().processFailed();
         }
     }

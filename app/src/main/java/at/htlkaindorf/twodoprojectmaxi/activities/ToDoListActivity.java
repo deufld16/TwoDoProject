@@ -74,7 +74,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager lm;
     private CategoryListModel clm;
     private BottomNavigationView vNavBottom;
-    private static final String [] SUPPORTED_LANGUAGES = {"German", "English"};
+    private static String [] supported_languages;
     private static final String [] SUPPORTED_LANGUAGES_PREFIX = {"de", "en"};
     private String currentLanguage = "de";
 
@@ -210,7 +210,9 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
-
+        supported_languages = new String[2];
+        supported_languages[0] = getString(R.string.lang_english);
+        supported_languages[1] = getString(R.string.lang_german);
         ImageView ivPopoupmenu = findViewById(R.id.ivPopupMenu);
         ivPopoupmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,7 +374,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 allFilterCategories.add(filterCategory.getCategory().getCategory_name());
             }
         }
-        allFilterCategories.add(0, "All Categories");
+        allFilterCategories.add(0, getString(R.string.all_categories));
         allCategories.removeIf(category -> category.getCategory_name().equalsIgnoreCase(getString(R.string.add_entry_page_add_category)));
 
         return allFilterCategories;
@@ -480,7 +482,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 checkedItem = i;
             }
         }
-        mBuilder.setSingleChoiceItems(SUPPORTED_LANGUAGES, checkedItem, new DialogInterface.OnClickListener() {
+        mBuilder.setSingleChoiceItems(supported_languages, checkedItem, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
@@ -533,6 +535,7 @@ public class ToDoListActivity extends AppCompatActivity {
             intent.putExtra("currentLang", languageIdentifier);
             finish();
             startActivity(getIntent());
+            //toDoAdapter.switchView(Status.Working);
         }
     }
 }

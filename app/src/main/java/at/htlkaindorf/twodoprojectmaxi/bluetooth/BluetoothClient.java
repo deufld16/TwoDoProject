@@ -45,7 +45,7 @@ public class BluetoothClient
                 bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_title_2),
                 bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_body_1),
                 bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_discover_devices_btn));
-        srcActivity.informUser("Querying paired devices");
+        srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_query));
     }
 
     /***
@@ -56,7 +56,7 @@ public class BluetoothClient
         if(partnerDevice == null)
         {
             bluetoothAdapter.startDiscovery();
-            srcActivity.informUser("Bluetooth discovery has started");
+            srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_start));
             srcActivity.displayDevices(bm, deviceList,
                     bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_title_1),
                     bm.getSrcActivity().getString(R.string.bluetooth_discovered_devices_body_2),
@@ -71,12 +71,12 @@ public class BluetoothClient
     {
         if(bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
-            srcActivity.informUser("Bluetooth discovery has stopped");
+            srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_stop));
         }
 
         if(selectedDevice == null)
         {
-            srcActivity.informUser("No device has been selected");
+            srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_no_device));
             srcActivity.processFailed();
             return;
         }
@@ -87,14 +87,14 @@ public class BluetoothClient
             socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
 
             bluetoothAdapter.cancelDiscovery();
-            printToUI("Connecting to: " + partnerDevice.getName());
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
             socket.connect();
-            printToUI("Connected to: " + partnerDevice.getName());
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
 
             sendData();
             disconnect();
         } catch (IOException e) {
-            printToUI("Error with connection");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_1));
             srcActivity.processFailed();
         }
     }
@@ -113,7 +113,7 @@ public class BluetoothClient
             //ToDo: add sending process for photographs
             oos.close();
         } catch (IOException e) {
-            printToUI("Error while transferring data");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_2));
             srcActivity.processFailed();
         }
     }
@@ -123,7 +123,7 @@ public class BluetoothClient
      */
     private void disconnect() throws IOException {
         socket.close();
-        printToUI("Disconnected");
+        printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_disconnected));
     }
 
     /***

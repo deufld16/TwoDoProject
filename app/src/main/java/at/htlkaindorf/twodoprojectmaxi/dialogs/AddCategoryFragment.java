@@ -66,7 +66,7 @@ public class AddCategoryFragment extends DialogFragment {
                 String catName = etName.getText().toString();
                 if(catName == null || catName.equals(""))
                 {
-                    catName = "New Category";
+                    catName = Proxy.getLanguageContext().getString(R.string.default_category_name);
                 }
                 Proxy.getClm().addCategory(new Category(catName));
                 catAdapter.setEntries(Proxy.getClm().getAllCategories());

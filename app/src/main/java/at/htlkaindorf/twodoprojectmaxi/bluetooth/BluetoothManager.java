@@ -56,7 +56,7 @@ public class BluetoothManager
                         BluetoothAdapter.ERROR);
 
                 if(state == BluetoothAdapter.STATE_OFF) {
-                    srcActivity.informUser("Bluetooth turned off");
+                    srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_turned_off));
                     if(!processDone) {
                         srcActivity.processFailed();
                     }
@@ -90,7 +90,7 @@ public class BluetoothManager
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null)
         {
-            throw new Exception("Device does not support bluetooth");
+            throw new Exception(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_3));
         }
 
         enableBluetoothDiscoverability();
@@ -129,7 +129,7 @@ public class BluetoothManager
         }
         else
         {
-            srcActivity.informUser("Bluetooth enabled, discoverable for "+discoverDur+"s");
+            srcActivity.informUser(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_enabled)+discoverDur+"s");
             initDeviceRole();
         }
     }

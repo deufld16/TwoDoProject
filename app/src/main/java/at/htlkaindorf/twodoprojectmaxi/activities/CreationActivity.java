@@ -332,7 +332,7 @@ public class CreationActivity extends AppCompatActivity{
     }
 
     //OnClick event for the OK Button which creates the entry with the input data
-    public void addOkListener()
+    protected void addOkListener()
     {
         btOk.setOnClickListener(new View.OnClickListener() {
             @Override

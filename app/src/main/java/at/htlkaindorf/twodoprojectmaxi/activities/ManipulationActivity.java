@@ -152,4 +152,12 @@ public class ManipulationActivity extends CreationActivity
             }
         });
     }
+
+    @Override
+    protected void addOkListener() {
+        intent.putExtra("newEntry", editEntry);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+        overridePendingTransition(0, R.anim.from_right);
+    }
 }

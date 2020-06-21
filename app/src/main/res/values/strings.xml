@@ -36,7 +36,22 @@
     <string name="bluetooth_discovered_devices_body_1">Please choose a paired device</string>
     <string name="bluetooth_discovered_devices_body_2">Please wait and choose a discovered device</string>
     <string name="bluetooth_discovered_devices_discover_devices_btn">DISCOVER FURHTER DEVICES</string>
-
+    <string name="bluetooth_inform_user_error">Error while enabling bluetooth</string>
+    <string name="bluetooth_inform_user_enabled">Bluetooth enabled, discoverable for </string>
+    <string name="bluetooth_inform_user_query">Querying paired devices</string>
+    <string name="bluetooth_inform_user_start">Bluetooth discovery has started</string>
+    <string name="bluetooth_inform_user_stop">Bluetooth discovery has stopped</string>
+    <string name="bluetooth_inform_user_no_device">No device has been selected</string>
+    <string name="bluetooth_inform_user_error_1">Error with connection</string>
+    <string name="bluetooth_inform_user_error_2">Error while transferring data</string>
+    <string name="bluetooth_inform_user_error_3">Device does not support bluetooth</string>
+    <string name="bluetooth_inform_user_error_4">Error while establishing connection</string>
+    <string name="bluetooth_inform_user_error_5">Error while receiving data</string>
+    <string name="bluetooth_inform_user_connect">Connected to: </string>
+    <string name="bluetooth_inform_user_disconnected">"Disconnected"</string>
+    <string name="bluetooth_inform_user_connected">"Connected"</string>
+    <string name="bluetooth_inform_user_turned_off">Bluetooth turned off</string>
+    <string name="bluetooth_inform_user_waiting">Device waits for connection attempt</string>
     <!---entry creation/adaptation page-->
     <string name="add_entry_page_title">Add Entry</string>
     <string name="add_entry_page_description">Description</string>
@@ -84,4 +99,15 @@
     <string name="delete_photo_title">Delete Photograph</string>
     <string name="delete_photo">Are you sure you want to\ndelete the selected photograph?</string>
 
+    <string name="channel_descritption">This channel is used to transmit the reminders for the activities</string>
+    <string name="all_categories">All Categories</string>
+    <string name="lang_german">German</string>
+    <string name="lang_english">English</string>
+    <string name="lang_french">French</string>
+    <string name="lang_spanish">Spanish</string>
+
+    <string name="sorting_1">Due Date ⋀</string>
+    <string name="sorting_2">Due Date ⋁</string>
+    <string name="sorting_3">Priority ⋀</string>
+    <string name="sorting_4">Priority ⋁</string>
 </resources>

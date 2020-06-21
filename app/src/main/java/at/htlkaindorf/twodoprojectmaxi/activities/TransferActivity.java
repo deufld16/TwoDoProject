@@ -242,13 +242,13 @@ public class TransferActivity extends AppCompatActivity {
             {
                 if(resultCode == RESULT_CANCELED)
                 {
-                    informUser("Error while enabling bluetooth");
+                    informUser(getString(R.string.bluetooth_inform_user_error));
                     processFailed();
                     return;
                 }
                 else
                 {
-                    informUser("Bluetooth enabled, discoverable for "+resultCode+"s");
+                    informUser(getString(R.string.bluetooth_inform_user_enabled)+resultCode+"s");
                     bm.initDeviceRole();
                 }
             }

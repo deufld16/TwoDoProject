@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 

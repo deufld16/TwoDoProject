@@ -337,7 +337,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         for (Entry entry:
                 helpList) {
-            if((filterCategory.equalsIgnoreCase("All Categories") ||
+            if((filterCategory.equalsIgnoreCase(Proxy.getLanguageContext().getString(R.string.all_categories)) ||
                     filterCategory.equalsIgnoreCase(entry.getCategory().getCategory_name())) && entry.getStatus() == displayStatus){
                 filteredEntries.add(entry);
             }

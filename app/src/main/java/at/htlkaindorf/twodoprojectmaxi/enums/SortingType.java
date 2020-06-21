@@ -1,13 +1,16 @@
 package at.htlkaindorf.twodoprojectmaxi.enums;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
+import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
+
 /**
  * Enum for Sorting which is used to determine how the entries should be sorted
  */
 public enum SortingType {
-    DUE_DATE_DOWNWARDS("Due Date ⋀"),
-    DUE_DATE_UPWARDS("Due Date ⋁"),
-    PRIORITY_DOWNWARDS("Priority ⋀"),
-    PRIORITY_UPWARDS("Priority ⋁");
+    DUE_DATE_DOWNWARDS(Proxy.getLanguageContext().getString(R.string.sorting_1)),
+    DUE_DATE_UPWARDS(Proxy.getLanguageContext().getString(R.string.sorting_2)),
+    PRIORITY_DOWNWARDS(Proxy.getLanguageContext().getString(R.string.sorting_3)),
+    PRIORITY_UPWARDS(Proxy.getLanguageContext().getString(R.string.sorting_4));
 
     private String display_text;
 

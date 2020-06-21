@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
 /**
@@ -44,7 +45,7 @@ public class App extends Application {
                     NotificationManager.IMPORTANCE_DEFAULT
             );
 
-            reminder_channel.setDescription("This channel is used to transmit the reminders for the activities");
+            reminder_channel.setDescription(getString(R.string.channel_descritption));
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(reminder_channel);

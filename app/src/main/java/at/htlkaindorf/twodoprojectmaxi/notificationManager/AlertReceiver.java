@@ -58,7 +58,7 @@ public class AlertReceiver extends BroadcastReceiver {
 
         Notification notification = new NotificationCompat.Builder(Proxy.getContext(), App.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle("Reminder for " + intent.getStringExtra("title"))
+                .setContentTitle(Proxy.getLanguageContext().getString(R.string.notifications_reminder_for) + intent.getStringExtra("title"))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(displayText))
                 .setContentText(displayText)
