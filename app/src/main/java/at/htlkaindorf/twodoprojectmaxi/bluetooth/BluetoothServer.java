@@ -79,7 +79,12 @@ public class BluetoothServer
         catch (IOException e)
         {
             printToUI("Error while establishing connection");
-            bm.getSrcActivity().processFailed();
+            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    bm.getSrcActivity().processFailed();
+                }
+            });
         }
     }
 
@@ -94,7 +99,12 @@ public class BluetoothServer
             lt.start();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_5));
-            bm.getSrcActivity().processFailed();
+            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    bm.getSrcActivity().processFailed();
+                }
+            });
         }
     }
 
@@ -171,19 +181,34 @@ public class BluetoothServer
                         List<Object> uncategorizedItems = new LinkedList<>((List<Object>) o);
                         if(uncategorizedItems.get(0) instanceof Entry) {
                             //Entry sent
-                            Proxy.getToDoAdapter().setEntries(new LinkedList(uncategorizedItems));
+                            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                                                  @Override
+                                                                  public void run() {
+                                                                      Proxy.getToDoAdapter().setEntries(new LinkedList(uncategorizedItems));
+                                                                  }
+                                                              });
                             printToUI(bm.getSrcActivity().getString(R.string.bt_entries_received));
                         }
                         else if(uncategorizedItems.get(0) instanceof Category) {
                             //Category sent
-                            Proxy.getClm().setAllCategories(new LinkedList(uncategorizedItems));
+                            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                                                  @Override
+                                                                  public void run() {
+                                                                      Proxy.getClm().setAllCategories(new LinkedList(uncategorizedItems));
+                                                                  }
+                                                              });
                             printToUI(bm.getSrcActivity().getString(R.string.bt_categories_received));
                         }
                     }
                     else if(o instanceof Map)
                     {
                         //Attachment sent
-                        AttachmentIO.saveAttachments((Map<String, List<File>>) o);
+                        bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                                              @Override
+                                                              public void run() {
+                                                                  AttachmentIO.saveAttachments((Map<String, List<File>>) o);
+                                                              }
+                                                          });
                         printToUI(bm.getSrcActivity().getString(R.string.bt_attachments_received));
                     }
                 }

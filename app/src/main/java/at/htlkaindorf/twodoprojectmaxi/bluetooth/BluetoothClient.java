@@ -112,7 +112,12 @@ public class BluetoothClient
             oos.close();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_2));
-            srcActivity.processFailed();
+            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    srcActivity.processFailed();
+                }
+            });
         }
     }
 
