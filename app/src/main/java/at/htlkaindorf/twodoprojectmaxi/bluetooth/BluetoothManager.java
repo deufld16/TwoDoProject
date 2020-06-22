@@ -143,13 +143,13 @@ public class BluetoothManager
      */
     public void initDeviceRole()
     {
-        if(role.equals(Proxy.getContext().getString(R.string.bluetooth_sender)))
+        if(role.equals(Proxy.getLanguageContext().getString(R.string.bluetooth_sender)))
         {
             //device will act as a client
             client = new BluetoothClient(this, bluetoothAdapter, srcActivity, THE_UUID);
             client.queryPairedDevices();
         }
-        else if(role.equals(Proxy.getContext().getString(R.string.bluetooth_receiver)))
+        else if(role.equals(Proxy.getLanguageContext().getString(R.string.bluetooth_receiver)))
         {
             //device will act as a server
             server = new BluetoothServer(this, THE_UUID);
