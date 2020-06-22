@@ -99,6 +99,7 @@ public class BluetoothServer
             lt.start();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_5));
+            e.printStackTrace();
             bm.getSrcActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
