@@ -41,29 +41,32 @@ public class NotificationHelper {
      * @param entry
      */
     public static void startAlarm(Entry entry){
-        AlarmManager alarmManager = (AlarmManager) Proxy.getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(Proxy.getContext(), AlertReceiver.class);
-        //Log.d("NOTIFICATION_TODO", "startAlarm: " + entry.getTitle() + entry.getRequest_id());
-        intent.setData(Uri.parse("timer: " + entry.getReminderDates().get(0)));
+        try {
+            AlarmManager alarmManager = (AlarmManager) Proxy.getContext().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(Proxy.getContext(), AlertReceiver.class);
+            //Log.d("NOTIFICATION_TODO", "startAlarm: " + entry.getTitle() + entry.getRequest_id());
+            intent.setData(Uri.parse("timer: " + entry.getReminderDates().get(0)));
 
-        intent.putExtra("title", entry.getTitle());
-        intent.putExtra("doneUntil", dtf.format(entry.getDueDate()));
-        intent.putExtra("id", entry.getRequest_id());
+            intent.putExtra("title", entry.getTitle());
+            intent.putExtra("doneUntil", dtf.format(entry.getDueDate()));
+            intent.putExtra("id", entry.getRequest_id());
 
-        if(entry.getReminderDates().size() > 1) {
-            String nextDueDate = entry.getReminderDates().get(1) + "";
-            intent.putExtra("nextDueDate", nextDueDate);
-        }else{
-            intent.putExtra("nextDueDate", "none");
+            if (entry.getReminderDates().size() > 1) {
+                String nextDueDate = entry.getReminderDates().get(1) + "";
+                intent.putExtra("nextDueDate", nextDueDate);
+            } else {
+                intent.putExtra("nextDueDate", "none");
+            }
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(Proxy.getContext(), entry.getRequest_id(), intent, 0);
+            Calendar c = Calendar.getInstance();
+            Log.d("NOTIFICATION_FIX", "method: startAlarm - the next alarm for the activity " + entry.getTitle() + " should occur at " + entry.getReminderDates().get(0));
+            c.setTime(Date.from(entry.getReminderDates().get(0).atZone(ZoneId.systemDefault()).toInstant()));
+            c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), 8, 0);
+            Log.d("NOTIFICATION_FIX", c.getTime() + " ----- " + Calendar.getInstance().getTime() + "-----" + c.getTimeInMillis());
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 5000*/, pendingIntent);
+            entry.getReminderDates().remove(0);
+        }catch (Exception ex){
         }
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(Proxy.getContext(), entry.getRequest_id(), intent, 0);
-        Calendar c = Calendar.getInstance();
-        Log.d("NOTIFICATION_FIX", "method: startAlarm - the next alarm for the activity " + entry.getTitle() + " should occur at " + entry.getReminderDates().get(0));
-        c.setTime(Date.from(entry.getReminderDates().get(0).atZone(ZoneId.systemDefault()).toInstant()));
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), 8, 0);
-        Log.d("NOTIFICATION_FIX", c.getTime() + " ----- " + Calendar.getInstance().getTime() + "-----" + c.getTimeInMillis());
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 5000*/, pendingIntent);
-        entry.getReminderDates().remove(0);
     }
 
     /**
