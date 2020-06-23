@@ -103,20 +103,28 @@ public class BluetoothClient
     {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
             AttachmentIO.initStorageDirectory();
             oos.writeObject(AttachmentIO.getStorageDirStr());
-            List<byte[]> bytes = AttachmentIO.getAllAttachments();
+
+            /*List<byte[]> bytes = AttachmentIO.getPhotoAttachments();
             for (byte[] byteArr : bytes)
             {
+                oos.writeObject("photo");
                 oos.writeObject(byteArr);
-            }
+            }*/
+
             oos.writeObject(AttachmentIO.getImageFilenameMapping());
             printToUI(srcActivity.getString(R.string.bt_attachments_sent));
+
             oos.writeObject(Proxy.getClm().getAllCategories());
             printToUI(srcActivity.getString(R.string.bt_categories_sent));
+
             oos.writeObject(Proxy.getToDoAdapter().getEntries());
             printToUI(srcActivity.getString(R.string.bt_entries_sent));
+
             oos.writeObject(false);
+
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

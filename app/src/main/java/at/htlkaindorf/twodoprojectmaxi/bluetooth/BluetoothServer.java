@@ -194,27 +194,41 @@ public class BluetoothServer
                         Map<byte[], String> filenameImageMapping = (Map<byte[], String>)o;
                         for (byte[] imgByteArray : filenameImageMapping.keySet())
                         {
-                            File oldFile = new File(filenameImageMapping.get(imgByteArray));
-                            File tempFile = new File(tempImgPaths.get(imgByteArray));
-                            tempFile.renameTo(oldFile);
+                            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AttachmentIO.saveAttachments(filenameImageMapping.get(imgByteArray), imgByteArray);
+                                }
+                            });
+                            //File oldFile = new File(filenameImageMapping.get(imgByteArray));
+                            //File tempFile = new File(tempImgPaths.get(imgByteArray));
+                            //tempFile.renameTo(oldFile);
                         }
-
-                    } else if(o instanceof byte[]) {
-
-                        String imgPath = directory+ImageRecorder.assemblePhotoPath();
-                        byte[] sentArray = (byte[]) o;
-                        bm.getSrcActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AttachmentIO.saveAttachments(imgPath, sentArray);
-                            }
-                        });
-                        tempImgPaths.put(sentArray, imgPath);
 
                     } else if(o instanceof String) {
 
-                        directory = o+"";
+                        switch(o+"")
+                        {
+                            case "photo":
+                                //wait for photo-byte[]:
+                                o = ois.readObject();
+                                String imgPath = directory+ImageRecorder.assemblePhotoPath();
+                                byte[] sentArray = (byte[]) o;
+                                bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AttachmentIO.saveAttachments(imgPath, sentArray);
+                                    }
+                                });
+                                tempImgPaths.put(sentArray, imgPath);
+                                break;
+                            case "audio":
 
+                                break;
+                            default:
+                                directory = o+"";
+                                break;
+                        }
                     } else if(o instanceof Boolean){
                         if(!(boolean)o){
                             printToUI(bm.getSrcActivity().getString(R.string.bt_attachments_received));

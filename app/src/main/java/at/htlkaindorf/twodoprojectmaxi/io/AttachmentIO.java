@@ -35,7 +35,8 @@ public class AttachmentIO {
     private static final String KEY_AUDIO = "audio";
     private static final String KEY_PHOTO = "photo";
     private static Map<byte[], String> imageFilenameMapping;
-    private static List<byte[]> bytes = new LinkedList<>();
+    private static Map<byte[], String> audioFilenameMapping;
+    private static List<byte[]> bytes;
     private static String storageDirStr;
 
     /***
@@ -49,14 +50,12 @@ public class AttachmentIO {
     }
 
     /***
-     * Method to convert the Attachments to a format (Map) that can be transferred via Bluetooth
-     *  - key:      attachment type description
-     *  - value:    collection of storage locations for each attachment item
+     * Method to transform all photos to a transferable state (byte[])
      *
-     * @return Map
+     * @return List
      */
-    //public static Map<String, List<File>> getAllAttachments(){
-    public static List<byte[]> getAllAttachments(){
+    public static /*List<byte[]>*/ void getPhotoAttachments(){
+        bytes = new LinkedList<>();
         imageFilenameMapping = new HashMap<>();
 
         for (Entry entry:Proxy.getToDoAdapter().getEntries()) {
@@ -72,7 +71,7 @@ public class AttachmentIO {
                     FileInputStream fis = new FileInputStream(imgFile);
                     byte[] byteArr = new byte[fis.available()];
                     fis.read(byteArr);
-                    bytes.add(byteArr);
+                    //bytes.add(byteArr);
                     imageFilenameMapping.put(byteArr, imgFileStr);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -81,8 +80,35 @@ public class AttachmentIO {
                 }
             }
         }
-        return bytes;
+        //return bytes;
     }
+
+    /***
+     * Method to transform all audios to a transferable state (byte[])
+     *
+     * @return List
+     */
+    /*public static List<byte[]> getAudioAttachments() {
+        bytes = new LinkedList<>();
+        try {
+            for (Entry entry:Proxy.getToDoAdapter().getEntries()) {
+                for (String audioPath : entry.getAllAudioFileLocations())
+                {
+                    File audioFile = new File(audioPath);
+                    FileInputStream fis = new FileInputStream(audioFile);
+                    byte[] byteArr = new byte[fis.available()];
+                    fis.read(byteArr);
+                    bytes.add(byteArr);
+                    audioFilenameMapping.put(byteArr, aud)
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }*/
 
     /***
      * Method to save a successfully transferred attachment collection
