@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.awt.image.*;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
@@ -229,7 +228,7 @@ public class BluetoothServer
                                                                     AttachmentIO.setFileBitmapMap((Map<String, byte[]>) o);
                                                               }
                                                           });*/
-                        Map<byte[], String> filenameImageMapping = (Map<byte[], String>) ois.readObject();
+                        Map<byte[], String> filenameImageMapping = (Map<byte[], String>)o;
                         for (byte[] imgByteArray : filenameImageMapping.keySet())
                         {
                             File oldFile = new File(filenameImageMapping.get(imgByteArray));
@@ -240,7 +239,7 @@ public class BluetoothServer
                     } else if(o instanceof byte[]) {
 
                         String imgPath = directory+ImageRecorder.assemblePhotoPath();
-                        byte[] sentArray = (byte[]) ois.readObject();
+                        byte[] sentArray = (byte[]) o;
                         bm.getSrcActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

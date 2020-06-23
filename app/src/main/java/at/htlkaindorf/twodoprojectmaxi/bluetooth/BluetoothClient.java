@@ -127,6 +127,11 @@ public class BluetoothClient
             oos.writeObject(Proxy.getToDoAdapter().getEntries());
             printToUI(srcActivity.getString(R.string.bt_entries_sent));
             oos.writeObject(false);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             oos.close();
             //os.close();
         } catch (IOException e) {
