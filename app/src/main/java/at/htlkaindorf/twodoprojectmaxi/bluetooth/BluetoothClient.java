@@ -175,11 +175,11 @@ public class BluetoothClient
         public void run() {
             try {
                 socket.connect();
-                printToUI("Connected to: " + partnerDevice.getName());
+                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
                 sendData();
                 disconnect();
             } catch (IOException e) {
-                printToUI("Error while connecting");
+                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_1));
                 srcActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

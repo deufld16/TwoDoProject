@@ -110,5 +110,8 @@
     <string name="language_is_stupid_2">finden</string>
     <string name="notifications_stupid_language_3">zum</string>
     <string name="choose_language_title">Sprache auswählen</string>
+    <string name="bluetooth_process_execution_failed">Prozessausführung ist fehlgeschlagen</string>
+    <string name="bluetooth_waiting_for_transfer">Warten auf übertragene Daten</string>
+    <string name="bluetooth_inform_user_error_6">Es wurde keine Verbindung angefordert</string>
 
 </resources>

@@ -73,13 +73,13 @@ public class BluetoothServer
         try
         {
             bss = bm.getBluetoothAdapter().listenUsingRfcommWithServiceRecord(NAME, THE_UUID);
-            printToUI("Device waits for connection attempt");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_waiting));
             at = new Thread(new AcceptThread());
             at.start();
         }
         catch (IOException e)
         {
-            printToUI("Error while establishing connection");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_4));
             bm.getSrcActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -160,11 +160,11 @@ public class BluetoothServer
                 socket = bss.accept();
                 if(socket != null)
                 {
-                    printToUI("Connected");
+                    printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connected));
                     receiveData();
                 }
             } catch (IOException e) {
-                printToUI("No connection was requested");
+                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_6));
             }
         }
     }
@@ -178,7 +178,7 @@ public class BluetoothServer
 
         @Override
         public void run() {
-            printToUI("Waiting for transmitted data");
+            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_waiting_for_transfer));
             AttachmentIO.deleteAudiosForTransfer();
             try {
                 do {
