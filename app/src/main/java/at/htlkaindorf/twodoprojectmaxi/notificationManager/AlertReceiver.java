@@ -33,7 +33,7 @@ public class AlertReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Log.d("NOTIFICATION_TESTING", "onReceive: Started message sending process");
+        Log.d("NOTIFICATION_FIX", "onReceive: Started message sending process");
 
         String displayText = Proxy.getLanguageContext().getString(R.string.notifications_this_is_a_reminder);
         String parts[] = intent.getStringExtra("doneUntil").split("\\.");
@@ -41,7 +41,7 @@ public class AlertReceiver extends BroadcastReceiver {
         if(help.minusDays(1).isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0))){
             displayText += Proxy.getLanguageContext().getString(R.string.tomorrow);
         }else if(help.isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0))){
-            displayText += Proxy.getLanguageContext().getString(R.string.tomorrow);
+            displayText += Proxy.getLanguageContext().getString(R.string.today);
         }
         else if(help.minusDays(2).isEqual(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0))){
             displayText += Proxy.getLanguageContext().getString(R.string.the_day_after_tomorrow);
@@ -74,6 +74,6 @@ public class AlertReceiver extends BroadcastReceiver {
         if(!intent.getStringExtra("nextDueDate").equalsIgnoreCase("none")){
             NotificationHelper.startAlarm(intent.getIntExtra("id", 1));
         }
-        //Log.d("NOTIFICATION_TESTING", "onReceive: Terminated message sending process");
+        Log.d("NOTIFICATION_FIX", "onReceive: Terminated message sending process");
     }
 }

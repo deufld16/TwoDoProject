@@ -55,6 +55,7 @@ public class Entry implements Serializable{
 
         this.request_id = request_id;
         NotificationHelper.startAlarm(this);
+        Log.d("NOTIFICATION_FIX", "setParameters: 2" + getReminderDates());
     }
 
     public void setParameters(int reminderID, LocalDateTime dueDate, String title, String entryNote, int priorityValue, Category category, int request_id){
@@ -71,6 +72,8 @@ public class Entry implements Serializable{
 
         this.request_id = request_id;
         NotificationHelper.startAlarm(this);
+
+        Log.d("NOTIFICATION_FIX", "setParameters: " + getReminderDates());
     }
 
     public Entry(){

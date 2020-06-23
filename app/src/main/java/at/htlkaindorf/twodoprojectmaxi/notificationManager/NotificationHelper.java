@@ -52,18 +52,17 @@ public class NotificationHelper {
 
         if(entry.getReminderDates().size() > 1) {
             String nextDueDate = entry.getReminderDates().get(1) + "";
-            //Log.d("NOTIFICATION_TODO", nextDueDate);
             intent.putExtra("nextDueDate", nextDueDate);
         }else{
             intent.putExtra("nextDueDate", "none");
         }
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(Proxy.getContext(), 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Proxy.getContext(), entry.getRequest_id(), intent, 0);
         Calendar c = Calendar.getInstance();
-        Log.d("NOTIFICATION_TESTING", "method: startAlarm - the next alarm for the activity " + entry.getTitle() + " should occur at " + entry.getReminderDates().get(0));
+        Log.d("NOTIFICATION_FIX", "method: startAlarm - the next alarm for the activity " + entry.getTitle() + " should occur at " + entry.getReminderDates().get(0));
         c.setTime(Date.from(entry.getReminderDates().get(0).atZone(ZoneId.systemDefault()).toInstant()));
         c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), 8, 0);
-        //Log.d("NOTIFICATION_TODO", c.getTime() + " ----- " + Calendar.getInstance().getTime());
-        alarmManager.setExact( AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+        Log.d("NOTIFICATION_FIX", c.getTime() + " ----- " + Calendar.getInstance().getTime() + "-----" + c.getTimeInMillis());
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 5000*/, pendingIntent);
         entry.getReminderDates().remove(0);
     }
 
@@ -95,6 +94,7 @@ public class NotificationHelper {
      * @param request_id
      */
     public static void cancelAlarm(int request_id){
+        Log.d("NOTIFICATION_FIX", "Notification canceled");
         AlarmManager alarmManager = (AlarmManager) Proxy.getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(Proxy.getContext(), AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(Proxy.getContext(), request_id, intent, 0);
