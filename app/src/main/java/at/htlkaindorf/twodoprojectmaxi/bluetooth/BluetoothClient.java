@@ -107,14 +107,26 @@ public class BluetoothClient
             AttachmentIO.initStorageDirectory();
             oos.writeObject(AttachmentIO.getStorageDirStr());
 
-            /*List<byte[]> bytes = AttachmentIO.getPhotoAttachments();
+            List<byte[]> bytes = AttachmentIO.getPhotoAttachments();
             for (byte[] byteArr : bytes)
             {
                 oos.writeObject("photo");
                 oos.writeObject(byteArr);
-            }*/
+            }
+
+            bytes = AttachmentIO.getAudioAttachments();
+            for (byte[] byteArr : bytes)
+            {
+                oos.writeObject("audio");
+                oos.writeObject(byteArr);
+            }
 
             oos.writeObject(AttachmentIO.getImageFilenameMapping());
+            oos.writeObject("photoMapping");
+
+            oos.writeObject(AttachmentIO.getAudioFilenameMapping());
+            oos.writeObject("audioMapping");
+
             printToUI(srcActivity.getString(R.string.bt_attachments_sent));
 
             oos.writeObject(Proxy.getClm().getAllCategories());

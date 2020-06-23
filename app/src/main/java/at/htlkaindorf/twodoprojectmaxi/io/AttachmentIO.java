@@ -54,7 +54,7 @@ public class AttachmentIO {
      *
      * @return List
      */
-    public static /*List<byte[]>*/ void getPhotoAttachments(){
+    public static List<byte[]> getPhotoAttachments(){
         bytes = new LinkedList<>();
         imageFilenameMapping = new HashMap<>();
 
@@ -71,7 +71,7 @@ public class AttachmentIO {
                     FileInputStream fis = new FileInputStream(imgFile);
                     byte[] byteArr = new byte[fis.available()];
                     fis.read(byteArr);
-                    //bytes.add(byteArr);
+                    bytes.add(byteArr);
                     imageFilenameMapping.put(byteArr, imgFileStr);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -80,7 +80,7 @@ public class AttachmentIO {
                 }
             }
         }
-        //return bytes;
+        return bytes;
     }
 
     /***
@@ -88,7 +88,7 @@ public class AttachmentIO {
      *
      * @return List
      */
-    /*public static List<byte[]> getAudioAttachments() {
+    public static List<byte[]> getAudioAttachments() {
         bytes = new LinkedList<>();
         try {
             for (Entry entry:Proxy.getToDoAdapter().getEntries()) {
@@ -99,7 +99,7 @@ public class AttachmentIO {
                     byte[] byteArr = new byte[fis.available()];
                     fis.read(byteArr);
                     bytes.add(byteArr);
-                    audioFilenameMapping.put(byteArr, aud)
+                    audioFilenameMapping.put(byteArr, audioPath);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -108,7 +108,7 @@ public class AttachmentIO {
             e.printStackTrace();
         }
         return bytes;
-    }*/
+    }
 
     /***
      * Method to save a successfully transferred attachment collection
@@ -116,9 +116,9 @@ public class AttachmentIO {
      * @param
      * @param
      */
-    public static void saveAttachments(String imgPath, byte[] sentArray){
+    public static void saveAttachments(String path, byte[] sentArray){
         try {
-            FileOutputStream fos = new FileOutputStream(imgPath);
+            FileOutputStream fos = new FileOutputStream(path);
             fos.write(sentArray);
             fos.flush();
             fos.close();
@@ -152,6 +152,14 @@ public class AttachmentIO {
 
     public static void setImageFilenameMapping(Map<byte[], String> imageFilenameMapping) {
         AttachmentIO.imageFilenameMapping = imageFilenameMapping;
+    }
+
+    public static Map<byte[], String> getAudioFilenameMapping() {
+        return audioFilenameMapping;
+    }
+
+    public static void setAudioFilenameMapping(Map<byte[], String> audioFilenameMapping) {
+        AttachmentIO.audioFilenameMapping = audioFilenameMapping;
     }
 
     public static String getStorageDirStr() {

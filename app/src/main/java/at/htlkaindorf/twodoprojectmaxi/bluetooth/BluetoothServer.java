@@ -40,6 +40,9 @@ public class BluetoothServer
     private Thread at;
     private Thread lt;
     private Map<byte[], String> tempImgPaths = new HashMap<>();
+    private Map<byte[], String> tempAudioPaths = new HashMap<>();
+    private String path = null;
+    private byte[] sentArray = null;
 
     public BluetoothServer(BluetoothManager bm, UUID THE_UUID)
     {
@@ -191,39 +194,46 @@ public class BluetoothServer
                     }
                     else if(o instanceof Map)
                     {
-                        Map<byte[], String> filenameImageMapping = (Map<byte[], String>)o;
-                        for (byte[] imgByteArray : filenameImageMapping.keySet())
+                        String type = ois.readObject()+"";
+                        Map<byte[], String> mapping = (Map<byte[], String>)o;
+                        for (byte[] byteArray : mapping.keySet())
                         {
-                            bm.getSrcActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AttachmentIO.saveAttachments(filenameImageMapping.get(imgByteArray), imgByteArray);
-                                }
-                            });
-                            //File oldFile = new File(filenameImageMapping.get(imgByteArray));
-                            //File tempFile = new File(tempImgPaths.get(imgByteArray));
-                            //tempFile.renameTo(oldFile);
+                            File oldFile = new File(mapping.get(byteArray));
+                            File tempFile = null;
+                            switch (type)
+                            {
+                                case "photoMapping":
+                                    tempFile = new File(tempImgPaths.get(byteArray));
+                                    break;
+                                case "audioMapping":
+                                    tempFile = new File(tempAudioPaths.get(byteArray));
+                                    break;
+                            }
+                            if(tempFile != null) {
+                                tempFile.renameTo(oldFile);
+                            }
                         }
 
                     } else if(o instanceof String) {
+                        if(o.equals("photo") || o.equals("audio")) {
+                            o = ois.readObject();
+                            path = directory + ImageRecorder.assemblePhotoPath();
+                            sentArray = (byte[]) o;
+                            bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AttachmentIO.saveAttachments(path, sentArray);
+                                }
+                            });
+                        }
 
                         switch(o+"")
                         {
                             case "photo":
-                                //wait for photo-byte[]:
-                                o = ois.readObject();
-                                String imgPath = directory+ImageRecorder.assemblePhotoPath();
-                                byte[] sentArray = (byte[]) o;
-                                bm.getSrcActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        AttachmentIO.saveAttachments(imgPath, sentArray);
-                                    }
-                                });
-                                tempImgPaths.put(sentArray, imgPath);
+                                tempImgPaths.put(sentArray, path);
                                 break;
                             case "audio":
-
+                                tempAudioPaths.put(sentArray, path);
                                 break;
                             default:
                                 directory = o+"";
