@@ -87,7 +87,6 @@ public class BluetoothClient
 
         try {
             bluetoothAdapter.cancelDiscovery();
-            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
             socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
             ct = new Thread(new ConnectThread());
             ct.start();
