@@ -6,17 +6,10 @@ import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import java.nio.file.Path;
-import java.util.UUID;
 
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
@@ -51,9 +44,10 @@ public class SoundRecorder {
         int audio_file_number = getUniqueAudioFileNumber(entry);
         String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record_3gp";
         entry.getAllAudioFileLocations().add(savePath);
-        Log.d("VOICE2", "setupMediaRecorder: " + savePath);
+        Log.d("FIXINGVR", "setupMediaRecorder: " + savePath);
         mediaRecorder.setOutputFile(savePath);
     }
+
 
     public void recordAudio(Entry entry){
         setupMediaRecorder(entry);
@@ -80,6 +74,7 @@ public class SoundRecorder {
 
     public int getLengthOfAudio(String path){
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        Log.d("FIXINGVR", "getLengthOfAudio: " + path);
         mmr.setDataSource(path);
 
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);

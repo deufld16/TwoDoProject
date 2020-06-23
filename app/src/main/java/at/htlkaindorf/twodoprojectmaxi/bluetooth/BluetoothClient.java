@@ -109,6 +109,7 @@ public class BluetoothClient
             printToUI(srcActivity.getString(R.string.bt_categories_sent));
             oos.writeObject(Proxy.getToDoAdapter().getEntries());
             printToUI(srcActivity.getString(R.string.bt_entries_sent));
+            oos.writeObject(false);
             oos.close();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_2));

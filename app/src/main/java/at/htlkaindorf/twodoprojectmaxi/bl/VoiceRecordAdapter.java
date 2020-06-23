@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -96,6 +99,16 @@ public class VoiceRecordAdapter extends RecyclerView.Adapter<VoiceRecordAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull VoiceRecordAdapter.ViewHolder holder, int position) {
+        for (File file:
+                Proxy.getContext().getFilesDir().listFiles()) {
+            try {
+                FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+                fis.getFD();
+                Log.d("FIXINGVR", "onBindViewHolder: no error: " + file.getAbsolutePath());
+            } catch (Exception e) {
+                Log.d("FIXINGVR", "onBindViewHolder: " + file.getAbsolutePath());
+            }
+        }
         holder.pbProgress.setMax(Proxy.getSoundRecorder().getLengthOfAudio(displayedAudios.get(position)));
         holder.pbProgress.setMin(0);
         holder.pbProgress.setProgress(0);
