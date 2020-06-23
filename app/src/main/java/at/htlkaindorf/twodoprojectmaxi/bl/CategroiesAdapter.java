@@ -66,9 +66,9 @@ public class CategroiesAdapter extends RecyclerView.Adapter<CategroiesAdapter.Vi
         List<Category> catToRemove  = new LinkedList<>();
         for (Category cat:
              Proxy.getClm().getAllCategories()) {
-            if(cat.getCategory_name().equalsIgnoreCase(Proxy.getContext().getString(R.string.add_entry_page_add_category))){
+            if(cat.getCategory_name().equalsIgnoreCase(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category))){
                 catToRemove.add(cat);
-            }else if(cat.getCategory_name().equalsIgnoreCase(Proxy.getContext().getString(R.string.add_entry_page_default))){
+            }else if(cat.getCategory_name().equalsIgnoreCase(Proxy.getLanguageContext().getString(R.string.add_entry_page_default))){
                 catToRemove.add(cat);
             }
         }
