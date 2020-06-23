@@ -6,17 +6,21 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.awt.image.*;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.beans.Category;
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.io.AttachmentIO;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.ImageRecorder;
 
 /***
  * Class that handles all relevant steps for the Bluetooth connection as a server
@@ -31,10 +35,12 @@ public class BluetoothServer
     private final String NAME = "TWO_DO";
 
     private ObjectInputStream ois;
+    private InputStream is;
     private BluetoothServerSocket bss;
     private BluetoothSocket socket;
     private Thread at;
     private Thread lt;
+    private Map<byte[], String> tempImgPaths = new HashMap<>();
 
     public BluetoothServer(BluetoothManager bm, UUID THE_UUID)
     {
@@ -96,6 +102,7 @@ public class BluetoothServer
     {
         try {
             ois = new ObjectInputStream(socket.getInputStream());
+            is = socket.getInputStream();
             lt = new Thread(new ListenerThread());
             lt.start();
         } catch (IOException e) {
@@ -180,6 +187,7 @@ public class BluetoothServer
         public void run() {
             printToUI("Waiting for transmitted data");
             AttachmentIO.deleteAudiosForTransfer();
+            String directory = "";
             try {
                 do {
                     Object o = ois.readObject();
@@ -209,21 +217,72 @@ public class BluetoothServer
                     else if(o instanceof Map)
                     {
                         //Attachment sent
-                        bm.getSrcActivity().runOnUiThread(new Runnable() {
+                        /*bm.getSrcActivity().runOnUiThread(new Runnable() {
                                                               @Override
                                                               public void run() {
                                                                   AttachmentIO.saveAttachments((Map<String, List<File>>) o);
                                                               }
-                                                          });
-                        printToUI(bm.getSrcActivity().getString(R.string.bt_attachments_received));
-                    }else if(o instanceof Boolean){
+                                                          });*/
+                        /*bm.getSrcActivity().runOnUiThread(new Runnable() {
+                                                              @Override
+                                                              public void run() {
+                                                                    AttachmentIO.setFileBitmapMap((Map<String, byte[]>) o);
+                                                              }
+                                                          });*/
+                        Map<byte[], String> filenameImageMapping = (Map<byte[], String>) ois.readObject();
+                        for (byte[] imgByteArray : filenameImageMapping.keySet())
+                        {
+                            File oldFile = new File(filenameImageMapping.get(imgByteArray));
+                            File tempFile = new File(tempImgPaths.get(imgByteArray));
+                            tempFile.renameTo(oldFile);
+                        }
+
+                    } else if(o instanceof byte[]) {
+
+                        String imgPath = directory+ImageRecorder.assemblePhotoPath();
+                        byte[] sentArray = (byte[]) ois.readObject();
+                        bm.getSrcActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AttachmentIO.saveAttachments(imgPath, sentArray);
+                            }
+                        });
+                        tempImgPaths.put(sentArray, imgPath);
+
+                    } else if(o instanceof String) {
+
+                        directory = o+"";
+
+                    } else if(o instanceof Boolean){
                         if(!(boolean)o){
+                            printToUI(bm.getSrcActivity().getString(R.string.bt_attachments_received));
                             break;
                         }
                     }
+
+                    /*bm.getSrcActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AttachmentIO.saveAttachments(is);
+                        }
+                    });*/
+
+                    /*ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    int nRead;
+                    byte[] data = new byte[16384];
+                    while ((nRead = is.read(data, 0, data.length)) != -1) {
+                        buffer.write(data, 0, nRead);
+                    }
+
+                    byte[] bytes = buffer.toByteArray();
+                    ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+                    Iterator<?> readers = ImageIO*/
+
+
                 }
                 while (!Thread.interrupted());
                 ois.close();
+                is.close();
                 socket.close();
                 bss.close();
             } catch (ClassNotFoundException e) {

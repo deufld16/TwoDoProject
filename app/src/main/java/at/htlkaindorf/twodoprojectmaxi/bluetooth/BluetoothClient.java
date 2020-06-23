@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -103,7 +104,23 @@ public class BluetoothClient
     {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject(AttachmentIO.getAllAttachments());
+
+            //OutputStream os = socket.getOutputStream();
+
+            //oos.writeObject(AttachmentIO.getAllAttachments());
+            AttachmentIO.initStorageDirectory();
+            oos.writeObject(AttachmentIO.getStorageDirStr());
+            List<byte[]> bytes = AttachmentIO.getAllAttachments();
+            for (byte[] byteArr : bytes)
+            {
+                oos.writeObject(byteArr);
+            }
+            oos.writeObject(AttachmentIO.getImageFilenameMapping());
+            /*for (byte[] byteArr : bytes)
+            {
+                os.write(byteArr);
+            }*/
+            //os.write("end of file".getBytes());
             printToUI(srcActivity.getString(R.string.bt_attachments_sent));
             oos.writeObject(Proxy.getClm().getAllCategories());
             printToUI(srcActivity.getString(R.string.bt_categories_sent));
@@ -111,6 +128,7 @@ public class BluetoothClient
             printToUI(srcActivity.getString(R.string.bt_entries_sent));
             oos.writeObject(false);
             oos.close();
+            //os.close();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_2));
             bm.getSrcActivity().runOnUiThread(new Runnable() {

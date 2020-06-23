@@ -76,13 +76,32 @@ public class ImageRecorder
         }*/
 
         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        String fileName = "twodo_img_"
-                                + DateTimeFormatter
-                                        .ofPattern("yyyy-MM-dd_HH-mm-ss-SS_")
-                                        .format(LocalDateTime.now());
+        String fileName = createFileNameNow();
         String suffix = ".jpg";
         //Log.d("FIXINGVR", "Photo File Name: "+storageDir);
         return File.createTempFile(fileName, suffix, storageDir);
+    }
+
+    /***
+     * Method to assemble a path for a photograph
+     *
+     * @return String
+     */
+    public static String assemblePhotoPath()
+    {
+        return createFileNameNow()+".jpg";
+    }
+
+    /***
+     * Method to create a name for a file using the current date & time
+     * @return
+     */
+    private static String createFileNameNow()
+    {
+        return "twodo_img_"
+                + DateTimeFormatter
+                .ofPattern("yyyy-MM-dd_HH-mm-ss-SS_")
+                .format(LocalDateTime.now());
     }
 
     public static Bitmap createScaledBitmap(Context context, Uri uri, double targetWidth) throws IOException {

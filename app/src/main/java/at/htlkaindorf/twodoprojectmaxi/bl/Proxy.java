@@ -2,6 +2,7 @@ package at.htlkaindorf.twodoprojectmaxi.bl;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -141,6 +144,15 @@ public class Proxy {
 
     public static void setContext(Context context){
         Proxy.context = context;
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(!storageDir.exists())
+        {
+            try {
+                storageDir.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static CategoryListModel getClm() {
