@@ -43,11 +43,11 @@ public class AttachmentIO {
                 try {
                     File file = new File(path);
                     allAudioFiles.add(file);
+                    Log.d("FIXINGVR", "getAllAttachments: " + file.getAbsolutePath());
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
             }
-
             for(String imgPath : entry.getAllPhotoLocations())
             {
                 allPhotoFiles.add(new File(imgPath));
@@ -73,11 +73,12 @@ public class AttachmentIO {
              allAudioFiles) {
             try{
                 if(file.createNewFile()) {
-                    Log.d("TRANSFER_DATA", "audios successfully created");
+                    Log.d("FIXINGVR", "getAllAttachments: " + file.getAbsolutePath());
+                    Log.d("FIXINGVR", "audios successfully created");
                 }
                 else
                 {
-                    Log.d("TRANSFER_DATA", "audios unsuccessfully created");
+                    Log.d("FIXINGVR", "audios unsuccessfully created");
                 }
             }catch (Exception ex){
                 ex.printStackTrace();
@@ -97,6 +98,22 @@ public class AttachmentIO {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public static void deleteAudiosForTransfer(){
+        List<Entry> allAudioFileLocations = new LinkedList<>(Proxy.getToDoAdapter().getEntries());
+
+        for (Entry entry:
+             allAudioFileLocations) {
+            for (String location:
+                 entry.getAllAudioFileLocations()) {
+                try{
+                    Files.delete(Paths.get(location));
+                }catch (IOException ex){
+                    ex.printStackTrace();
+                }
             }
         }
     }

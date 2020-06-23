@@ -2,6 +2,7 @@ package at.htlkaindorf.twodoprojectmaxi.bluetooth;
 
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,7 +137,9 @@ public class BluetoothServer
         {
             at.interrupt();
             try {
-                socket.close();
+                if(socket != null){
+                    socket.close();
+                }
                 bss.close();
             } catch (IOException e) {}
         }
@@ -152,6 +155,7 @@ public class BluetoothServer
         @Override
         public void run() {
             try {
+                Log.d("FIXINGBT", "run: " + "waiting for other device");
                 socket = bss.accept();
                 if(socket != null)
                 {
@@ -174,6 +178,7 @@ public class BluetoothServer
         @Override
         public void run() {
             printToUI("Waiting for transmitted data");
+            AttachmentIO.deleteAudiosForTransfer();
             try {
                 do {
                     Object o = ois.readObject();
@@ -210,6 +215,10 @@ public class BluetoothServer
                                                               }
                                                           });
                         printToUI(bm.getSrcActivity().getString(R.string.bt_attachments_received));
+                    }else if(o instanceof Boolean){
+                        if(!(boolean)o){
+                            break;
+                        }
                     }
                 }
                 while (!Thread.interrupted());

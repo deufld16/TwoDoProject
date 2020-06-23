@@ -81,7 +81,7 @@ public class ImageRecorder
                                         .ofPattern("yyyy-MM-dd_HH-mm-ss-SS_")
                                         .format(LocalDateTime.now());
         String suffix = ".jpg";
-        //Log.d("PHOTO_STORAGE", "Photo File Name: "+fileName);
+        //Log.d("FIXINGVR", "Photo File Name: "+storageDir);
         return File.createTempFile(fileName, suffix, storageDir);
     }
 
