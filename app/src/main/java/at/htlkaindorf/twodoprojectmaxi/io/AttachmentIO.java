@@ -57,22 +57,9 @@ public class AttachmentIO {
      */
     //public static Map<String, List<File>> getAllAttachments(){
     public static List<byte[]> getAllAttachments(){
-        //List<File> allAudioFiles = new LinkedList<>();
-        //List<File> allPhotoFiles = new LinkedList<>();
-
         imageFilenameMapping = new HashMap<>();
 
         for (Entry entry:Proxy.getToDoAdapter().getEntries()) {
-            /*for (String path:
-                 entry.getAllAudioFileLocations()) {
-                try {
-                    File file = new File(path);
-                    allAudioFiles.add(file);
-                    Log.d("FIXINGVR", "getAllAttachments: " + file.getAbsolutePath());
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
-            }*/
             for(String imgPath : entry.getAllPhotoLocations())
             {
                 imgPath = imgPath.replace("content://at.htlkaindorf.fileprovider/twodo_images/",
@@ -92,47 +79,8 @@ public class AttachmentIO {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                /*Bitmap bm = BitmapFactory.decodeFile(storageDir.toString()+File.separator+imgPath);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 40, baos);
-                byte[] bArr = baos.toByteArray();
-                bytes.add(bArr);
-                fileBitmapMap.put(storageDir.toString()+File.separator+imgPath, bArr);*/
-
-                /*try {
-                    File imgFile = new File(storageDir.toString()+File.separator+imgPath);
-                    FileInputStream fis = new FileInputStream(imgFile);
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    byte[] buf = new byte[1024];
-                    for (int readNum; (readNum = fis.read(buf)) != -1;)
-                    {
-                        bos.write(buf, 0, readNum);
-                    }
-                    bytes.add(bos.toByteArray());
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
-
-                /*try {
-                    File imgFile = new File(storageDir.toString()+File.separator+imgPath);
-                    handleImage(imgFile, null);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
-
-                //allPhotoFiles.add(new File(storageDir.toString()+File.separator+imgPath));
             }
         }
-
-        /*Map<String, List<File>> attachments = new HashMap<>();
-        attachments.put(KEY_AUDIO, allAudioFiles);
-        attachments.put(KEY_PHOTO, allPhotoFiles);*/
-        //return attachments;
         return bytes;
     }
 
@@ -142,9 +90,7 @@ public class AttachmentIO {
      * @param
      * @param
      */
-    public static void saveAttachments(String imgPath, byte[] sentArray
-            /*Map<String, List<File>> attachment InputStream is*/){
-
+    public static void saveAttachments(String imgPath, byte[] sentArray){
         try {
             FileOutputStream fos = new FileOutputStream(imgPath);
             fos.write(sentArray);
@@ -153,78 +99,11 @@ public class AttachmentIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*try {
-            FileOutputStream fos = new FileOutputStream(file);
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            int bytesRead;
-            while ((bytesRead = is.read(buf)) != -1) {
-                bos.write(buf, 0, bytesRead);
-            }
-            bos.flush();
-            bos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        /*List<File> allAudioFiles = attachment.get(KEY_AUDIO);
-        List<File> allPhotoFiles = attachment.get(KEY_PHOTO);
-
-        for (File file:
-             allAudioFiles) {
-            try{
-                if(file.createNewFile()) {
-                    Log.d("FIXINGVR", "getAllAttachments: " + file.getAbsolutePath());
-                    Log.d("FIXINGVR", "audios successfully created");
-                }
-                else
-                {
-                    Log.d("FIXINGVR", "audios unsuccessfully created");
-                }
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-        }
-
-        for (File file : allPhotoFiles)
-        {
-            try {
-                if(file.createNewFile())
-                {
-                    Log.d("TRANSFER_DATA", "photos successfully created");
-                }
-                else
-                {
-                    Log.d("TRANSFER_DATA", "photos unsuccessfully created");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
-    /*private static void handleImage(File file, InputStream is) throws IOException {
-        byte[] buf = new byte[1024];
-        if(is == null)
-        {
-            //prepare for sending
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            FileInputStream fis = new FileInputStream(file);
-            for (int readNum; (readNum = fis.read(buf)) != -1;)
-            {
-                baos.write(buf, 0, readNum);
-            }
-            bytes.add(baos.toByteArray());
-            baos.close();
-            fis.close();
-        }
-        else
-        {
-            //prepare for receiving
-
-        }
-    }*/
-
+    /***
+     * Method to prepare the receiving device for the bluetooth transfer
+     */
     public static void deleteAudiosForTransfer(){
         List<Entry> allAudioFileLocations = new LinkedList<>(Proxy.getToDoAdapter().getEntries());
 

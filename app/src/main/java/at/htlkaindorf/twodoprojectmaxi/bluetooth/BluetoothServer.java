@@ -49,30 +49,6 @@ public class BluetoothServer
 
     /***
      * Method to initialize all relevant steps for the device acting as a Bluetooth Server
-
-    public void runServer() {
-        try
-        {
-            BluetoothServerSocket bss = bm.getBluetoothAdapter().listenUsingRfcommWithServiceRecord(NAME, THE_UUID);
-            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_waiting));
-            BluetoothSocket socket = bss.accept();
-            if(socket != null)
-            {
-                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connected));
-                receiveData(socket);
-                socket.close();
-            }
-            bss.close();
-        }
-        catch (IOException e)
-        {
-            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_4));
-            bm.getSrcActivity().processFailed();
-        }
-    }*/
-
-    /***
-     * Method to initialize all relevant steps for the device acting as a Bluetooth Server
      */
     public void runServer() {
         try
@@ -215,19 +191,6 @@ public class BluetoothServer
                     }
                     else if(o instanceof Map)
                     {
-                        //Attachment sent
-                        /*bm.getSrcActivity().runOnUiThread(new Runnable() {
-                                                              @Override
-                                                              public void run() {
-                                                                  AttachmentIO.saveAttachments((Map<String, List<File>>) o);
-                                                              }
-                                                          });*/
-                        /*bm.getSrcActivity().runOnUiThread(new Runnable() {
-                                                              @Override
-                                                              public void run() {
-                                                                    AttachmentIO.setFileBitmapMap((Map<String, byte[]>) o);
-                                                              }
-                                                          });*/
                         Map<byte[], String> filenameImageMapping = (Map<byte[], String>)o;
                         for (byte[] imgByteArray : filenameImageMapping.keySet())
                         {
@@ -258,26 +221,6 @@ public class BluetoothServer
                             break;
                         }
                     }
-
-                    /*bm.getSrcActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AttachmentIO.saveAttachments(is);
-                        }
-                    });*/
-
-                    /*ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[16384];
-                    while ((nRead = is.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-
-                    byte[] bytes = buffer.toByteArray();
-                    ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-                    Iterator<?> readers = ImageIO*/
-
-
                 }
                 while (!Thread.interrupted());
                 ois.close();
