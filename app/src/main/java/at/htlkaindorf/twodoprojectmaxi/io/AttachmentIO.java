@@ -90,10 +90,12 @@ public class AttachmentIO {
      */
     public static List<byte[]> getAudioAttachments() {
         bytes = new LinkedList<>();
+        audioFilenameMapping = new HashMap<>();
         try {
             for (Entry entry:Proxy.getToDoAdapter().getEntries()) {
                 for (String audioPath : entry.getAllAudioFileLocations())
                 {
+                    Log.d("BUGFIXING", "getAudioAttachments: " + audioPath);
                     File audioFile = new File(audioPath);
                     FileInputStream fis = new FileInputStream(audioFile);
                     byte[] byteArr = new byte[fis.available()];

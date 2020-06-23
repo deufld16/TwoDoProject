@@ -122,13 +122,13 @@ public class CreationActivity extends AppCompatActivity{
      */
     private void init(){
         if(Proxy.getVra() == null){
-            Proxy.setVra(new VoiceRecordAdapter(this, getSupportFragmentManager()));
         }
+        Proxy.setVra(new VoiceRecordAdapter(this, getSupportFragmentManager()));
         Proxy.getVra().setEntry(entry);
         Proxy.getVra().setSourceActivity(this);
         remindingIntervalls = Arrays.asList(getString(R.string.add_entry_page_no_reminder), getString(R.string.add_entry_page_daily_reminder), getString(R.string.add_entry_page_weekly_reminder),
-                getString(R.string.add_entry_page_monthly_reminder), getString(R.string.add_entry_page_yearly_reminder), getString(R.string.add_entry_page_specific_reminder),
-                getString(R.string.add_entry_page_specific_interval));
+                getString(R.string.add_entry_page_monthly_reminder), getString(R.string.add_entry_page_yearly_reminder)); /*getString(R.string.add_entry_page_specific_reminder),
+                getString(R.string.add_entry_page_specific_interval));*/
         //fetching the components and disabling the ReminderInterval until a date is selected
         tvHeader = findViewById(R.id.tv_creation_manipulation_title);
         etTitle = findViewById(R.id.etEntryTitle);

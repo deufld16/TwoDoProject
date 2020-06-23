@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 import at.htlkaindorf.twodoprojectmaxi.io.AttachmentIO;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.ImageRecorder;
+import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
 /***
  * Class that handles all relevant steps for the Bluetooth connection as a server
@@ -39,8 +41,8 @@ public class BluetoothServer
     private BluetoothSocket socket;
     private Thread at;
     private Thread lt;
-    private Map<byte[], String> tempImgPaths = new HashMap<>();
-    private Map<byte[], String> tempAudioPaths = new HashMap<>();
+    private Map<byte[], String> tempImgPaths;
+    private Map<byte[], String> tempAudioPaths;
     private String path = null;
     private byte[] sentArray = null;
 
@@ -166,6 +168,8 @@ public class BluetoothServer
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_waiting_for_transfer));
             AttachmentIO.deleteAudiosForTransfer();
             String directory = "";
+            tempImgPaths = new HashMap<>();
+            tempAudioPaths = new HashMap<>();
             try {
                 do {
                     Object o = ois.readObject();
@@ -200,6 +204,8 @@ public class BluetoothServer
                         {
                             File oldFile = new File(mapping.get(byteArray));
                             File tempFile = null;
+                            //Log.d("BUGFIXING", "run: " + byteArray.toString() + " - " + tempImgPaths);
+                            //Log.d("BUGFIXING", "run: " + mapping.keySet() + " - " + mapping.values());
                             switch (type)
                             {
                                 case "photoMapping":
@@ -215,10 +221,15 @@ public class BluetoothServer
                         }
 
                     } else if(o instanceof String) {
+                        Log.d("BUGFIXING", "run: ich bin hier");
                         if(o.equals("photo") || o.equals("audio")) {
-                            o = ois.readObject();
-                            path = directory + ImageRecorder.assemblePhotoPath();
-                            sentArray = (byte[]) o;
+                            byte[] help = (byte[])ois.readObject();
+                            if(o.equals("photo")){
+                                path = directory + ImageRecorder.assemblePhotoPath();
+                            }else{
+                                path = directory + SoundRecorder.createFileNameNow();
+                            }
+                            sentArray = help;
                             bm.getSrcActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -230,6 +241,7 @@ public class BluetoothServer
                         switch(o+"")
                         {
                             case "photo":
+                                //Log.d("BUGFIXING", "run: ich bin hier aber habe heute kein Foto für dich");
                                 tempImgPaths.put(sentArray, path);
                                 break;
                             case "audio":
