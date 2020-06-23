@@ -48,11 +48,14 @@
     <string name="bluetooth_inform_user_error_3">Device does not support bluetooth</string>
     <string name="bluetooth_inform_user_error_4">Error while establishing connection</string>
     <string name="bluetooth_inform_user_error_5">Error while receiving data</string>
+    <string name="bluetooth_inform_user_error_6">No connection was requested</string>
     <string name="bluetooth_inform_user_connect">Connected to: </string>
     <string name="bluetooth_inform_user_disconnected">Disconnected</string>
     <string name="bluetooth_inform_user_connected">"Connected"</string>
     <string name="bluetooth_inform_user_turned_off">Bluetooth turned off</string>
     <string name="bluetooth_inform_user_waiting">Device waits for connection attempt</string>
+    <string name="bluetooth_process_execution_failed">Process execution failed</string>
+    <string name="bluetooth_waiting_for_transfer">Waiting for transmitted data</string>
     <string name="bt_attachments_sent">Attachments sent</string>
     <string name="bt_categories_sent">Categories sent</string>
     <string name="bt_entries_sent">To-Do-Entries sent</string>
