@@ -8,6 +8,11 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Paths;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -42,7 +47,7 @@ public class SoundRecorder {
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         int audio_file_number = getUniqueAudioFileNumber(entry);
-        String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record_3gp";
+        String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record.3gp";
         entry.getAllAudioFileLocations().add(savePath);
         Log.d("FIXINGVR", "setupMediaRecorder: " + savePath);
         mediaRecorder.setOutputFile(savePath);
@@ -74,11 +79,18 @@ public class SoundRecorder {
 
     public int getLengthOfAudio(String path){
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        Log.d("FIXINGVR", "getLengthOfAudio: " + path);
-        mmr.setDataSource(path);
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(path);
+            Log.d("FIXINGVR", "getLengthOfAudio: " + path);
+            mmr.setDataSource(fis.getFD());
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
 
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         int lengthInSeconds = Integer.parseInt(durationStr);
+
         return  lengthInSeconds;
     }
 
