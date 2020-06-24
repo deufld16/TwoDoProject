@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.FileInputStream;
@@ -15,6 +16,10 @@ import java.nio.file.Paths;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import at.htlkaindorf.twodoprojectmaxi.beans.Entry;
 import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
@@ -47,7 +52,8 @@ public class SoundRecorder {
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         int audio_file_number = getUniqueAudioFileNumber(entry);
-        String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record.3gp";
+        String savePath = Proxy.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + File.separator + audio_file_number + "_audio_record.3gp";
+        //String savePath = Proxy.getContext().getFilesDir().getAbsolutePath() + "/" + audio_file_number + "_audio_record.3gp";
         entry.getAllAudioFileLocations().add(savePath);
         Log.d("FIXINGVR", "setupMediaRecorder: " + savePath);
         mediaRecorder.setOutputFile(savePath);
@@ -79,18 +85,11 @@ public class SoundRecorder {
 
     public int getLengthOfAudio(String path){
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        FileInputStream fis = null;
-        try{
-            fis = new FileInputStream(path);
-            Log.d("FIXINGVR", "getLengthOfAudio: " + path);
-            mmr.setDataSource(fis.getFD());
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
+        Log.d("FIXINGVR", "getLengthOfAudio: " + path);
+        mmr.setDataSource(path);
 
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         int lengthInSeconds = Integer.parseInt(durationStr);
-
         return  lengthInSeconds;
     }
 
@@ -144,6 +143,12 @@ public class SoundRecorder {
             //setupMediaRecorder(entry);
             isPaused = false;
         }
+    }
+
+    public static String createFileNameNow(){
+        return "twodo_video_" +
+                DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss-SS")
+                .format(LocalDateTime.now()) + ".3gp";
     }
 
     private int getUniqueAudioFileNumber(Entry currentEntry){

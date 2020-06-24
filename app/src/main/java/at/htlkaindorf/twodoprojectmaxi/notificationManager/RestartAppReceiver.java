@@ -16,7 +16,7 @@ import at.htlkaindorf.twodoprojectmaxi.bl.Proxy;
 
 public class RestartAppReceiver extends BroadcastReceiver {
 
-    private static final String LOG_TAG = "NOTIFICATION_TODO";
+    private static final String LOG_TAG = "NOTIFICATION_FIX";
     private static final String FILE_NAME = "entries.ser";
 
     public RestartAppReceiver() {
@@ -61,6 +61,7 @@ public class RestartAppReceiver extends BroadcastReceiver {
                     Log.i(LOG_TAG, "Finish resetting alarms after reboot");
                     break;
                 default:
+                    Log.d(LOG_TAG, "Start resetting alarms after reboot");
                     break;
             }
         }

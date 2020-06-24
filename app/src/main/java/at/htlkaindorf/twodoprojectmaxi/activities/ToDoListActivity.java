@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -259,7 +260,7 @@ public class ToDoListActivity extends AppCompatActivity {
             boolean categoriesFileExists = false;
             for (File file:
                  getFilesDir().listFiles()) {
-                Log.d("ERROR", "onCreate: " + file.getName()) ;
+                //Log.d("BUGFIXWTF", "onCreate: " + file.getAbsolutePath()) ;
                 if(file.getName().equalsIgnoreCase("entries.ser")){
                     entriesFileExists = true;
                 }
@@ -525,6 +526,7 @@ public class ToDoListActivity extends AppCompatActivity {
             config.locale = locale;
             res.updateConfiguration(config, res.getDisplayMetrics());
             Proxy.getClm().languageChanged(add_category, default_category);
+            Proxy.setCurrentSortingTypes();
             finish();
             Intent intent = getIntent();
             Intent intent1 = new Intent(this, CreationActivity.class);

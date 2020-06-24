@@ -219,8 +219,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     public void setFilterEnum(String filterEnum) {
-        for (SortingType sortingType:
-             SortingType.values()) {
+        for (SortingType sortingType : Proxy.getCurrentSortingTypes()) {
             if(sortingType.getDisplay_text().equalsIgnoreCase(filterEnum)){
                 this.filterEnum = sortingType;
             }
@@ -251,6 +250,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
      */
     public void doEntry(int position, Entry entry)
     {
+        Log.d("NOTIFICATION_FIX", "doEntry: " + "i am here");
         NotificationHelper.cancelAlarm(entry.getRequest_id());
         entry.setStatus(Status.Done);
         entries.set(position, entry);
@@ -264,6 +264,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
      */
     public void deleteEntry(int position, Entry entry)
     {
+        Log.d("NOTIFICATION_FIX", "deleteEntry: " + "i am here");
         NotificationHelper.cancelAlarm(entry.getRequest_id());
         entry.setStatus(Status.Deleted);
         entries.set(position, entry);
@@ -281,11 +282,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         entries.set(position, entry);
         updateReminders(entry);
         if(entry.getReminderDates().size() >= 1){
+            Log.d("NOTIFICATION_FIX", "restoreEntry: " + "i am here");
             NotificationHelper.startAlarm(entry);
         }
     }
 
     private void updateReminders(Entry entry){
+        Log.d("NOTIFICATION_FIX", "updateReminders: " + "i am here");
         List<LocalDateTime> datesToRemove = new LinkedList<>();
         for (LocalDateTime reminder:
              entry.getReminderDates()) {
@@ -379,7 +382,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ObjectInputStream ois = new ObjectInputStream(fis);
         entries = (List<Entry>)ois.readObject();
         ois.close();
-        Toast.makeText(context, "Entries Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Entries Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
         filter();
     }
 
@@ -393,7 +396,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(entries);
         oos.close();
-        Toast.makeText(context, "Entries Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Entries Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 
 

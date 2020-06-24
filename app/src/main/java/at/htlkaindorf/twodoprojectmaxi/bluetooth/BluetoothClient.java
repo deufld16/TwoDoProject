@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -86,7 +87,6 @@ public class BluetoothClient
 
         try {
             bluetoothAdapter.cancelDiscovery();
-            printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
             socket = partnerDevice.createRfcommSocketToServiceRecord(THE_UUID);
             ct = new Thread(new ConnectThread());
             ct.start();
@@ -103,13 +103,45 @@ public class BluetoothClient
     {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject(AttachmentIO.getAllAttachments());
+
+            AttachmentIO.initStorageDirectory();
+            oos.writeObject(AttachmentIO.getStorageDirStr());
+
+            List<byte[]> bytes = AttachmentIO.getPhotoAttachments();
+            for (byte[] byteArr : bytes)
+            {
+                oos.writeObject("photo");
+                oos.writeObject(byteArr);
+            }
+
+            bytes = AttachmentIO.getAudioAttachments();
+            for (byte[] byteArr : bytes)
+            {
+                oos.writeObject("audio");
+                oos.writeObject(byteArr);
+            }
+
+            oos.writeObject(AttachmentIO.getImageFilenameMapping());
+            oos.writeObject("photoMapping");
+
+            oos.writeObject(AttachmentIO.getAudioFilenameMapping());
+            oos.writeObject("audioMapping");
+
             printToUI(srcActivity.getString(R.string.bt_attachments_sent));
+
             oos.writeObject(Proxy.getClm().getAllCategories());
             printToUI(srcActivity.getString(R.string.bt_categories_sent));
+
             oos.writeObject(Proxy.getToDoAdapter().getEntries());
             printToUI(srcActivity.getString(R.string.bt_entries_sent));
+
             oos.writeObject(false);
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             oos.close();
         } catch (IOException e) {
             printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_2));
@@ -175,11 +207,11 @@ public class BluetoothClient
         public void run() {
             try {
                 socket.connect();
-                printToUI("Connected to: " + partnerDevice.getName());
+                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_connect) + partnerDevice.getName());
                 sendData();
                 disconnect();
             } catch (IOException e) {
-                printToUI("Error while connecting");
+                printToUI(Proxy.getLanguageContext().getString(R.string.bluetooth_inform_user_error_1));
                 srcActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

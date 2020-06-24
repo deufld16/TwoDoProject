@@ -50,7 +50,6 @@ public class ImageRecorder
                         "at.htlkaindorf.fileprovider",
                         file);
                 photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                //photoIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 srcActivity.startActivityForResult(photoIntent, REQUEST_IMAGE_CAPTURE);
                 return uri;
             }
@@ -63,28 +62,43 @@ public class ImageRecorder
      * @return File
      */
     private static File createPhotoFile(Context context) throws IOException {
-        /*File storageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "T(W)O_DO");
-        if(!storageDir.exists())
-        {
-            if(!storageDir.mkdirs())
-            {
-                Log.d("PHOTO_STORAGE", "failed to create directory");
-                return null;
-            }
-            Log.d("PHOTO_STORAGE", "directory created: "+storageDir.toString());
-        }*/
-
         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        String fileName = "twodo_img_"
-                                + DateTimeFormatter
-                                        .ofPattern("yyyy-MM-dd_HH-mm-ss-SS_")
-                                        .format(LocalDateTime.now());
+        String fileName = createFileNameNow();
         String suffix = ".jpg";
-        //Log.d("FIXINGVR", "Photo File Name: "+storageDir);
         return File.createTempFile(fileName, suffix, storageDir);
     }
 
+    /***
+     * Method to assemble a path for a photograph
+     *
+     * @return String
+     */
+    public static String assemblePhotoPath()
+    {
+        return createFileNameNow()+".jpg";
+    }
+
+    /***
+     * Method to create a name for a file using the current date & time
+     * @return
+     */
+    private static String createFileNameNow()
+    {
+        return "twodo_img_"
+                + DateTimeFormatter
+                .ofPattern("yyyy-MM-dd_HH-mm-ss-SS_")
+                .format(LocalDateTime.now());
+    }
+
+    /***
+     * Method to create a scaled bitmap to display the image
+     *
+     * @param context
+     * @param uri
+     * @param targetWidth
+     * @return
+     * @throws IOException
+     */
     public static Bitmap createScaledBitmap(Context context, Uri uri, double targetWidth) throws IOException {
         Bitmap bitmap = null;
         if (Build.VERSION.SDK_INT < 28) {

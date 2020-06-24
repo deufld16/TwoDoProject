@@ -2,6 +2,7 @@ package at.htlkaindorf.twodoprojectmaxi.bl;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,13 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import at.htlkaindorf.twodoprojectmaxi.R;
 import at.htlkaindorf.twodoprojectmaxi.activities.CategoriesManagementActivity;
 import at.htlkaindorf.twodoprojectmaxi.activities.ToDoListActivity;
+import at.htlkaindorf.twodoprojectmaxi.enums.SortingType;
 import at.htlkaindorf.twodoprojectmaxi.enums.Status;
 import at.htlkaindorf.twodoprojectmaxi.mediaRecorders.SoundRecorder;
 
@@ -39,6 +45,7 @@ public class Proxy {
     private static SoundRecorder soundRecorder = new SoundRecorder();
     private static VoiceRecordAdapter vra;
     private static final Map<Character, Double> CHARACTER_WIDTH;
+    private static List<SortingType> currentSortingTypes = new LinkedList<>();
 
     static
     {
@@ -105,6 +112,15 @@ public class Proxy {
         CHARACTER_WIDTH.put('7', 2.5);
         CHARACTER_WIDTH.put('8', 2.5);
         CHARACTER_WIDTH.put('9', 2.5);
+
+        for (SortingType type:
+             SortingType.values()) {
+            currentSortingTypes.add(type);
+        }
+    }
+
+    public static List<SortingType> getCurrentSortingTypes() {
+        return currentSortingTypes;
     }
 
     public static Map<Character, Double> getCharacterWidth() {
@@ -127,6 +143,14 @@ public class Proxy {
         Proxy.languageContext = languageContext;
     }
 
+    public static void setCurrentSortingTypes(){
+        currentSortingTypes.clear();
+        currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_1)));
+        currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_2)));
+        currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_3)));
+        currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_4)));
+    }
+
     public static VoiceRecordAdapter getVra() {
         return vra;
     }
@@ -141,6 +165,15 @@ public class Proxy {
 
     public static void setContext(Context context){
         Proxy.context = context;
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(!storageDir.exists())
+        {
+            try {
+                storageDir.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static CategoryListModel getClm() {

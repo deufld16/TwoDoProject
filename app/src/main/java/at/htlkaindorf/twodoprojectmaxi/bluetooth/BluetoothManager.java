@@ -94,26 +94,7 @@ public class BluetoothManager
         }
 
         enableBluetoothDiscoverability();
-
-        //enableBluetooth();
     }
-
-    /***
-     * Method to enable Bluetooth on device
-     */
-    /*private void enableBluetooth()
-    {
-        if(!bluetoothAdapter.isEnabled())
-        {
-            Intent enaBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            srcActivity.startActivityForResult(enaBluetoothIntent, BLUETOOTH_ENABLE_REQUEST_CODE);
-        }
-        else
-        {
-            srcActivity.informUser("Bluetooth turned on");
-            queryPairedDevices();
-        }
-    }*/
 
     /***
      * Method to enable Bluetooth as well as the discoverability of the device to certain amount of time

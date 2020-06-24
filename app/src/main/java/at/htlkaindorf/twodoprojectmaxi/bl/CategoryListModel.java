@@ -98,7 +98,7 @@ public class CategoryListModel {
         addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_default)));
         addCategory(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
         ois.close();
-        Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Categories Successfully loaded from " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -117,7 +117,7 @@ public class CategoryListModel {
         allCategories.add(new Category(Proxy.getLanguageContext().getString(R.string.add_entry_page_add_category)));
         Log.d("ERROR", "saveCategories: " + allCategories);;
         oos.close();
-        Toast.makeText(context, "Categories Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Categories Successfully saved to " + FILE_NAME, Toast.LENGTH_LONG).show();
     }
 
     public void languageChanged(Category addCategory, Category defaultCategory){

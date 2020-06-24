@@ -102,4 +102,8 @@
     <string name="language_is_stupid_2">-</string>
     <string name="language_is_stupid">-</string>
     <string name="bluetooth_inform_user_enabled">"Bluetooth activé, découvrable pour "</string>
+    <string name="cat_dialog_width">"Le nom de la nouvelle catégorie est trop long  "</string>
+    <string name="bluetooth_process_execution_failed">Échec de l\'exécution du processus</string>
+    <string name="bluetooth_waiting_for_transfer">En attente des données transmises</string>
+    <string name="bluetooth_inform_user_error_6">Aucune connexion n\'a été demandée</string>
 </resources>
