@@ -219,7 +219,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     public void setFilterEnum(String filterEnum) {
-        for (SortingType sortingType : Proxy.getCurrentSortingTypes()) {
+        for (SortingType sortingType : SortingType.values()) {
             if(sortingType.getDisplay_text().equalsIgnoreCase(filterEnum)){
                 this.filterEnum = sortingType;
             }

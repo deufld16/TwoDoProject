@@ -113,15 +113,15 @@ public class Proxy {
         CHARACTER_WIDTH.put('8', 2.5);
         CHARACTER_WIDTH.put('9', 2.5);
 
-        for (SortingType type:
+        /*for (SortingType type:
              SortingType.values()) {
             currentSortingTypes.add(type);
-        }
+        }*/
     }
 
-    public static List<SortingType> getCurrentSortingTypes() {
+    /*public static List<SortingType> getCurrentSortingTypes() {
         return currentSortingTypes;
-    }
+    }*/
 
     public static Map<Character, Double> getCharacterWidth() {
         return CHARACTER_WIDTH;
@@ -143,13 +143,13 @@ public class Proxy {
         Proxy.languageContext = languageContext;
     }
 
-    public static void setCurrentSortingTypes(){
+    /*public static void setCurrentSortingTypes(){
         currentSortingTypes.clear();
         currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_1)));
         currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_2)));
         currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_3)));
         currentSortingTypes.add(SortingType.valueOf(Proxy.getLanguageContext().getString(R.string.sorting_4)));
-    }
+    }*/
 
     public static VoiceRecordAdapter getVra() {
         return vra;

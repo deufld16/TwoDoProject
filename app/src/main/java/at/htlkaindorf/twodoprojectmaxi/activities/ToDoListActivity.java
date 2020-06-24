@@ -526,7 +526,7 @@ public class ToDoListActivity extends AppCompatActivity {
             config.locale = locale;
             res.updateConfiguration(config, res.getDisplayMetrics());
             Proxy.getClm().languageChanged(add_category, default_category);
-            Proxy.setCurrentSortingTypes();
+            //Proxy.setCurrentSortingTypes();
             finish();
             Intent intent = getIntent();
             Intent intent1 = new Intent(this, CreationActivity.class);
