@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     private List<Entry> filteredEntries = new LinkedList<>();
     private Context context;
     private String filter = "";
-    private Enum filterEnum = null;
+    private String filterEnum = null;
     private String filterCategory = "";
     private Status displayStatus = Status.Working;
 
@@ -219,11 +220,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     public void setFilterEnum(String filterEnum) {
-        for (SortingType sortingType : SortingType.values()) {
-            if(sortingType.getDisplay_text().equalsIgnoreCase(filterEnum)){
-                this.filterEnum = sortingType;
-            }
-        }
+        this.filterEnum = filterEnum;
     }
 
     public void setFilterCategory(String filterCategory) {
@@ -357,12 +354,17 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
      * Sort the filtered entries
      */
     private void sortCategories(){
+        List<String> allSortingTypesText = Arrays.asList(Proxy.getLanguageContext().getString(R.string.sorting_1),
+                Proxy.getLanguageContext().getString(R.string.sorting_2),
+                Proxy.getLanguageContext().getString(R.string.sorting_3),
+                Proxy.getLanguageContext().getString(R.string.sorting_4));
+
         if(filterEnum != null){
-            if(filterEnum == SortingType.PRIORITY_DOWNWARDS){
+            if(filterEnum.equalsIgnoreCase(allSortingTypesText.get(2))){
                 filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue));
-            }else if(filterEnum == SortingType.DUE_DATE_DOWNWARDS){
+            }else if(filterEnum.equalsIgnoreCase(allSortingTypesText.get(0))){
                 filteredEntries.sort(Comparator.comparing(Entry::getDueDate));
-            }else if(filterEnum == SortingType.PRIORITY_UPWARDS){
+            }else if(filterEnum.equalsIgnoreCase(allSortingTypesText.get(3))){
                 filteredEntries.sort(Comparator.comparing(Entry::getPriorityValue).reversed());
             }else{
                 filteredEntries.sort(Comparator.comparing(Entry::getDueDate).reversed());
